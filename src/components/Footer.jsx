@@ -21,7 +21,6 @@ export default function Footer() {
           <a href="https://betrue.es/trip/canyoning_adventure_in_rio_verde/" className="mb-2 block text-[13.5px] text-white/40 transition-colors hover:text-white">Barranquismo</a>
           <a href="https://betrue.es/trip/via-ferrata-adventure/" className="mb-2 block text-[13.5px] text-white/40 transition-colors hover:text-white">Vía Ferrata</a>
           <a href="https://betrue.es/trip/albayzin/" className="mb-2 block text-[13.5px] text-white/40 transition-colors hover:text-white">E-Bike Tour</a>
-          <a href="#" className="mb-2 block text-[13.5px] text-white/40 transition-colors hover:text-white">Flamenco (pronto)</a>
         </div>
 
         <div>
@@ -34,18 +33,14 @@ export default function Footer() {
 
         <div>
           <div className="mb-3.5 text-[10px] font-semibold uppercase tracking-[.16em] text-gold">Legal</div>
-          <a href="#" className="mb-2 block text-[13.5px] text-white/40 transition-colors hover:text-white">Términos</a>
-          <a href="#" className="mb-2 block text-[13.5px] text-white/40 transition-colors hover:text-white">Privacidad</a>
-          <a href="#" className="mb-2 block text-[13.5px] text-white/40 transition-colors hover:text-white">Cookies</a>
+          <span className="mb-2 block text-[13.5px] text-white/25">Términos <em className="not-italic text-white/15">(Próximamente)</em></span>
+          <span className="mb-2 block text-[13.5px] text-white/25">Privacidad <em className="not-italic text-white/15">(Próximamente)</em></span>
+          <span className="mb-2 block text-[13.5px] text-white/25">Cookies <em className="not-italic text-white/15">(Próximamente)</em></span>
         </div>
       </div>
 
       <div className="mx-auto flex max-w-[1160px] flex-wrap items-center justify-between gap-2.5 border-t border-white/[.06] pt-6">
         <span className="text-[11.5px] text-white/20">© 2026 TRUE Granada Experiences</span>
-        <div className="flex gap-[18px]">
-          <a href="#" className="text-[11.5px] text-white/25 transition-colors hover:text-white">Privacidad</a>
-          <a href="#" className="text-[11.5px] text-white/25 transition-colors hover:text-white">Términos</a>
-        </div>
       </div>
     </footer>
   );
