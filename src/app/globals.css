@@ -1,26 +1,162 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ─── BRAND FONTS (local) ────────────────────────────────── */
+@font-face {
+  font-family: 'Erode';
+  src: url('/fonts/Erode-Light.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Erode';
+  src: url('/fonts/Erode-LightItalic.otf') format('opentype');
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Erode';
+  src: url('/fonts/Erode-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Erode';
+  src: url('/fonts/Erode-Italic.otf') format('opentype');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Erode';
+  src: url('/fonts/Erode-Semibold.otf') format('opentype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Erode';
+  src: url('/fonts/Erode-SemiboldItalic.otf') format('opentype');
+  font-weight: 600;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Erode';
+  src: url('/fonts/Erode-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Erode';
+  src: url('/fonts/Erode-BoldItalic.otf') format('opentype');
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Anathema';
+  src: url('/fonts/Anathema.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Dacht';
+  src: url('/fonts/Dacht.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* ─── BRAND THEME TOKENS ─────────────────────────────────── */
+@theme {
+  --color-cream: #F5F0E8;
+  --color-cream2: #EDE5D4;
+  --color-paper: #FFFDF9;
+  --color-ink: #1E1A14;
+  --color-ink2: #4A4035;
+  --color-ink3: #8A7E6E;
+  --color-gold: #C9A55A;
+  --color-gold2: #A8843A;
+  --color-sage: #5E7355;
+  --color-wa: #25D366;
+
+  --font-serif: 'Erode', ui-serif, Georgia, serif;
+  --font-display: 'Anathema', var(--font-serif);
+  --font-script: 'Dacht', var(--font-serif);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* ─── BASE ───────────────────────────────────────────────── */
+html {
+  scroll-behavior: smooth;
+}
+section[id] {
+  scroll-margin-top: 66px;
+}
+body {
+  font-family: var(--font-serif), 'Inter', sans-serif;
+  background: var(--color-cream);
+  color: var(--color-ink);
+  overflow-x: hidden;
+}
+img,
+video {
+  max-width: 100%;
+  display: block;
+}
+
+/* ─── ANIMATIONS ─────────────────────────────────────────── */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(26px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
   }
 }
+.fade-up {
+  opacity: 0;
+  animation: fadeUp 0.9s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+.reveal {
+  opacity: 0;
+  transform: translateY(46px) scale(0.97);
+  transition:
+    opacity 0.9s cubic-bezier(0.22, 0.61, 0.36, 1),
+    transform 0.9s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.reveal.in-view {
+  opacity: 1;
+  transform: none;
+}
+.reveal-group .reveal:nth-child(1) { transition-delay: 0s; }
+.reveal-group .reveal:nth-child(2) { transition-delay: 0.1s; }
+.reveal-group .reveal:nth-child(3) { transition-delay: 0.2s; }
+.reveal-group .reveal:nth-child(4) { transition-delay: 0.3s; }
+.reveal-group .reveal:nth-child(5) { transition-delay: 0.4s; }
+.reveal-group .reveal:nth-child(6) { transition-delay: 0.5s; }
+
+@keyframes scrollPulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+@keyframes waPulse {
+  0% { opacity: 0.55; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1.9); }
+}
+@keyframes td {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+  30% { transform: translateY(-4px); opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .wa-pulse { animation: none !important; }
 }

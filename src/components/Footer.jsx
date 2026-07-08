@@ -1,0 +1,52 @@
+import Image from 'next/image';
+
+export default function Footer() {
+  return (
+    <footer className="border-t border-white/[.06] bg-ink px-7 pb-8 pt-[60px]">
+      <div className="mx-auto mb-12 grid max-w-[1160px] grid-cols-[2fr_1fr_1fr_1fr] gap-10 max-sm:grid-cols-1 sm:max-md:grid-cols-2">
+        <div>
+          <Image src="/images/logo-true.png" alt="T.R.U.E. Albaycín" width={917} height={500} className="mb-3 h-[58px] w-auto opacity-95" />
+          <p className="mb-[18px] text-[13.5px] leading-[1.7] text-white/35">
+            Granada de Verdad.<br />Aventura · Naturaleza · Conexión.
+          </p>
+          <div>
+            <a href="tel:+34689507099" className="mb-[5px] block text-[13.5px] text-white/45 transition-colors hover:text-gold">+34 689 50 70 99</a>
+            <a href="mailto:info@betrue.es" className="mb-[5px] block text-[13.5px] text-white/45 transition-colors hover:text-gold">info@betrue.es</a>
+            <a href="#" className="mb-[5px] block text-[13.5px] text-white/45 transition-colors hover:text-gold">Plaza Larga, Albaicín, Granada</a>
+          </div>
+        </div>
+
+        <div>
+          <div className="mb-3.5 text-[10px] font-semibold uppercase tracking-[.16em] text-gold">Experiencias</div>
+          <a href="https://betrue.es/trip/canyoning_adventure_in_rio_verde/" className="mb-2 block text-[13.5px] text-white/40 transition-colors hover:text-white">Barranquismo</a>
+          <a href="https://betrue.es/trip/via-ferrata-adventure/" className="mb-2 block text-[13.5px] text-white/40 transition-colors hover:text-white">Vía Ferrata</a>
+          <a href="https://betrue.es/trip/albayzin/" className="mb-2 block text-[13.5px] text-white/40 transition-colors hover:text-white">E-Bike Tour</a>
+          <a href="#" className="mb-2 block text-[13.5px] text-white/40 transition-colors hover:text-white">Flamenco (pronto)</a>
+        </div>
+
+        <div>
+          <div className="mb-3.5 text-[10px] font-semibold uppercase tracking-[.16em] text-gold">TRUE</div>
+          <a href="#about" className="mb-2 block text-[13.5px] text-white/40 transition-colors hover:text-white">Quiénes somos</a>
+          <a href="#adventure" className="mb-2 block text-[13.5px] text-white/40 transition-colors hover:text-white">Elige tu aventura</a>
+          <a href="#blog" className="mb-2 block text-[13.5px] text-white/40 transition-colors hover:text-white">Blog</a>
+          <a href="https://betrue.es/contact-us/" className="mb-2 block text-[13.5px] text-white/40 transition-colors hover:text-white">Contacto</a>
+        </div>
+
+        <div>
+          <div className="mb-3.5 text-[10px] font-semibold uppercase tracking-[.16em] text-gold">Legal</div>
+          <a href="#" className="mb-2 block text-[13.5px] text-white/40 transition-colors hover:text-white">Términos</a>
+          <a href="#" className="mb-2 block text-[13.5px] text-white/40 transition-colors hover:text-white">Privacidad</a>
+          <a href="#" className="mb-2 block text-[13.5px] text-white/40 transition-colors hover:text-white">Cookies</a>
+        </div>
+      </div>
+
+      <div className="mx-auto flex max-w-[1160px] flex-wrap items-center justify-between gap-2.5 border-t border-white/[.06] pt-6">
+        <span className="text-[11.5px] text-white/20">© 2026 TRUE Granada Experiences</span>
+        <div className="flex gap-[18px]">
+          <a href="#" className="text-[11.5px] text-white/25 transition-colors hover:text-white">Privacidad</a>
+          <a href="#" className="text-[11.5px] text-white/25 transition-colors hover:text-white">Términos</a>
+        </div>
+      </div>
+    </footer>
+  );
+}
