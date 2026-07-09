@@ -68,8 +68,12 @@ export default function AdventurePlanner() {
         {typing && <TypingIndicator />}
       </div>
 
-      {!showResult && !typing && q && (
-        <Question q={q} onPick={pick} onBack={goBack} onSkip={() => setShowResult(true)} step={step} />
+      {!showResult && (
+        <div className="min-h-[270px]">
+          {!typing && q && (
+            <Question q={q} onPick={pick} onBack={goBack} onSkip={() => setShowResult(true)} step={step} />
+          )}
+        </div>
       )}
 
       {showResult && <ResultCard scores={scores} />}
