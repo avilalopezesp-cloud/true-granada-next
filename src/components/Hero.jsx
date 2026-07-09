@@ -17,7 +17,7 @@ export default function Hero() {
   }, []);
 
   return (
-    <section className="relative flex min-h-screen items-end overflow-hidden px-7 pb-20">
+    <section className="relative flex min-h-screen items-end overflow-hidden px-7 pb-20 pt-24">
       <div className="absolute inset-x-0 top-0 z-[5] h-1 bg-[linear-gradient(to_right,var(--color-gold)_0%,var(--color-gold)_33%,var(--color-sage)_33%,var(--color-sage)_66%,var(--color-ink)_66%,var(--color-ink)_100%)]" />
 
       <div ref={bgRef} className="absolute inset-0 z-0 overflow-hidden bg-ink">
