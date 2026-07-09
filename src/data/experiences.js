@@ -52,15 +52,43 @@ export const EXPERIENCES = {
     group: 'Máx. 6 personas',
     level: 'Fácil — apto para todos',
     desc: 'Tú eliges: Alhambra, Sacromonte, Albaicín, grafitis, playa por el Genil, tapas o flamenco.',
-    sub: 'Elige las paradas que más te apetezcan y te armamos una ruta a medida en e-bike por Granada.',
     why: 'Queréis Granada sin prisa ni cuestas — la e-bike hace el esfuerzo por vosotros mientras descubrís miradores que la mayoría se pierde.',
     cover: '/images/ebike-cover.jpg',
     url: 'https://betrue.es/trip/albayzin/',
     wa: 'Hola TRUE 👋 El planificador me recomendó el Sunset E-Bike Tour. ¿Tenéis disponibilidad pronto?',
-    routeOptions: [
-      'Tour guiado', 'Alhambra', 'Sacromonte', 'Albaicín Sunset tour', 'Grafitis',
-      'Río Genil y playa en bici', 'Llano de la Perdiz', 'Tapas', 'Flamenco workshop', 'Workshop de arte',
-    ],
+    // Data for the "choose your adventure" e-bike configurator (see EbikeAdventureBuilder
+    // in Experiences.jsx). Each step appends a chapter to the journey timeline; the result
+    // screen strings them together into one narrative route instead of a flat checklist.
+    builder: {
+      origin: '📍 Granada',
+      intro: {
+        eyebrow: 'Create Your E-Bike Adventure',
+        title: 'No sigas una ruta. Créala.',
+        subtitle: 'Diseña tu día perfecto en Granada, capítulo a capítulo.',
+        cta: 'Empezar a diseñar →',
+      },
+      durations: [
+        { key: 'corto', icon: '🕑', label: '2 horas', sub: 'Algo rápido', km: 8, price: 35 },
+        { key: 'medio', icon: '🌄', label: 'Medio día', sub: '~4 horas', km: 18, price: 45 },
+        { key: 'completo', icon: '☀️', label: 'Día completo', sub: 'Sin prisa', km: 28, price: 65 },
+        { key: 'costa', icon: '🌊', label: 'Costa', sub: 'Premium · día completo', km: 45, price: 89, premium: true },
+      ],
+      emotions: [
+        { key: 'adrenalina', icon: '🔥', label: 'Adrenalina', stop: 'Cuesta del Chapiz y Sacromonte', tint: 'from-[#7a2e1d] to-[#c9642f]' },
+        { key: 'calma', icon: '🌿', label: 'Calma', stop: 'El Carril de la Lona', tint: 'from-[#31402b] to-[#5e7355]' },
+        { key: 'romance', icon: '❤️', label: 'Romance', stop: 'Mirador de San Nicolás', tint: 'from-[#5e2233] to-[#a8556f]' },
+        { key: 'descubrimiento', icon: '🧭', label: 'Descubrimiento', stop: 'Callejones secretos del Albaicín', tint: 'from-[#1f3a4a] to-[#3f7f96]' },
+        { key: 'inspiracion', icon: '🎨', label: 'Inspiración', stop: 'Grafitis y arte urbano del Albaicín', tint: 'from-[#3a2a55] to-[#7a5ba6]' },
+      ],
+      endings: [
+        { key: 'tapas', icon: '🍷', label: 'Tapas', stop: 'Tapas tradicionales en el Albaicín' },
+        { key: 'atardecer', icon: '🌅', label: 'Atardecer', stop: 'Atardecer en el mirador' },
+        { key: 'flamenco', icon: '🎭', label: 'Flamenco', stop: 'Flamenco en Sacromonte' },
+        { key: 'picnic', icon: '🧺', label: 'Picnic', stop: 'Picnic con vistas a la Alhambra' },
+        { key: 'cafe', icon: '☕', label: 'Café con vistas', stop: 'Café con vistas a la Alhambra' },
+        { key: 'camino', icon: '🚲', label: 'Solo el camino', stop: null },
+      ],
+    },
   },
 };
 

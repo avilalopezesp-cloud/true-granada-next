@@ -112,7 +112,7 @@ function ExperienceModal({ exp, onClose }) {
     </ModalShell>
   ) : (
     <ModalShell onClose={onClose}>
-      <RouteBuilderModal exp={exp} />
+      <EbikeAdventureBuilder exp={exp} />
     </ModalShell>
   );
 }
@@ -181,51 +181,248 @@ function GalleryModal({ exp }) {
   );
 }
 
-function RouteBuilderModal({ exp }) {
-  const [selected, setSelected] = useState([]);
+// The e-bike card doesn't sell a fixed tour — it opens a small "configurator":
+// pick a duration, an emotion, and how the day should end, and each answer
+// appends a chapter to a journey timeline instead of just filling a checklist.
+function EbikeAdventureBuilder({ exp }) {
+  const b = exp.builder;
+  const [phase, setPhase] = useState('intro'); // intro | duration | emotion | ending | result
+  const [duration, setDuration] = useState(null);
+  const [emotion, setEmotion] = useState(null);
+  const [ending, setEnding] = useState(null);
 
-  function toggle(option) {
-    setSelected((s) => (s.includes(option) ? s.filter((o) => o !== option) : [...s, option]));
+  const stepIndex = { duration: 0, emotion: 1, ending: 2 }[phase] ?? null;
+
+  function goBack() {
+    if (phase === 'duration') setPhase('intro');
+    else if (phase === 'emotion') { setDuration(null); setPhase('duration'); }
+    else if (phase === 'ending') { setEmotion(null); setPhase('emotion'); }
   }
 
-  function send() {
-    if (!selected.length) return;
-    const msg = `Hola TRUE 👋 Quiero diseñar mi ruta en e-bike con estas paradas: ${selected.join(', ')}. ¿Podéis armarme una propuesta?`;
+  function restart() {
+    setDuration(null); setEmotion(null); setEnding(null); setPhase('duration');
+  }
+
+  function sendWhatsApp() {
+    const msg = `Hola TRUE 👋 Diseñé mi propia aventura en e-bike:\n· Duración: ${duration.label}\n· Quiero sentir: ${emotion.label}\n· Cómo terminar: ${ending.label}\n¿Podéis armarme esta propuesta?`;
     window.open(`https://wa.me/34689507099?text=${encodeURIComponent(msg)}`, '_blank');
   }
 
+  if (phase === 'intro') {
+    return (
+      <>
+        <Image src={exp.cover} alt={exp.name} width={900} height={563} className="block aspect-[16/10] w-full rounded-t-[14px] bg-ink object-cover" />
+        <div className="p-8 text-center">
+          <p className="mb-3 text-[10px] font-semibold uppercase tracking-[.18em] text-gold2">{b.intro.eyebrow}</p>
+          <h3 className="mb-3 font-serif text-3xl font-bold text-ink">{b.intro.title}</h3>
+          <p className="mx-auto mb-7 max-w-[380px] text-[15px] leading-[1.6] text-ink2">{b.intro.subtitle}</p>
+          <button
+            type="button"
+            onClick={() => setPhase('duration')}
+            className="rounded bg-gold px-8 py-4 text-sm font-bold text-ink transition-all hover:-translate-y-0.5 hover:bg-gold2 hover:text-white"
+          >
+            {b.intro.cta}
+          </button>
+        </div>
+      </>
+    );
+  }
+
   return (
-    <>
-      <Image src={exp.cover} alt={exp.name} width={900} height={563} className="block aspect-[16/10] w-full rounded-t-[14px] bg-ink object-cover" />
-      <div className="px-6 pt-[26px]">
-        <p className="mb-2 text-[10px] font-semibold uppercase tracking-[.14em] text-gold2">{exp.cat}</p>
-        <h3 className="mb-2 font-serif text-2xl font-bold">{exp.name}</h3>
-        <p className="mb-1.5 text-[14.5px] leading-[1.6] text-ink2">{exp.sub}</p>
+    <div>
+      {phase !== 'result' && <BuilderProgress step={stepIndex} />}
+      <BuilderTimeline origin={b.origin} duration={duration} emotion={emotion} ending={ending} />
+
+      {phase === 'duration' && (
+        <BuilderStep title="¿Cuánto tiempo tiene tu historia?">
+          <div className="grid grid-cols-2 gap-3 max-[540px]:grid-cols-1">
+            {b.durations.map((d) => (
+              <button
+                key={d.key}
+                type="button"
+                onClick={() => { setDuration(d); setPhase('emotion'); }}
+                className="relative flex items-center gap-3 rounded-[10px] border-[1.5px] border-black/10 bg-cream2 p-4 text-left transition-all hover:-translate-y-0.5 hover:border-gold"
+              >
+                {d.premium && (
+                  <span className="absolute right-2 top-2 rounded-full bg-gold px-2 py-0.5 text-[9px] font-bold uppercase text-ink">Premium</span>
+                )}
+                <span className="text-2xl">{d.icon}</span>
+                <span>
+                  <span className="block text-[14.5px] font-semibold text-ink">{d.label}</span>
+                  <span className="block text-xs text-ink3">{d.sub}</span>
+                </span>
+              </button>
+            ))}
+          </div>
+        </BuilderStep>
+      )}
+
+      {phase === 'emotion' && (
+        <BuilderStep title="¿Qué quieres sentir hoy?">
+          <div className="grid grid-cols-2 gap-3 max-[540px]:grid-cols-1">
+            {b.emotions.map((e) => (
+              <button
+                key={e.key}
+                type="button"
+                onClick={() => { setEmotion(e); setPhase('ending'); }}
+                className={`group relative overflow-hidden rounded-[12px] bg-gradient-to-br ${e.tint} p-5 text-left text-white transition-transform hover:-translate-y-1`}
+              >
+                <span className="mb-6 block text-3xl">{e.icon}</span>
+                <span className="block text-[15px] font-bold">{e.label}</span>
+                <span className="mt-1 block text-[11.5px] text-white/70">{e.stop}</span>
+              </button>
+            ))}
+          </div>
+        </BuilderStep>
+      )}
+
+      {phase === 'ending' && (
+        <BuilderStep title="¿Cómo quieres que termine tu día?">
+          <div className="grid grid-cols-2 gap-3 max-[540px]:grid-cols-1">
+            {b.endings.map((en) => (
+              <button
+                key={en.key}
+                type="button"
+                onClick={() => { setEnding(en); setPhase('result'); }}
+                className="flex items-center gap-3 rounded-[10px] border-[1.5px] border-black/10 bg-cream2 p-4 text-left transition-all hover:-translate-y-0.5 hover:border-gold"
+              >
+                <span className="text-2xl">{en.icon}</span>
+                <span className="text-[14.5px] font-semibold text-ink">{en.label}</span>
+              </button>
+            ))}
+          </div>
+        </BuilderStep>
+      )}
+
+      {phase === 'result' && (
+        <BuilderResult exp={exp} duration={duration} emotion={emotion} ending={ending} onRestart={restart} onSend={sendWhatsApp} />
+      )}
+
+      {phase !== 'result' && (
+        <div className="px-6 pb-6">
+          <button type="button" onClick={goBack} className="text-xs text-ink3 underline">
+            ← Atrás
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function BuilderProgress({ step }) {
+  const labels = ['Duración', 'Emoción', 'Final'];
+  return (
+    <div className="flex items-center justify-center gap-2 px-6 pt-6">
+      {labels.map((l, i) => (
+        <div key={l} className="flex items-center gap-2">
+          <span
+            className={`flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full text-[10px] font-semibold ${
+              i <= step ? 'bg-gold2 text-white' : 'bg-cream2 text-ink3'
+            }`}
+          >
+            {i < step ? '✓' : i + 1}
+          </span>
+          <span className={`text-[11px] font-semibold uppercase tracking-[.08em] ${i === step ? 'text-gold2' : 'text-ink3'}`}>{l}</span>
+          {i < 2 && <span className="mx-1 h-px w-4 bg-black/10" />}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function BuilderTimeline({ origin, duration, emotion, ending }) {
+  const chapters = [origin];
+  if (duration) chapters.push(`${duration.icon} ${duration.label}`);
+  if (emotion) chapters.push(`${emotion.icon} ${emotion.stop}`);
+  if (ending) chapters.push(ending.stop ? `${ending.icon} ${ending.stop}` : `${ending.icon} ${ending.label}`);
+
+  return (
+    <div className="flex flex-wrap items-center gap-x-2 gap-y-1 px-6 pb-1 pt-4 text-[12.5px] font-medium text-ink2">
+      {chapters.map((c, i) => (
+        <span key={i} className="flex items-center gap-2">
+          {i > 0 && <span className="text-ink3/50">→</span>}
+          <span className={i === chapters.length - 1 ? 'font-semibold text-ink' : ''}>{c}</span>
+        </span>
+      ))}
+    </div>
+  );
+}
+
+function BuilderStep({ title, children }) {
+  return (
+    <div className="px-6 py-5">
+      <h4 className="mb-4 font-serif text-xl font-bold text-ink">{title}</h4>
+      {children}
+    </div>
+  );
+}
+
+function BuilderResult({ exp, duration, emotion, ending, onRestart, onSend }) {
+  const chapters = [
+    { icon: '📍', label: 'Granada' },
+    { icon: emotion.icon, label: emotion.stop },
+  ];
+  if (ending.stop) chapters.push({ icon: ending.icon, label: ending.stop });
+  chapters.push({ icon: '🏁', label: 'Regreso' });
+
+  return (
+    <div className="p-6 pb-[26px]">
+      <p className="mb-1.5 text-[10px] font-semibold uppercase tracking-[.14em] text-gold2">Tu aventura está lista</p>
+      <h3 className="mb-4 font-serif text-2xl font-bold text-ink">
+        {emotion.icon} {emotion.label} &amp; {ending.label}
+      </h3>
+
+      <div className="mb-5 rounded-[10px] border border-black/10 bg-cream2 p-4">
+        {chapters.map((c, i) => (
+          <div key={i} className="flex items-center gap-3 py-1.5">
+            <span className="text-lg">{c.icon}</span>
+            <span className="text-[13.5px] font-medium text-ink2">{c.label}</span>
+          </div>
+        ))}
       </div>
-      <div className="grid grid-cols-2 gap-2.5 px-6 py-[18px] max-[540px]:grid-cols-1">
-        {exp.routeOptions.map((option) => {
-          const checked = selected.includes(option);
-          return (
-            <label
-              key={option}
-              className={`flex cursor-pointer items-center gap-2.5 rounded-[9px] border-[1.5px] px-3.5 py-3 text-[14.5px] font-medium transition-colors ${
-                checked ? 'border-gold2 bg-gold/[.12] text-ink' : 'border-black/10 bg-cream2 text-ink2 hover:border-gold'
-              }`}
-            >
-              <input type="checkbox" checked={checked} onChange={() => toggle(option)} className="h-4 w-4 flex-shrink-0 accent-gold2" />
-              {option}
-            </label>
-          );
-        })}
+
+      <div className="mb-5 flex flex-wrap gap-2">
+        <BuilderChip>⏱ {duration.label}</BuilderChip>
+        <BuilderChip>📏 {duration.km} km</BuilderChip>
+        <BuilderChip>⚡ E-bike incluida</BuilderChip>
+        <BuilderChip>👥 {exp.group}</BuilderChip>
       </div>
-      <div className="mt-1 border-t border-black/10 px-6 pb-[26px] pt-[18px]">
-        <p className="mb-3 text-xs text-ink3">
-          {selected.length ? `${selected.length} ${selected.length === 1 ? 'parada seleccionada' : 'paradas seleccionadas'}` : 'Elige al menos una parada para tu ruta.'}
-        </p>
-        <button type="button" onClick={send} className="rounded bg-wa px-7 py-[15px] text-sm font-semibold text-white transition-all hover:brightness-110 disabled:opacity-50">
-          Enviar ruta por WhatsApp
+
+      <div className="mb-5 flex items-baseline justify-between border-t border-black/10 pt-4">
+        <div>
+          <span className="text-[10.5px] uppercase tracking-[.08em] text-ink3">Desde</span>
+          <br />
+          <span className="font-serif text-[26px] font-bold text-gold2">
+            {duration.price}€ <span className="text-xs font-normal text-ink3">/ persona</span>
+          </span>
+        </div>
+      </div>
+
+      <div className="flex gap-2.5 max-[540px]:flex-col">
+        <button
+          type="button"
+          onClick={onSend}
+          className="flex flex-1 items-center justify-center gap-2.5 rounded bg-wa px-7 py-[15px] text-sm font-semibold text-white transition-all hover:brightness-110"
+        >
+          <WhatsAppIcon size={15} />
+          Reservar por WhatsApp
+        </button>
+        <button
+          type="button"
+          onClick={onRestart}
+          className="flex flex-1 items-center justify-center gap-2 rounded border-[1.5px] border-ink px-[26px] py-3.5 text-sm font-medium text-ink transition-all hover:border-gold2 hover:text-gold2"
+        >
+          ✏️ Personalizar
         </button>
       </div>
-    </>
+    </div>
+  );
+}
+
+function BuilderChip({ children }) {
+  return (
+    <span className="flex items-center gap-1.5 rounded-full border border-black/10 bg-cream2 px-3 py-1.5 text-[12.5px] text-ink2">
+      {children}
+    </span>
   );
 }
