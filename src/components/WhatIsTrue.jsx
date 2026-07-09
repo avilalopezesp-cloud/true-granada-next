@@ -17,11 +17,11 @@ export default function WhatIsTrue() {
               <p className="mb-3.5">Las actividades son simplemente nuestra herramienta. Lo que vendemos es la conexión con una Granada que la mayoría no llega a conocer.</p>
             </div>
           </div>
-          <div className="reveal-group grid grid-cols-2 gap-3 max-[860px]:hidden">
+          <div className="reveal-group grid grid-cols-2 gap-3">
             <div className="reveal aspect-[3/4] overflow-hidden rounded-[10px]">
               <Image src="/images/team-1.jpg" alt="Equipo TRUE Granada" width={2048} height={928} className="h-full w-full object-cover" />
             </div>
-            <div className="reveal mt-8 aspect-[3/4] overflow-hidden rounded-[10px]">
+            <div className="reveal mt-8 aspect-[3/4] overflow-hidden rounded-[10px] max-[860px]:mt-0">
               <Image src="/images/team-2.jpg" alt="Equipo TRUE Granada" width={1050} height={1400} className="h-full w-full object-cover" />
             </div>
           </div>
