@@ -8,7 +8,7 @@ export default function Community() {
         <h2 className="mb-4 font-serif text-[clamp(1.8rem,3.5vw,2.6rem)] font-bold italic text-white">
           No queremos crear clientes.<br />Queremos crear comunidad.
         </h2>
-        <p className="mx-auto mb-9 max-w-[420px] text-[15px] leading-[1.7] text-white/50">
+        <p className="mx-auto mb-9 max-w-[420px] text-[15px] leading-[1.7] text-white/60">
           Quedadas, sunsets, rutas, eventos. Conoce otros viajeros que entienden Granada como tú.
         </p>
         <div className="mb-9 flex flex-wrap justify-center gap-2.5">

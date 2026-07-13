@@ -7,11 +7,11 @@ export default function WhatIsTrue() {
         <div className="grid grid-cols-2 items-center gap-20 max-[860px]:grid-cols-1">
           <div className="reveal">
             <p className="mb-[18px] text-[11px] font-semibold uppercase tracking-[.22em] text-gold2">What is TRUE</p>
-            <h2 className="mb-6 font-serif text-[clamp(2rem,4vw,3rem)] font-medium leading-[1.1] text-ink">
+            <h2 className="mb-6 font-serif text-[clamp(2rem,4vw,3rem)] font-bold leading-[1.1] text-ink">
               No somos una empresa<br />de tours.<br />
               Somos <em className="font-light italic text-gold2">locales.</em>
             </h2>
-            <div className="text-base font-light leading-[1.8] text-ink2">
+            <div className="text-base font-normal leading-[1.8] text-ink2">
               <p className="mb-3.5">No vendemos paquetes de actividades. No tenemos un catálogo que rellenar.</p>
               <p className="mb-3.5">Somos un equipo nacido en el Albaicín que ayuda a viajeros a vivir Granada de la forma que más les gusta. Cada persona busca algo diferente — por eso primero te escuchamos. Después te recomendamos.</p>
               <p className="mb-3.5">Las actividades son simplemente nuestra herramienta. Lo que vendemos es la conexión con una Granada que la mayoría no llega a conocer.</p>

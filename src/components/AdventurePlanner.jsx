@@ -140,7 +140,7 @@ function Question({ q, onPick, onBack, onSkip, step }) {
       <span className="mb-2.5 block text-[10.5px] font-semibold uppercase tracking-[.14em] text-gold">
         Pregunta {step + 1} de {QUIZ_QUESTIONS.length}
       </span>
-      <div className="mb-[22px] font-serif text-xl font-light leading-[1.4] text-white">{q.q}</div>
+      <div className="mb-[22px] font-serif text-xl font-bold leading-[1.4] text-white">{q.q}</div>
       <div className={`grid gap-[9px] ${q.single ? 'grid-cols-1' : 'grid-cols-2 max-[580px]:grid-cols-1'}`}>
         {q.opts.map((opt, i) => (
           <button
@@ -195,7 +195,7 @@ function ResultCard({ scores }) {
         </div>
         <div className="absolute inset-x-0 bottom-0 px-[22px] py-5">
           <p className="mb-[5px] text-[10px] font-semibold uppercase tracking-[.14em] text-gold">{exp.cat}</p>
-          <h3 className="mb-[3px] font-serif text-2xl font-medium text-white">{exp.name}</h3>
+          <h3 className="mb-[3px] font-serif text-2xl font-bold text-white">{exp.name}</h3>
           <p className="text-[13.5px] italic text-white/65">{exp.tagline}</p>
         </div>
       </div>
@@ -211,7 +211,7 @@ function ResultCard({ scores }) {
           <div>
             <span className="text-[10.5px] uppercase tracking-[.08em] text-ink3">Desde</span>
             <br />
-            <span className="font-serif text-[28px] font-medium text-gold2">
+            <span className="font-serif text-[28px] font-bold text-gold2">
               {exp.price}€ <span className="font-sans text-xs font-normal text-ink3">/ persona</span>
             </span>
           </div>

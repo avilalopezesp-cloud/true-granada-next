@@ -6,8 +6,8 @@ export default function InstagramStrip() {
           Síguenos en{' '}
           <a href="#" className="font-semibold text-ink underline decoration-black/10">@betrue.granada</a>
         </p>
-        <blockquote className="mx-auto mb-6 max-w-[520px] font-serif text-[clamp(1.2rem,3vw,1.8rem)] font-light italic leading-[1.5] text-ink">
-          &quot;Así se vive Granada. <em className="not-italic text-gold2">De verdad.</em>&quot;
+        <blockquote className="mx-auto mb-6 max-w-[520px] font-serif text-[clamp(1.2rem,3vw,1.8rem)] font-normal italic leading-[1.5] text-ink">
+          &quot;Así se vive Granada. <em className="not-italic font-bold text-gold2">De verdad.</em>&quot;
         </blockquote>
         <a
           href="https://wa.me/34689507099"

@@ -34,7 +34,7 @@ export default function Hero() {
         <h1 className="fade-up mb-3 font-serif text-[clamp(3rem,7vw,5.5rem)] font-bold leading-none tracking-[-.02em] text-white [animation-delay:.25s]">
           Granada<br />no se <em className="font-light italic text-gold">visita.</em><br />Se vive.
         </h1>
-        <p className="fade-up mb-9 max-w-[480px] text-[17px] font-light leading-[1.7] text-white/72 [animation-delay:.5s]">
+        <p className="fade-up mb-9 max-w-[480px] text-[17px] font-normal leading-[1.7] text-white/80 [animation-delay:.5s]">
           Cuéntanos cómo quieres descubrirla y diseñaremos una experiencia para ti.
           Sin catálogos. Sin tours genéricos.
         </p>

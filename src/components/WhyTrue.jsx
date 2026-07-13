@@ -12,7 +12,7 @@ export default function WhyTrue() {
     <section className="bg-cream py-[100px]" id="why">
       <div className="mx-auto max-w-[1160px] px-7">
         <p className="mb-2.5 text-center text-[11px] font-semibold uppercase tracking-[.22em] text-gold2">Why TRUE</p>
-        <h2 className="reveal mx-auto mb-14 max-w-[480px] text-center font-serif text-[clamp(1.8rem,3.5vw,2.6rem)] font-medium">
+        <h2 className="reveal mx-auto mb-14 max-w-[480px] text-center font-serif text-[clamp(1.8rem,3.5vw,2.6rem)] font-bold">
           Honestos. Locales.<br />Obsesionados con Granada.
         </h2>
         <div className="reveal-group grid grid-cols-2 gap-5 max-[600px]:grid-cols-1">
