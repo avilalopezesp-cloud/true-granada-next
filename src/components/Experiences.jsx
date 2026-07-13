@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { EXPERIENCES, EXPERIENCE_LIST } from '@/data/experiences';
 import WhatsAppIcon from './icons/WhatsAppIcon';
 
@@ -55,8 +56,8 @@ export default function Experiences() {
 
 function ExperienceCard({ exp, onOpen }) {
   const ctaLabel = exp.key === 'ebike' ? 'Diseñar mi ruta →' : 'Ver experiencia →';
-  return (
-    <div className="group reveal relative aspect-[3/4] overflow-hidden rounded-xl transition-transform hover:-translate-y-1">
+  const inner = (
+    <>
       <div className="h-full w-full overflow-hidden">
         <Image
           src={exp.cover}
@@ -76,15 +77,35 @@ function ExperienceCard({ exp, onOpen }) {
         <p className="mb-3.5 text-[14px] leading-[1.5] text-white/75">{exp.desc}</p>
         <div className="flex items-center justify-between">
           <span className="font-serif text-lg font-bold text-gold">Desde {exp.price}€</span>
-          <button
-            type="button"
-            onClick={onOpen}
-            className="flex items-center gap-1.5 text-xs font-semibold text-white opacity-80 transition-opacity group-hover:opacity-100"
-          >
-            {ctaLabel}
-          </button>
+          {exp.detailPage ? (
+            <span className="flex items-center gap-1.5 text-xs font-semibold text-white opacity-80 transition-opacity group-hover:opacity-100">
+              {ctaLabel}
+            </span>
+          ) : (
+            <button
+              type="button"
+              onClick={onOpen}
+              className="flex items-center gap-1.5 text-xs font-semibold text-white opacity-80 transition-opacity group-hover:opacity-100"
+            >
+              {ctaLabel}
+            </button>
+          )}
         </div>
       </div>
+    </>
+  );
+
+  if (exp.detailPage) {
+    return (
+      <Link href={exp.detailPage} className="group reveal relative block aspect-[3/4] overflow-hidden rounded-xl transition-transform hover:-translate-y-1">
+        {inner}
+      </Link>
+    );
+  }
+
+  return (
+    <div className="group reveal relative aspect-[3/4] overflow-hidden rounded-xl transition-transform hover:-translate-y-1">
+      {inner}
     </div>
   );
 }

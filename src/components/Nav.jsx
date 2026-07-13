@@ -2,12 +2,13 @@
 
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 const LINKS = [
-  { href: '#experiences', label: 'Experiencias' },
-  { href: '#adventure', label: 'Elige tu aventura' },
-  { href: '#why', label: 'Nosotros' },
-  { href: '#blog', label: 'Blog' },
+  { href: '/#experiences', label: 'Experiencias' },
+  { href: '/#adventure', label: 'Elige tu aventura' },
+  { href: '/#why', label: 'Nosotros' },
+  { href: '/#blog', label: 'Blog' },
 ];
 
 export default function Nav() {
@@ -39,9 +40,9 @@ export default function Nav() {
     >
       <div className="absolute inset-0 -z-10 bg-[rgba(20,17,13,.88)] backdrop-blur-md" />
 
-      <div className="flex items-center gap-2.5">
+      <Link href="/" className="flex items-center gap-2.5">
         <Image src="/images/logo-true.png" alt="T.R.U.E. Albaycín" width={917} height={500} priority className="h-[62px] w-auto" />
-      </div>
+      </Link>
 
       <div
         id="nav-links"
