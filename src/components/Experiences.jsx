@@ -30,7 +30,7 @@ export default function Experiences() {
         <div className="reveal mb-11 flex flex-wrap items-end justify-between gap-4">
           <div>
             <p className="text-[11px] font-semibold uppercase tracking-[.22em] text-gold2">Nuestras experiencias</p>
-            <h2 className="mt-3 font-serif text-[clamp(1.8rem,3.5vw,2.6rem)] font-medium">O explora por tu cuenta</h2>
+            <h2 className="mt-3 font-serif text-[clamp(1.8rem,3.5vw,2.6rem)] font-bold">O explora por tu cuenta</h2>
           </div>
           <a href="https://wa.me/34689507099" className="inline-flex items-center gap-2.5 rounded bg-wa px-7 py-[15px] text-sm font-semibold text-white transition-all hover:brightness-110">
             <WhatsAppIcon size={16} />
@@ -72,10 +72,10 @@ function ExperienceCard({ exp, onOpen }) {
       </span>
       <div className="absolute inset-x-0 bottom-0 p-5">
         <p className="mb-[5px] text-[10px] font-semibold uppercase tracking-[.14em] text-gold">{exp.cat}</p>
-        <h3 className="mb-1 font-serif text-xl font-medium leading-[1.2] text-white">{exp.name}</h3>
-        <p className="mb-3.5 text-[13.5px] leading-[1.5] text-white/65">{exp.desc}</p>
+        <h3 className="mb-1 font-serif text-xl font-bold leading-[1.2] text-white">{exp.name}</h3>
+        <p className="mb-3.5 text-[14px] leading-[1.5] text-white/75">{exp.desc}</p>
         <div className="flex items-center justify-between">
-          <span className="font-serif text-lg font-medium text-gold">Desde {exp.price}€</span>
+          <span className="font-serif text-lg font-bold text-gold">Desde {exp.price}€</span>
           <button
             type="button"
             onClick={onOpen}
@@ -99,7 +99,7 @@ function ComingSoonCard({ item }) {
       </span>
       <div className="absolute inset-x-0 bottom-0 p-5">
         <p className="mb-[5px] text-[10px] font-semibold uppercase tracking-[.14em] text-gold">{item.cat}</p>
-        <h3 className="font-serif text-xl font-medium leading-[1.2] text-white">{item.name}</h3>
+        <h3 className="font-serif text-xl font-bold leading-[1.2] text-white">{item.name}</h3>
       </div>
     </div>
   );
