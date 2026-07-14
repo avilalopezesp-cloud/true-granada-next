@@ -2,12 +2,30 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
+import { AnimatePresence, motion } from 'framer-motion';
 import { EXPERIENCES, QUIZ_QUESTIONS } from '@/data/experiences';
 import WhatsAppIcon from './icons/WhatsAppIcon';
 
 const EMPTY_SCORES = { barranquismo: 0, ferrata: 0, ebike: 0 };
 const ICONS = { barranquismo: '🏞️', ferrata: '🧗', ebike: '🚲' };
 const GREETING = 'Hola 👋 Vamos a encontrar la experiencia perfecta para ti. Responde unas pocas preguntas.';
+const EASE = [0.22, 0.61, 0.36, 1];
+
+const slideVariants = {
+  enter: (direction) => ({ x: direction > 0 ? 32 : -32, opacity: 0 }),
+  center: { x: 0, opacity: 1 },
+  exit: (direction) => ({ x: direction > 0 ? -32 : 32, opacity: 0 }),
+};
+
+const staggerParent = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.05, delayChildren: 0.05 } },
+};
+
+const staggerItem = {
+  hidden: { opacity: 0, y: 10 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.35, ease: EASE } },
+};
 
 export default function AdventurePlanner() {
   const [step, setStep] = useState(0);
@@ -16,6 +34,7 @@ export default function AdventurePlanner() {
   const [messages, setMessages] = useState([{ role: 'ai', text: GREETING }]);
   const [typing, setTyping] = useState(false);
   const [showResult, setShowResult] = useState(false);
+  const [direction, setDirection] = useState(1);
 
   function pick(idx) {
     const q = QUIZ_QUESTIONS[step];
@@ -27,6 +46,7 @@ export default function AdventurePlanner() {
     setHist((h) => [...h, { q: q.q, a: opt.l, w: opt.w }]);
     setScores(nextScores);
     setTyping(true);
+    setDirection(1);
 
     const isLast = step + 1 >= QUIZ_QUESTIONS.length;
     setTimeout(() => {
@@ -44,6 +64,7 @@ export default function AdventurePlanner() {
     setHist(newHist);
     setScores(newScores);
     setMessages((m) => m.slice(0, -1));
+    setDirection(-1);
     setStep((s) => s - 1);
   }
 
@@ -53,6 +74,7 @@ export default function AdventurePlanner() {
     setScores(EMPTY_SCORES);
     setMessages([{ role: 'ai', text: GREETING }]);
     setShowResult(false);
+    setDirection(1);
   }
 
   const q = QUIZ_QUESTIONS[step];
@@ -68,15 +90,27 @@ export default function AdventurePlanner() {
         {typing && <TypingIndicator />}
       </div>
 
-      {!showResult && (
-        <div className="min-h-[270px]">
-          {!typing && q && (
+      <AnimatePresence mode="wait">
+        {!showResult && !typing && q && (
+          <motion.div
+            key={step}
+            custom={direction}
+            variants={slideVariants}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            transition={{ duration: 0.35, ease: EASE }}
+          >
             <Question q={q} onPick={pick} onBack={goBack} onSkip={() => setShowResult(true)} step={step} />
-          )}
-        </div>
-      )}
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-      {showResult && <ResultCard scores={scores} />}
+      {showResult && (
+        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, ease: EASE }}>
+          <ResultCard scores={scores} />
+        </motion.div>
+      )}
 
       {showResult && (
         <div className="mt-5 text-center">
@@ -92,31 +126,40 @@ export default function AdventurePlanner() {
 function ProgressBar({ step, done }) {
   return (
     <div className="mb-7 flex justify-center gap-[5px]">
-      {QUIZ_QUESTIONS.map((_, i) => (
-        <div
-          key={i}
-          className={`h-[3px] w-7 rounded-sm transition-colors duration-[400ms] ${
-            done || i < step ? 'bg-gold' : i === step ? 'bg-sage' : 'bg-white/[.12]'
-          }`}
-        />
-      ))}
+      {QUIZ_QUESTIONS.map((_, i) => {
+        const active = done || i < step;
+        const current = !done && i === step;
+        return (
+          <div key={i} className="relative h-[3px] w-7 overflow-hidden rounded-sm bg-white/[.12]">
+            <motion.div
+              className={`absolute inset-y-0 left-0 w-full origin-left rounded-sm ${current ? 'bg-sage' : 'bg-gold'}`}
+              initial={false}
+              animate={{ scaleX: active || current ? 1 : 0 }}
+              transition={{ duration: 0.4, ease: EASE }}
+            />
+          </div>
+        );
+      })}
     </div>
   );
 }
 
 function Bubble({ role, text }) {
-  if (role === 'ai') {
-    return (
-      <div className="fade-up max-w-[85%] self-start rounded-[10px] rounded-tl-[2px] border border-white/[.08] bg-white/[.06] px-[17px] py-[13px] text-sm leading-[1.6] text-white/88">
-        <span className="mb-[5px] block text-[9.5px] font-semibold uppercase tracking-[.12em] text-gold">TRUE</span>
-        {text}
-      </div>
-    );
-  }
+  const isAi = role === 'ai';
   return (
-    <div className="fade-up ml-auto max-w-[85%] self-end rounded-[10px] rounded-tr-[2px] bg-gold2 px-[17px] py-[13px] text-sm font-medium leading-[1.6] text-white">
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.35, ease: EASE }}
+      className={
+        isAi
+          ? 'max-w-[85%] self-start rounded-[10px] rounded-tl-[2px] border border-white/[.08] bg-white/[.06] px-[17px] py-[13px] text-sm leading-[1.6] text-white/88'
+          : 'ml-auto max-w-[85%] self-end rounded-[10px] rounded-tr-[2px] bg-gold2 px-[17px] py-[13px] text-sm font-medium leading-[1.6] text-white'
+      }
+    >
+      {isAi && <span className="mb-[5px] block text-[9.5px] font-semibold uppercase tracking-[.12em] text-gold">TRUE</span>}
       {text}
-    </div>
+    </motion.div>
   );
 }
 
@@ -136,26 +179,31 @@ function TypingIndicator() {
 
 function Question({ q, onPick, onBack, onSkip, step }) {
   return (
-    <div>
-      <span className="mb-2.5 block text-[10.5px] font-semibold uppercase tracking-[.14em] text-gold">
+    <motion.div variants={staggerParent} initial="hidden" animate="show">
+      <motion.span variants={staggerItem} className="mb-2.5 block text-[10.5px] font-semibold uppercase tracking-[.14em] text-gold">
         Pregunta {step + 1} de {QUIZ_QUESTIONS.length}
-      </span>
-      <div className="mb-[22px] font-serif text-xl font-bold leading-[1.4] text-white">{q.q}</div>
+      </motion.span>
+      <motion.div variants={staggerItem} className="mb-[22px] font-serif text-xl font-bold leading-[1.4] text-white">
+        {q.q}
+      </motion.div>
       <div className={`grid gap-[9px] ${q.single ? 'grid-cols-1' : 'grid-cols-2 max-[580px]:grid-cols-1'}`}>
         {q.opts.map((opt, i) => (
-          <button
+          <motion.button
             key={opt.l}
             type="button"
+            variants={staggerItem}
             onClick={() => onPick(i)}
-            className="fade-up flex items-center gap-3 rounded-[9px] border border-white/[.09] bg-white/[.04] p-4 text-left transition-all hover:-translate-y-px hover:border-gold hover:bg-gold/[.08]"
-            style={{ animationDelay: `${i * 0.05}s` }}
+            whileHover={{ scale: 1.02, borderColor: 'var(--color-gold)' }}
+            whileTap={{ scale: 0.98 }}
+            transition={{ duration: 0.18 }}
+            className="flex items-center gap-3 rounded-[9px] border border-white/[.09] bg-white/[.04] p-4 text-left hover:bg-gold/[.08]"
           >
             <span className="w-6 flex-shrink-0 text-center text-xl">{opt.i}</span>
             <span>
               <span className="block text-[13.5px] font-semibold text-white">{opt.l}</span>
               <span className="mt-0.5 block text-[11.5px] text-white/45">{opt.s}</span>
             </span>
-          </button>
+          </motion.button>
         ))}
       </div>
       <div className="mt-[18px] flex items-center justify-between">
@@ -170,7 +218,7 @@ function Question({ q, onPick, onBack, onSkip, step }) {
           Saltar →
         </button>
       </div>
-    </div>
+    </motion.div>
   );
 }
 
@@ -183,7 +231,7 @@ function ResultCard({ scores }) {
   const exp2 = second ? EXPERIENCES[second] : null;
 
   return (
-    <div className="fade-up overflow-hidden rounded-[14px] border border-black/10 bg-paper">
+    <div className="overflow-hidden rounded-[14px] border border-black/10 bg-paper">
       <div className="relative">
         <Image src={exp.cover} alt={exp.name} width={900} height={506} className="aspect-video w-full object-cover" />
         <div className="absolute inset-0 bg-[linear-gradient(to_top,rgba(30,26,20,.88)_0%,rgba(30,26,20,.1)_60%,transparent_100%)]" />
