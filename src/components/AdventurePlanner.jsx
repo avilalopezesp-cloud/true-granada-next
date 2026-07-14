@@ -8,55 +8,52 @@ import WhatsAppIcon from './icons/WhatsAppIcon';
 
 const EMPTY_SCORES = { barranquismo: 0, ferrata: 0, ebike: 0 };
 const ICONS = { barranquismo: '🏞️', ferrata: '🧗', ebike: '🚲' };
+const GREETING = 'Hola 👋 Vamos a encontrar la experiencia perfecta para ti. Responde unas pocas preguntas.';
 const EASE = [0.22, 0.61, 0.36, 1];
 
-// Card backgrounds until real per-option photos are ready — same gradient
-// tints already used in the e-bike builder, so the palette stays consistent.
-const CARD_TINTS = [
-  'from-[#7a2e1d] to-[#c9642f]',
-  'from-[#1f3a4a] to-[#3f7f96]',
-  'from-[#31402b] to-[#5e7355]',
-  'from-[#3a2a55] to-[#7a5ba6]',
-];
-
 const slideVariants = {
-  enter: (direction) => ({ x: direction > 0 ? 40 : -40, opacity: 0 }),
+  enter: (direction) => ({ x: direction > 0 ? 32 : -32, opacity: 0 }),
   center: { x: 0, opacity: 1 },
-  exit: (direction) => ({ x: direction > 0 ? -40 : 40, opacity: 0 }),
+  exit: (direction) => ({ x: direction > 0 ? -32 : 32, opacity: 0 }),
 };
 
 const staggerParent = {
   hidden: {},
-  show: { transition: { staggerChildren: 0.08, delayChildren: 0.1 } },
+  show: { transition: { staggerChildren: 0.05, delayChildren: 0.05 } },
 };
 
 const staggerItem = {
-  hidden: { opacity: 0, y: 14 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.45, ease: EASE } },
+  hidden: { opacity: 0, y: 10 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.35, ease: EASE } },
 };
 
 export default function AdventurePlanner() {
   const [step, setStep] = useState(0);
   const [hist, setHist] = useState([]);
   const [scores, setScores] = useState(EMPTY_SCORES);
+  const [messages, setMessages] = useState([{ role: 'ai', text: GREETING }]);
+  const [typing, setTyping] = useState(false);
   const [showResult, setShowResult] = useState(false);
   const [direction, setDirection] = useState(1);
 
-  const q = QUIZ_QUESTIONS[step];
-  const total = QUIZ_QUESTIONS.length;
-
   function pick(idx) {
+    const q = QUIZ_QUESTIONS[step];
     const opt = q.opts[idx];
     const nextScores = { ...scores };
     Object.keys(opt.w).forEach((k) => { nextScores[k] += opt.w[k]; });
 
+    setMessages((m) => [...m, { role: 'user', text: opt.l }]);
     setHist((h) => [...h, { q: q.q, a: opt.l, w: opt.w }]);
     setScores(nextScores);
+    setTyping(true);
     setDirection(1);
 
-    const isLast = step + 1 >= total;
-    if (isLast) setShowResult(true);
-    else setStep((s) => s + 1);
+    const isLast = step + 1 >= QUIZ_QUESTIONS.length;
+    setTimeout(() => {
+      setTyping(false);
+      setStep((s) => s + 1);
+      if (isLast) setShowResult(true);
+    }, 650);
   }
 
   function goBack() {
@@ -66,6 +63,7 @@ export default function AdventurePlanner() {
     newHist.forEach((h) => Object.keys(h.w).forEach((k) => { newScores[k] += h.w[k]; }));
     setHist(newHist);
     setScores(newScores);
+    setMessages((m) => m.slice(0, -1));
     setDirection(-1);
     setStep((s) => s - 1);
   }
@@ -74,171 +72,153 @@ export default function AdventurePlanner() {
     setStep(0);
     setHist([]);
     setScores(EMPTY_SCORES);
+    setMessages([{ role: 'ai', text: GREETING }]);
     setShowResult(false);
     setDirection(1);
   }
 
+  const q = QUIZ_QUESTIONS[step];
+
   return (
-    <div className="overflow-hidden rounded-2xl border border-white/[.08] bg-white/[.03]">
+    <div className="mx-auto max-w-[640px] rounded-2xl border border-white/[.08] bg-white/[.04] p-8">
+      <ProgressBar step={step} done={showResult} />
+
+      <div className="mb-6 flex flex-col gap-3">
+        {messages.map((m, i) => (
+          <Bubble key={i} role={m.role} text={m.text} />
+        ))}
+        {typing && <TypingIndicator />}
+      </div>
+
       <AnimatePresence mode="wait">
-        {!showResult ? (
+        {!showResult && !typing && q && (
           <motion.div
-            key="quiz"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0, y: -16 }}
+            key={step}
+            custom={direction}
+            variants={slideVariants}
+            initial="enter"
+            animate="center"
+            exit="exit"
             transition={{ duration: 0.35, ease: EASE }}
-            className="p-9 max-[860px]:p-6"
           >
-            <ProgressBar step={step} total={total} />
-
-            <AnimatePresence mode="wait" custom={direction}>
-              <motion.div
-                key={step}
-                custom={direction}
-                variants={slideVariants}
-                initial="enter"
-                animate="center"
-                exit="exit"
-                transition={{ duration: 0.45, ease: EASE }}
-                className="grid grid-cols-[0.85fr_1.15fr] items-center gap-14 max-[860px]:grid-cols-1 max-[860px]:gap-8"
-              >
-                <QuestionInfo q={q} step={step} total={total} />
-                <OptionsGrid q={q} onPick={pick} />
-              </motion.div>
-            </AnimatePresence>
-
-            <div className="mt-9 flex items-center justify-between border-t border-white/[.08] pt-5">
-              <button
-                type="button"
-                onClick={goBack}
-                className={`text-xs text-white/35 transition-colors hover:text-white/65 ${step === 0 ? 'invisible' : ''}`}
-              >
-                ← Atrás
-              </button>
-              <button type="button" onClick={() => setShowResult(true)} className="text-xs text-white/30 underline">
-                Saltar →
-              </button>
-            </div>
-          </motion.div>
-        ) : (
-          <motion.div
-            key="result"
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -24 }}
-            transition={{ duration: 0.45, ease: EASE }}
-            className="bg-paper p-2"
-          >
-            <ResultCard scores={scores} />
-            <div className="pb-6 pt-2 text-center">
-              <button type="button" onClick={restart} className="text-xs text-ink3 underline">
-                Volver a empezar
-              </button>
-            </div>
+            <Question q={q} onPick={pick} onBack={goBack} onSkip={() => setShowResult(true)} step={step} />
           </motion.div>
         )}
       </AnimatePresence>
+
+      {showResult && (
+        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, ease: EASE }}>
+          <ResultCard scores={scores} />
+        </motion.div>
+      )}
+
+      {showResult && (
+        <div className="mt-5 text-center">
+          <a href="#" onClick={(e) => { e.preventDefault(); restart(); }} className="text-xs text-white/30 underline">
+            Volver a empezar
+          </a>
+        </div>
+      )}
     </div>
   );
 }
 
-function ProgressBar({ step, total }) {
+function ProgressBar({ step, done }) {
   return (
-    <div className="mb-10 flex items-center gap-4">
-      <span className="font-serif text-sm font-bold text-gold">{String(step + 1).padStart(2, '0')}</span>
-      <div className="relative h-px flex-1 overflow-hidden bg-white/10">
-        <motion.div
-          className="absolute inset-y-0 left-0 bg-gold"
-          initial={false}
-          animate={{ width: `${((step + 1) / total) * 100}%` }}
-          transition={{ duration: 0.5, ease: EASE }}
-        />
-      </div>
-      <span className="font-serif text-sm font-bold text-white/30">{String(total).padStart(2, '0')}</span>
+    <div className="mb-7 flex justify-center gap-[5px]">
+      {QUIZ_QUESTIONS.map((_, i) => {
+        const active = done || i < step;
+        const current = !done && i === step;
+        return (
+          <div key={i} className="relative h-[3px] w-7 overflow-hidden rounded-sm bg-white/[.12]">
+            <motion.div
+              className={`absolute inset-y-0 left-0 w-full origin-left rounded-sm ${current ? 'bg-sage' : 'bg-gold'}`}
+              initial={false}
+              animate={{ scaleX: active || current ? 1 : 0 }}
+              transition={{ duration: 0.4, ease: EASE }}
+            />
+          </div>
+        );
+      })}
     </div>
   );
 }
 
-function QuestionInfo({ q, step, total }) {
-  const words = q.q.split(' ');
-  const last = words.pop();
-  const rest = words.join(' ');
-
+function Bubble({ role, text }) {
+  const isAi = role === 'ai';
   return (
-    <motion.div variants={staggerParent} initial="hidden" animate="show" className="max-[860px]:order-1">
-      <motion.p variants={staggerItem} className="mb-4 text-[11px] font-semibold uppercase tracking-[.22em] text-gold">
-        Pregunta {step + 1} de {total}
-      </motion.p>
-      <motion.h3 variants={staggerItem} className="mb-5 font-serif text-[clamp(1.7rem,4vw,2.5rem)] font-bold uppercase leading-[1.08] text-white">
-        {rest} <em className="not-italic text-gold">{last}</em>
-      </motion.h3>
-      <motion.p variants={staggerItem} className="max-w-[340px] text-[14.5px] leading-[1.7] text-white/50">
-        Cuéntanos un poco sobre tu grupo y te recomendaremos la experiencia perfecta para ti.
-      </motion.p>
-
-      <motion.div variants={staggerItem} className="mt-10 max-[860px]:hidden">
-        <Compass />
-        <p className="mt-6 max-w-[220px] font-script text-xl leading-[1.3] text-white/40">
-          No es solo un tour, es tu aventura.
-        </p>
-      </motion.div>
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.35, ease: EASE }}
+      className={
+        isAi
+          ? 'max-w-[85%] self-start rounded-[10px] rounded-tl-[2px] border border-white/[.08] bg-white/[.06] px-[17px] py-[13px] text-sm leading-[1.6] text-white/88'
+          : 'ml-auto max-w-[85%] self-end rounded-[10px] rounded-tr-[2px] bg-gold2 px-[17px] py-[13px] text-sm font-medium leading-[1.6] text-white'
+      }
+    >
+      {isAi && <span className="mb-[5px] block text-[9.5px] font-semibold uppercase tracking-[.12em] text-gold">TRUE</span>}
+      {text}
     </motion.div>
   );
 }
 
-function Compass() {
+function TypingIndicator() {
   return (
-    <svg viewBox="0 0 120 120" className="h-24 w-24" aria-hidden="true">
-      <circle cx="60" cy="60" r="46" fill="none" stroke="currentColor" strokeWidth="1" className="text-white/25" />
-      <circle cx="60" cy="60" r="1.6" fill="currentColor" className="text-gold" />
-      <text x="60" y="19" textAnchor="middle" className="fill-white/40 text-[9px] font-semibold" style={{ letterSpacing: '0.1em' }}>N</text>
-      <text x="60" y="107" textAnchor="middle" className="fill-white/40 text-[9px] font-semibold" style={{ letterSpacing: '0.1em' }}>S</text>
-      <text x="11" y="64" textAnchor="middle" className="fill-white/40 text-[9px] font-semibold" style={{ letterSpacing: '0.1em' }}>W</text>
-      <text x="109" y="64" textAnchor="middle" className="fill-white/40 text-[9px] font-semibold" style={{ letterSpacing: '0.1em' }}>E</text>
-      <path d="M40 78 L55 50 L65 65 L75 45 L88 78 Z" fill="none" stroke="currentColor" strokeWidth="1.2" className="text-gold/70" />
-    </svg>
-  );
-}
-
-function OptionsGrid({ q, onPick }) {
-  return (
-    <div className="grid grid-cols-2 gap-4 max-[860px]:order-2 max-[540px]:grid-cols-1">
-      {q.opts.map((opt, i) => (
-        <OptionCard key={opt.l} opt={opt} index={i} onClick={() => onPick(i)} />
+    <div className="flex w-fit items-center gap-1 rounded-[10px] rounded-tl-[2px] border border-white/[.08] bg-white/[.06] px-[17px] py-[13px]">
+      {[0, 1, 2].map((i) => (
+        <span
+          key={i}
+          className="h-[5px] w-[5px] animate-[td_1.2s_ease_infinite] rounded-full bg-gold"
+          style={{ animationDelay: `${i * 0.15}s` }}
+        />
       ))}
     </div>
   );
 }
 
-function OptionCard({ opt, index, onClick }) {
-  const tint = CARD_TINTS[index % CARD_TINTS.length];
+function Question({ q, onPick, onBack, onSkip, step }) {
   return (
-    <motion.button
-      type="button"
-      onClick={onClick}
-      initial={{ opacity: 0, y: 18 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.15 + index * 0.06, duration: 0.4, ease: EASE }}
-      whileHover={{ scale: 1.02 }}
-      whileTap={{ scale: 0.98 }}
-      className={`group relative flex aspect-[4/3] flex-col justify-between overflow-hidden rounded-xl bg-gradient-to-br ${tint} p-5 text-left`}
-    >
-      <div className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-inset ring-white/10 transition-all duration-300 group-hover:ring-2 group-hover:ring-gold" />
-      <div className="pointer-events-none absolute inset-0 bg-black/15 transition-opacity duration-300 group-hover:bg-black/0" />
-
-      <span className="relative z-10 flex h-11 w-11 items-center justify-center rounded-full border border-white/25 bg-black/20 text-xl backdrop-blur-sm">
-        {opt.i}
-      </span>
-
-      <div className="relative z-10">
-        <span className="block font-serif text-[17px] font-bold uppercase tracking-wide text-white">{opt.l}</span>
-        <span className="mb-3 mt-1 block text-[12.5px] text-white/70">{opt.s}</span>
-        <span className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[.12em] text-gold">
-          Ver más →
-        </span>
+    <motion.div variants={staggerParent} initial="hidden" animate="show">
+      <motion.span variants={staggerItem} className="mb-2.5 block text-[10.5px] font-semibold uppercase tracking-[.14em] text-gold">
+        Pregunta {step + 1} de {QUIZ_QUESTIONS.length}
+      </motion.span>
+      <motion.div variants={staggerItem} className="mb-[22px] font-serif text-xl font-bold leading-[1.4] text-white">
+        {q.q}
+      </motion.div>
+      <div className={`grid gap-[9px] ${q.single ? 'grid-cols-1' : 'grid-cols-2 max-[580px]:grid-cols-1'}`}>
+        {q.opts.map((opt, i) => (
+          <motion.button
+            key={opt.l}
+            type="button"
+            variants={staggerItem}
+            onClick={() => onPick(i)}
+            whileHover={{ scale: 1.02, borderColor: 'var(--color-gold)' }}
+            whileTap={{ scale: 0.98 }}
+            transition={{ duration: 0.18 }}
+            className="flex items-center gap-3 rounded-[9px] border border-white/[.09] bg-white/[.04] p-4 text-left hover:bg-gold/[.08]"
+          >
+            <span className="w-6 flex-shrink-0 text-center text-xl">{opt.i}</span>
+            <span>
+              <span className="block text-[13.5px] font-semibold text-white">{opt.l}</span>
+              <span className="mt-0.5 block text-[11.5px] text-white/45">{opt.s}</span>
+            </span>
+          </motion.button>
+        ))}
       </div>
-    </motion.button>
+      <div className="mt-[18px] flex items-center justify-between">
+        <button
+          type="button"
+          onClick={onBack}
+          className={`flex items-center gap-1.5 text-xs text-white/35 transition-colors hover:text-white/65 ${step === 0 ? 'invisible' : ''}`}
+        >
+          ← Atrás
+        </button>
+        <button type="button" onClick={onSkip} className="text-xs text-white/30 underline">
+          Saltar →
+        </button>
+      </div>
+    </motion.div>
   );
 }
 
