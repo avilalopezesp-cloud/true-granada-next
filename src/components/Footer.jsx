@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 
 export default function Footer() {
   return (
@@ -18,16 +19,16 @@ export default function Footer() {
 
         <div>
           <div className="mb-3.5 text-[10px] font-semibold uppercase tracking-[.16em] text-gold">Experiencias</div>
-          <a href="https://betrue.es/trip/canyoning_adventure_in_rio_verde/" className="mb-2 block text-[13.5px] text-white/55 transition-colors hover:text-white">Barranquismo</a>
+          <Link href="/experiencias/barranquismo" className="mb-2 block text-[13.5px] text-white/55 transition-colors hover:text-white">Barranquismo</Link>
           <a href="https://betrue.es/trip/via-ferrata-adventure/" className="mb-2 block text-[13.5px] text-white/55 transition-colors hover:text-white">Vía Ferrata</a>
           <a href="https://betrue.es/trip/albayzin/" className="mb-2 block text-[13.5px] text-white/55 transition-colors hover:text-white">E-Bike Tour</a>
         </div>
 
         <div>
           <div className="mb-3.5 text-[10px] font-semibold uppercase tracking-[.16em] text-gold">TRUE</div>
-          <a href="#about" className="mb-2 block text-[13.5px] text-white/55 transition-colors hover:text-white">Quiénes somos</a>
-          <a href="#adventure" className="mb-2 block text-[13.5px] text-white/55 transition-colors hover:text-white">Elige tu aventura</a>
-          <a href="#blog" className="mb-2 block text-[13.5px] text-white/55 transition-colors hover:text-white">Blog</a>
+          <Link href="/#about" className="mb-2 block text-[13.5px] text-white/55 transition-colors hover:text-white">Quiénes somos</Link>
+          <Link href="/#adventure" className="mb-2 block text-[13.5px] text-white/55 transition-colors hover:text-white">Elige tu aventura</Link>
+          <Link href="/#blog" className="mb-2 block text-[13.5px] text-white/55 transition-colors hover:text-white">Blog</Link>
           <a href="https://betrue.es/contact-us/" className="mb-2 block text-[13.5px] text-white/55 transition-colors hover:text-white">Contacto</a>
         </div>
 

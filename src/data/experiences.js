@@ -15,10 +15,48 @@ export const EXPERIENCES = {
     level: 'Principiantes bienvenidos',
     desc: 'Saltos, toboganes naturales y rápeles en aguas turquesa a los pies de Sierra Nevada, a solo 45 minutos de Granada. Guía certificado y equipo incluido — apto para principiantes.',
     why: 'Buscáis adrenalina real y desconectar del calor — el cañón de Río Verde tiene agua fresca, saltos opcionales y paisaje que no se ve desde ningún mirador.',
-    cover: '/images/canyoning-cover.jpg',
+    cover: '/images/canyoning-jump.jpg',
     gallery: ['/images/canyoning-cover.jpg', '/images/canyoning-1.jpg', '/images/canyoning-2.jpg'],
     url: 'https://betrue.es/trip/canyoning_adventure_in_rio_verde/',
+    detailPage: '/experiencias/barranquismo',
     wa: 'Hola TRUE 👋 Quiero reservar el Barranquismo en Río Verde. ¿Tenéis disponibilidad pronto?',
+    // Full "recorrido" detail page (src/app/experiencias/barranquismo). Each stop pairs
+    // a short narrative beat with a photo or looping clip from the actual Río Verde route.
+    journey: {
+      heroVideo: '/canyoning-video-hero.mp4',
+      stops: [
+        {
+          n: 1,
+          title: 'Llegada y briefing',
+          text: 'Nos desplazamos juntos hasta el cañón de Río Verde, a los pies de Sierra Nevada. Antes de entrar en el agua, tu guía certificado revisa el equipo contigo y os cuenta cómo va a ser el descenso — sin prisas, sin tecnicismos.',
+          media: { type: 'image', src: '/images/canyoning-guides.jpg' },
+        },
+        {
+          n: 2,
+          title: 'Aproximación al cañón',
+          text: 'Empezamos a caminar entre rocas y vegetación mediterránea hasta el primer tramo de agua. El cañón se va cerrando poco a poco y el calor de Granada desaparece — aquí ya se respira otra cosa.',
+          media: { type: 'image', src: '/images/canyoning-approach.jpg' },
+        },
+        {
+          n: 3,
+          title: 'Rápeles y descensos',
+          text: 'Llegan los primeros rápeles junto a las cascadas. Con cuerda y guía en todo momento, bajas a tu ritmo — sea la primera vez que lo haces o no.',
+          media: { type: 'video', src: '/canyoning-video-descent.mp4', poster: '/images/canyoning-waterfall.jpg' },
+        },
+        {
+          n: 4,
+          title: 'Saltos y toboganes naturales',
+          text: 'La parte que todos recuerdan: saltos opcionales de distintas alturas a pozas de agua turquesa. Nadie te obliga a nada — pero cuando saltas, se nota.',
+          media: { type: 'video', src: '/canyoning-video-jump.mp4', poster: '/images/canyoning-jump.jpg' },
+        },
+        {
+          n: 5,
+          title: 'Celebración y vuelta',
+          text: 'Terminamos el recorrido con la ropa empapada y la sonrisa puesta. Volvemos juntos, comentando el salto que casi no dabas, con ganas de repetir.',
+          media: { type: 'image', src: '/images/canyoning-celebration.jpg' },
+        },
+      ],
+    },
   },
   ferrata: {
     key: 'ferrata',
