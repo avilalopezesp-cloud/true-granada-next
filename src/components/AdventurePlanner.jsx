@@ -82,13 +82,14 @@ export default function AdventurePlanner() {
 
   return (
     <div className="relative overflow-hidden rounded-2xl border border-gold/25 shadow-[0_30px_80px_rgba(0,0,0,.45)]">
-      <div className="absolute inset-0 z-0">
+      <motion.div
+        className="absolute inset-0 z-0"
+        animate={{ scale: [1, 1.08, 1] }}
+        transition={{ duration: 26, repeat: Infinity, ease: 'linear' }}
+      >
         <Image src="/images/quiz/quiz-bg.jpg" alt="" fill className="object-cover" priority />
         <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(15,13,10,.88)_0%,rgba(15,13,10,.94)_55%,rgba(15,13,10,.97)_100%)]" />
-      </div>
-
-      <Mascot side="left" />
-      <Mascot side="right" />
+      </motion.div>
 
       <div className="relative z-10 px-6 pb-8 pt-7 max-[860px]:px-4 sm:px-10">
         <AnimatePresence mode="wait">
@@ -101,18 +102,6 @@ export default function AdventurePlanner() {
               transition={{ duration: 0.35, ease: EASE }}
             >
               <Stepper step={step} total={total} />
-
-              {step === 0 && (
-                <div className="fade-up mx-auto mb-7 flex max-w-[560px] items-center gap-4 rounded-[12px] border border-white/10 bg-black/30 px-6 py-4 backdrop-blur-sm">
-                  <div>
-                    <p className="text-[15px] leading-[1.6] text-white/90">
-                      Hola 👋 Vamos a encontrar la experiencia perfecta para ti.{' '}
-                      <span className="text-white/60">Tus respuestas nos ayudarán a diseñar algo inolvidable.</span>
-                    </p>
-                  </div>
-                  <IconMountain className="hidden h-9 w-9 flex-shrink-0 text-gold/50 sm:block" />
-                </div>
-              )}
 
               <AnimatePresence mode="wait" custom={direction}>
                 <motion.div
@@ -133,7 +122,7 @@ export default function AdventurePlanner() {
                       {q.q}
                     </motion.h3>
                     {q.sub && (
-                      <motion.p variants={staggerItem} className="mb-6 text-[14px] text-white/50">
+                      <motion.p variants={staggerItem} className="mb-6 text-[14px] font-semibold text-white/65">
                         {q.sub}
                       </motion.p>
                     )}
@@ -151,17 +140,17 @@ export default function AdventurePlanner() {
                     ))}
                   </div>
 
-                  <div className="mt-5 min-h-[20px] text-[13px] italic text-white/45">
+                  <div className="mt-5 min-h-[20px] text-[13px] font-semibold italic text-white/60">
                     {selected !== null && q.opts[selected].tip}
                   </div>
 
                   <div className="mt-6 flex flex-wrap items-center justify-between gap-4">
-                    <button type="button" onClick={skip} className="text-xs text-white/35 underline transition-colors hover:text-white/60">
+                    <button type="button" onClick={skip} className="text-xs font-semibold text-white/50 underline transition-colors hover:text-white/70">
                       Saltar esta pregunta →
                     </button>
                     <div className="ml-auto flex items-center gap-4">
                       {step > 0 && (
-                        <button type="button" onClick={goBack} className="text-xs text-white/35 transition-colors hover:text-white/60">
+                        <button type="button" onClick={goBack} className="text-xs font-semibold text-white/50 transition-colors hover:text-white/70">
                           ← Atrás
                         </button>
                       )}
@@ -191,7 +180,7 @@ export default function AdventurePlanner() {
                 <ResultCard scores={scores} />
               </div>
               <div className="mt-5 text-center">
-                <button type="button" onClick={restart} className="text-xs text-white/35 underline hover:text-white/60">
+                <button type="button" onClick={restart} className="text-xs font-semibold text-white/50 underline hover:text-white/70">
                   Volver a empezar
                 </button>
               </div>
@@ -199,19 +188,6 @@ export default function AdventurePlanner() {
           )}
         </AnimatePresence>
       </div>
-    </div>
-  );
-}
-
-function Mascot({ side }) {
-  const src = side === 'left' ? '/images/quiz/mascot-izquierda.webp' : '/images/quiz/mascot-derecha.webp';
-  return (
-    <div
-      className={`pointer-events-none absolute bottom-0 z-[1] hidden h-full w-[220px] lg:block ${
-        side === 'left' ? 'left-0' : 'right-0 scale-x-[-1]'
-      }`}
-    >
-      <Image src={src} alt="" fill className="object-contain object-bottom opacity-90" />
     </div>
   );
 }
@@ -226,18 +202,20 @@ function Stepper({ step, total }) {
         return (
           <div key={question.short} className="flex flex-1 items-start">
             <div className="flex flex-col items-center gap-1.5 text-center">
-              <span
+              <motion.span
                 className={`flex h-8 w-8 items-center justify-center rounded-full border transition-colors ${
                   active
                     ? 'border-gold bg-gold text-ink'
                     : done
                       ? 'border-gold/60 bg-gold/15 text-gold'
-                      : 'border-white/15 bg-white/5 text-white/35'
+                      : 'border-white/15 bg-white/5 text-white/40'
                 }`}
+                animate={active ? { boxShadow: ['0 0 0px rgba(201,165,90,0)', '0 0 14px rgba(201,165,90,.6)', '0 0 0px rgba(201,165,90,0)'] } : {}}
+                transition={active ? { duration: 2.2, repeat: Infinity, ease: 'easeInOut' } : {}}
               >
                 <Icon className="h-3.5 w-3.5" />
-              </span>
-              <span className={`text-[10px] font-medium ${active ? 'text-gold' : done ? 'text-white/60' : 'text-white/30'}`}>
+              </motion.span>
+              <span className={`text-[10px] font-semibold ${active ? 'text-gold' : done ? 'text-white/70' : 'text-white/45'}`}>
                 {question.short}
               </span>
             </div>
@@ -269,7 +247,7 @@ function OptionCard({ opt, index, active, onClick }) {
         </div>
         <div className="px-3 py-3">
           <span className="block text-[14px] font-bold text-white">{opt.l}</span>
-          <span className="mt-0.5 block text-[11px] text-white/45">{opt.s}</span>
+          <span className="mt-0.5 block text-[11px] font-semibold text-white/60">{opt.s}</span>
         </div>
       </motion.button>
     );
@@ -290,7 +268,7 @@ function OptionCard({ opt, index, active, onClick }) {
     >
       <span className="text-2xl">{opt.i}</span>
       <span className="text-[14px] font-bold text-white">{opt.l}</span>
-      <span className="text-[11px] text-white/45">{opt.s}</span>
+      <span className="text-[11px] font-semibold text-white/60">{opt.s}</span>
     </motion.button>
   );
 }
@@ -308,7 +286,7 @@ function TrustBar() {
           <Icon className="h-5 w-5 flex-shrink-0 text-gold/70" />
           <div className="text-left">
             <span className="block text-[12px] font-semibold text-white/85">{l}</span>
-            <span className="block text-[10.5px] text-white/40">{s}</span>
+            <span className="block text-[10.5px] font-semibold text-white/55">{s}</span>
           </div>
         </div>
       ))}
