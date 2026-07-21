@@ -125,12 +125,18 @@ video {
   animation: fadeUp 0.9s cubic-bezier(0.22, 0.61, 0.36, 1) both;
 }
 
+/* Visible by default — JS (ScrollRevealInit) opts elements into the hidden
+   "pre-reveal" state right before observing them. If JS fails to run for any
+   reason (a hydration error, a crash, a slow/blocked script), content simply
+   has no fade-in animation instead of staying invisible forever. */
 .reveal {
-  opacity: 0;
-  transform: translateY(46px) scale(0.97);
   transition:
     opacity 0.9s cubic-bezier(0.22, 0.61, 0.36, 1),
     transform 0.9s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.reveal.pre-reveal {
+  opacity: 0;
+  transform: translateY(46px) scale(0.97);
 }
 .reveal.in-view {
   opacity: 1;
