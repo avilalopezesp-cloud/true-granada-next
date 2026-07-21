@@ -92,18 +92,18 @@ export default function AdventurePlanner() {
       </motion.div>
 
       <div className="relative z-10 px-6 pb-8 pt-7 max-[860px]:px-4 sm:px-10">
-        <AnimatePresence mode="wait">
+        <AnimatePresence mode="wait" initial={false}>
           {!showResult ? (
             <motion.div
               key="quiz"
-              initial={{ opacity: 0 }}
+              initial={false}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0, y: -16 }}
               transition={{ duration: 0.35, ease: EASE }}
             >
               <Stepper step={step} total={total} />
 
-              <AnimatePresence mode="wait" custom={direction}>
+              <AnimatePresence mode="wait" custom={direction} initial={false}>
                 <motion.div
                   key={step}
                   custom={direction}
@@ -114,7 +114,7 @@ export default function AdventurePlanner() {
                   transition={{ duration: 0.4, ease: EASE }}
                   className="mx-auto max-w-[720px] text-center"
                 >
-                  <motion.div variants={staggerParent} initial="hidden" animate="show">
+                  <motion.div variants={staggerParent} initial={false} animate="show">
                     <motion.p variants={staggerItem} className="mb-2 text-[10.5px] font-semibold uppercase tracking-[.18em] text-gold">
                       Pregunta {step + 1} de {total}
                     </motion.p>
@@ -233,9 +233,7 @@ function OptionCard({ opt, index, active, onClick }) {
       <motion.button
         type="button"
         onClick={onClick}
-        initial={{ opacity: 0, y: 14 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.1 + index * 0.05, duration: 0.35, ease: EASE }}
+        initial={false}
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
         className={`group relative flex flex-col overflow-hidden rounded-[12px] border bg-black/30 text-left transition-colors ${
