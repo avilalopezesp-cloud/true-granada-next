@@ -82,14 +82,10 @@ export default function AdventurePlanner() {
 
   return (
     <div className="relative overflow-hidden rounded-2xl border border-gold/25 shadow-[0_30px_80px_rgba(0,0,0,.45)]">
-      <motion.div
-        className="absolute inset-0 z-0"
-        animate={{ scale: [1, 1.08, 1] }}
-        transition={{ duration: 26, repeat: Infinity, ease: 'linear' }}
-      >
+      <div className="ken-burns absolute inset-0 z-0">
         <Image src="/images/quiz/quiz-bg.jpg" alt="" fill className="object-cover" priority />
         <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(15,13,10,.88)_0%,rgba(15,13,10,.94)_55%,rgba(15,13,10,.97)_100%)]" />
-      </motion.div>
+      </div>
 
       {/* No AnimatePresence wrapping the quiz/result swap either, for the same
           reason as the per-question transition below: exit tracking here was
@@ -206,19 +202,17 @@ function Stepper({ step, total }) {
         return (
           <div key={question.short} className="flex flex-1 items-start">
             <div className="flex flex-col items-center gap-1.5 text-center">
-              <motion.span
+              <span
                 className={`flex h-8 w-8 items-center justify-center rounded-full border transition-colors ${
                   active
-                    ? 'border-gold bg-gold text-ink'
+                    ? 'step-glow border-gold bg-gold text-ink'
                     : done
                       ? 'border-gold/60 bg-gold/15 text-gold'
                       : 'border-white/15 bg-white/5 text-white/40'
                 }`}
-                animate={active ? { boxShadow: ['0 0 0px rgba(201,165,90,0)', '0 0 14px rgba(201,165,90,.6)', '0 0 0px rgba(201,165,90,0)'] } : {}}
-                transition={active ? { duration: 2.2, repeat: Infinity, ease: 'easeInOut' } : {}}
               >
                 <Icon className="h-3.5 w-3.5" />
-              </motion.span>
+              </span>
               <span className={`text-[10px] font-semibold ${active ? 'text-gold' : done ? 'text-white/70' : 'text-white/45'}`}>
                 {question.short}
               </span>

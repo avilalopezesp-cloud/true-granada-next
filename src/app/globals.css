@@ -161,6 +161,20 @@ video {
   0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
   30% { transform: translateY(-4px); opacity: 1; }
 }
+@keyframes kenBurns {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+}
+.ken-burns {
+  animation: kenBurns 26s ease-in-out infinite;
+}
+@keyframes stepGlow {
+  0%, 100% { box-shadow: 0 0 0px rgba(201, 165, 90, 0); }
+  50% { box-shadow: 0 0 14px rgba(201, 165, 90, .6); }
+}
+.step-glow {
+  animation: stepGlow 2.2s ease-in-out infinite;
+}
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
