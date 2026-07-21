@@ -23,7 +23,6 @@ export const EXPERIENCES = {
     // Full "recorrido" detail page (src/app/experiencias/barranquismo). Each stop pairs
     // a short narrative beat with a photo or looping clip from the actual Río Verde route.
     journey: {
-      heroVideo: '/canyoning-video-hero.mp4',
       stops: [
         {
           n: 1,

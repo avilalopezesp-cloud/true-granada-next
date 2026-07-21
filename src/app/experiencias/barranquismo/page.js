@@ -28,9 +28,7 @@ export default function BarranquismoPage() {
 
       <section className="relative flex min-h-[92vh] items-end overflow-hidden px-7 pb-16 pt-24">
         <div className="absolute inset-0 z-0 overflow-hidden bg-ink">
-          <video autoPlay muted loop playsInline className="absolute inset-0 h-full w-full object-cover">
-            <source src={journey.heroVideo} type="video/mp4" />
-          </video>
+          <Image src={exp.cover} alt={exp.name} fill priority className="object-cover" />
           <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(30,26,20,.22)_0%,rgba(30,26,20,.72)_70%,rgba(30,26,20,.92)_100%)]" />
         </div>
 
