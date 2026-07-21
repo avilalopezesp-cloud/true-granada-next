@@ -28,9 +28,23 @@ export default function ScrollRevealInit() {
           }
         });
       },
-      { threshold: 0.15, rootMargin: '0px 0px -40px 0px' }
+      { threshold: 0.05, rootMargin: '0px 0px -10% 0px' }
     );
     revealEls.forEach((el) => io.observe(el));
+
+    // Safety net: on some mobile browsers the observer can miss elements that
+    // are already in the viewport at mount (e.g. right below a full-height
+    // hero, before any scroll event fires). Force those visible immediately
+    // instead of leaving them stuck at opacity:0 waiting for a scroll that
+    // may not measurably move them.
+    revealEls.forEach((el) => {
+      const rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight && rect.bottom > 0) {
+        el.classList.add('in-view');
+        io.unobserve(el);
+      }
+    });
+
     return () => io.disconnect();
   }, [pathname]);
 
