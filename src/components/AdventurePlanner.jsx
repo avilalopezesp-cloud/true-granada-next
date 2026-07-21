@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import { AnimatePresence, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { EXPERIENCES, QUIZ_QUESTIONS } from '@/data/experiences';
 import WhatsAppIcon from './icons/WhatsAppIcon';
 
@@ -91,29 +91,35 @@ export default function AdventurePlanner() {
         <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(15,13,10,.88)_0%,rgba(15,13,10,.94)_55%,rgba(15,13,10,.97)_100%)]" />
       </motion.div>
 
+      {/* No AnimatePresence wrapping the quiz/result swap either, for the same
+          reason as the per-question transition below: exit tracking here was
+          unreliable, so we just let React swap on the condition and animate
+          each branch's entrance only. */}
       <div className="relative z-10 px-6 pb-8 pt-7 max-[860px]:px-4 sm:px-10">
-        <AnimatePresence mode="wait" initial={false}>
-          {!showResult ? (
+        {!showResult ? (
             <motion.div
               key="quiz"
               initial={false}
               animate={{ opacity: 1 }}
-              exit={{ opacity: 0, y: -16 }}
               transition={{ duration: 0.35, ease: EASE }}
             >
               <Stepper step={step} total={total} />
 
-              <AnimatePresence mode="wait" custom={direction} initial={false}>
-                <motion.div
-                  key={step}
-                  custom={direction}
-                  variants={slideVariants}
-                  initial="enter"
-                  animate="center"
-                  exit="exit"
-                  transition={{ duration: 0.4, ease: EASE }}
-                  className="mx-auto max-w-[720px] text-center"
-                >
+              {/* No AnimatePresence here on purpose: with exit tracking, Framer Motion
+                  never reliably signalled the outgoing question as removed (both the
+                  old and new question ended up mounted at once), so Continuar looked
+                  broken — the state updated but two questions rendered stacked in the
+                  DOM. A plain key change lets React swap the content immediately and
+                  correctly every time; Framer Motion only animates the entrance. */}
+              <motion.div
+                key={step}
+                custom={direction}
+                variants={slideVariants}
+                initial="enter"
+                animate="center"
+                transition={{ duration: 0.4, ease: EASE }}
+                className="mx-auto max-w-[720px] text-center"
+              >
                   <motion.div variants={staggerParent} initial={false} animate="show">
                     <motion.p variants={staggerItem} className="mb-2 text-[10.5px] font-semibold uppercase tracking-[.18em] text-gold">
                       Pregunta {step + 1} de {total}
@@ -165,7 +171,6 @@ export default function AdventurePlanner() {
                     </div>
                   </div>
                 </motion.div>
-              </AnimatePresence>
 
               <TrustBar />
             </motion.div>
@@ -186,7 +191,6 @@ export default function AdventurePlanner() {
               </div>
             </motion.div>
           )}
-        </AnimatePresence>
       </div>
     </div>
   );
@@ -227,16 +231,13 @@ function Stepper({ step, total }) {
   );
 }
 
-function OptionCard({ opt, index, active, onClick }) {
+function OptionCard({ opt, active, onClick }) {
   if (opt.img) {
     return (
-      <motion.button
+      <button
         type="button"
         onClick={onClick}
-        initial={false}
-        whileHover={{ scale: 1.02 }}
-        whileTap={{ scale: 0.98 }}
-        className={`group relative flex flex-col overflow-hidden rounded-[12px] border bg-black/30 text-left transition-colors ${
+        className={`group relative flex flex-col overflow-hidden rounded-[12px] border bg-black/30 text-left transition-all duration-150 hover:scale-[1.02] active:scale-[0.98] ${
           active ? 'border-gold shadow-[0_0_0_3px_rgba(201,165,90,.25)]' : 'border-white/10 hover:border-gold/50'
         }`}
       >
@@ -247,27 +248,22 @@ function OptionCard({ opt, index, active, onClick }) {
           <span className="block text-[14px] font-bold text-white">{opt.l}</span>
           <span className="mt-0.5 block text-[11px] font-semibold text-white/60">{opt.s}</span>
         </div>
-      </motion.button>
+      </button>
     );
   }
 
   return (
-    <motion.button
+    <button
       type="button"
       onClick={onClick}
-      initial={{ opacity: 0, y: 14 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.1 + index * 0.05, duration: 0.35, ease: EASE }}
-      whileHover={{ scale: 1.02 }}
-      whileTap={{ scale: 0.98 }}
-      className={`flex flex-col items-center justify-center gap-2 rounded-[12px] border bg-black/30 px-4 py-6 text-center transition-colors ${
+      className={`flex flex-col items-center justify-center gap-2 rounded-[12px] border bg-black/30 px-4 py-6 text-center transition-all duration-150 hover:scale-[1.02] active:scale-[0.98] ${
         active ? 'border-gold shadow-[0_0_0_3px_rgba(201,165,90,.25)]' : 'border-white/10 hover:border-gold/50'
       }`}
     >
       <span className="text-2xl">{opt.i}</span>
       <span className="text-[14px] font-bold text-white">{opt.l}</span>
       <span className="text-[11px] font-semibold text-white/60">{opt.s}</span>
-    </motion.button>
+    </button>
   );
 }
 
