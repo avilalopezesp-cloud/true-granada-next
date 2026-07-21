@@ -22,14 +22,11 @@ export default function Home() {
       <section className="relative overflow-hidden bg-ink py-[100px]" id="adventure">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_60%_50%,rgba(201,165,90,.08),transparent_65%)]" />
         <div className="relative mx-auto max-w-[1160px] px-7">
-          <div className="reveal mb-[60px] text-center">
+          <div className="reveal mb-9 text-center">
             <p className="text-[11px] font-semibold uppercase tracking-[.22em] text-gold">Choose Your Adventure</p>
-            <h2 className="mx-auto my-3.5 mb-4 max-w-[560px] font-serif text-[clamp(2rem,4vw,3rem)] font-bold leading-[1.1] text-white">
+            <h2 className="mx-auto my-3.5 max-w-[560px] font-serif text-[clamp(2rem,4vw,3rem)] font-bold leading-[1.1] text-white">
               En menos de un minuto<br />diseñamos una propuesta <em className="font-light italic text-gold">para ti.</em>
             </h2>
-            <p className="mx-auto max-w-[420px] text-[15px] leading-[1.7] text-white/50">
-              Responde unas pocas preguntas. Nosotros hacemos el resto.
-            </p>
           </div>
           <AdventurePlanner />
         </div>

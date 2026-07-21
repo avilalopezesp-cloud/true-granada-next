@@ -137,15 +137,18 @@ export const EXPERIENCE_LIST = Object.values(EXPERIENCES);
 export const QUIZ_QUESTIONS = [
   {
     q: '¿Con quién viajas?',
+    short: 'Compañía',
+    sub: 'Cuéntanos para quién estás planeando esta aventura.',
     opts: [
-      { i: '💑', l: 'En pareja', s: 'Solo los dos', w: { ebike: 3, barranquismo: 1, ferrata: 1 } },
-      { i: '👨‍👩‍👧', l: 'En familia', s: 'Con niños o mayores', w: { ebike: 3, barranquismo: 0, ferrata: 0 } },
-      { i: '🎉', l: 'Con amigos', s: 'Grupo de 3 o más', w: { barranquismo: 3, ferrata: 2, ebike: 1 } },
-      { i: '🧍', l: 'Solo/a', s: 'Aventura en solitario', w: { ferrata: 2, barranquismo: 2, ebike: 1 } },
+      { i: '💑', l: 'En pareja', s: 'Solo los dos', img: '/images/quiz/quiz-en-pareja.webp', tip: 'Las escapadas en pareja suelen pedir menos ritmo y más momentos para los dos.', w: { ebike: 3, barranquismo: 1, ferrata: 1 } },
+      { i: '👨‍👩‍👧', l: 'En familia', s: 'Con niños o mayores', img: '/images/quiz/quiz-en-familia.webp', tip: 'Las aventuras en familia suelen crear los mejores recuerdos.', w: { ebike: 3, barranquismo: 0, ferrata: 0 } },
+      { i: '🎉', l: 'Con amigos', s: 'Grupo de 3 o más', img: '/images/quiz/quiz-con-amigos.webp', tip: 'Con amigos, cuanta más adrenalina, mejor anécdota para contar.', w: { barranquismo: 3, ferrata: 2, ebike: 1 } },
+      { i: '🧍', l: 'Solo/a', s: 'Aventura en solitario', img: '/images/quiz/quiz-solo.webp', tip: 'Ir por libre es la forma más rápida de desconectar de verdad.', w: { ferrata: 2, barranquismo: 2, ebike: 1 } },
     ],
   },
   {
     q: '¿Qué queréis sentir?',
+    short: 'Emoción',
     opts: [
       { i: '🔥', l: 'Adrenalina', s: 'El corazón a tope', w: { barranquismo: 3, ferrata: 3, ebike: 0 } },
       { i: '🌿', l: 'Calma y naturaleza', s: 'Desconectar sin prisa', w: { ebike: 2, barranquismo: 1, ferrata: 0 } },
@@ -155,6 +158,7 @@ export const QUIZ_QUESTIONS = [
   },
   {
     q: '¿Tenéis coche propio?',
+    short: 'Movilidad',
     single: true,
     opts: [
       { i: '🚗', l: 'Sí, tenemos coche', s: 'Podemos desplazarnos', w: { barranquismo: 2, ferrata: 2, ebike: 1 } },
@@ -163,6 +167,7 @@ export const QUIZ_QUESTIONS = [
   },
   {
     q: '¿Cuánto tiempo tenéis?',
+    short: 'Tiempo',
     opts: [
       { i: '⏱️', l: '2 horas', s: 'Algo corto', w: { ebike: 2, barranquismo: 0, ferrata: 0 } },
       { i: '🌤️', l: 'Medio día', s: '3–5 horas', w: { ebike: 1, barranquismo: 3, ferrata: 3 } },
@@ -171,6 +176,7 @@ export const QUIZ_QUESTIONS = [
   },
   {
     q: '¿Cómo os describís físicamente?',
+    short: 'Nivel físico',
     opts: [
       { i: '🌱', l: 'Tranquilos', s: 'Algo suave', w: { ebike: 3, barranquismo: 0, ferrata: 0 } },
       { i: '⚡', l: 'Activos', s: 'Hacemos deporte', w: { ebike: 1, barranquismo: 3, ferrata: 2 } },
@@ -179,6 +185,7 @@ export const QUIZ_QUESTIONS = [
   },
   {
     q: '¿Qué momento del día prefieres?',
+    short: 'Último paso',
     single: true,
     opts: [
       { i: '🌅', l: 'Mañana', s: 'Empezar pronto', w: { barranquismo: 2, ferrata: 2, ebike: 1 } },
