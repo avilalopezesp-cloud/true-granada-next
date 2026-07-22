@@ -135,6 +135,229 @@ export const BLOG_POSTS = [
       href: '/#adventure',
     },
   },
+  {
+    slug: 'los-cahorros-de-monachil',
+    title: 'Los Cahorros de Monachil: Guía completa para una aventura de verdad',
+    excerpt: 'Cómo llegar, dificultad, qué llevar y todo lo que hay que saber sobre el desfiladero y sus famosos puentes colgantes.',
+    metaDescription: 'Guía completa de Los Cahorros de Monachil: cómo llegar desde Granada, dificultad de la ruta, qué llevar, los puentes colgantes y la mejor época para visitarlos.',
+    keywords: [
+      'Los Cahorros de Monachil',
+      'ruta Los Cahorros',
+      'senderismo en Granada',
+      'puentes colgantes Granada',
+      'qué ver en Monachil',
+      'excursiones cerca de Granada',
+    ],
+    category: 'Granada de Verdad',
+    cover: '/images/blog/cahorros/cover.jpg',
+    date: '2026-07-23',
+    readTime: '7 min',
+    intro: [
+      'Si estás buscando una ruta de senderismo en Granada que se salga de lo común, deja de buscar. A solo unos kilómetros de la capital se esconde un paisaje que parece sacado de una novela de aventuras: Los Cahorros de Monachil.',
+      'En TRUE, siempre decimos que viajar no consiste en bajarse de un autobús, hacer una foto rápida e irse sin entender nada. Por eso, esta no es la típica lista fría de indicaciones. Esta es una guía completa para que vivas la ruta de Los Cahorros con los cinco sentidos, conectes con el entorno y entiendas por qué este desfiladero es uno de los secretos naturales más fascinantes de Andalucía.',
+      'Prepara las botas. Nos adentramos en el cañón.',
+    ],
+    items: [
+      {
+        number: null,
+        title: '¿Qué son Los Cahorros?',
+        image: '/images/blog/cahorros/01-que-son.jpg',
+        paragraphs: [
+          'Los Cahorros de Monachil son un espectacular desfiladero esculpido durante miles de años por el río Monachil. El agua, abriéndose paso desde las cumbres de Sierra Nevada, ha tallado paredes de roca caliza completamente verticales que, en algunos tramos, casi llegan a tocarse sobre tu cabeza.',
+          'Pero Los Cahorros son mucho más que geología. Son un ecosistema vivo donde el rugido del agua te acompaña en cada paso, un paraíso para los escaladores de todo el mundo y un terreno de juego perfecto si buscas qué ver en Monachil para huir del asfalto y reconectar con la naturaleza más pura.',
+        ],
+      },
+      {
+        number: null,
+        title: 'Cómo llegar desde Granada',
+        paragraphs: [
+          'Una de las mejores cosas de este plan es lo cerca que está de la ciudad. Tienes tres opciones principales para llegar a Monachil:',
+        ],
+        list: [
+          { icon: '🚗', label: 'En coche', text: 'Es rápido (unos 20-25 minutos). Conduce en dirección a Monachil y sigue las indicaciones hacia el Aparcamiento de Los Cahorros (junto al restaurante El Puntal).' },
+          { icon: '🚌', label: 'En autobús', text: 'La línea 183 de los autobuses metropolitanos te lleva desde el centro de Granada directo al pueblo de Monachil en una media hora.' },
+          { icon: '🚲', label: 'En e-bike (la opción TRUE)', text: '¿Por qué encerrarte en un autobús si puedes ir sintiendo la brisa? Desde el centro de Granada puedes subir hasta Monachil combinando tramos tranquilos de la vega y el río. Es la forma perfecta de calentar piernas antes de adentrarte a pie en el desfiladero.' },
+        ],
+      },
+      {
+        number: null,
+        title: 'Dificultad de la ruta: ¿Es apta para todos?',
+        paragraphs: [
+          'La ruta circular clásica de Los Cahorros (unos 8 kilómetros) se considera de dificultad media-baja. No requiere una forma física de atleta profesional, pero sí un mínimo de agilidad y, sobre todo, no sufrir de vértigo acusado.',
+          'El sendero combina tramos llanos y abiertos con zonas donde tendrás que agacharte, avanzar a gatas o caminar agarrado a unas asas de hierro ancladas a la pared de roca mientras el río pasa justo bajo tus pies. No es peligrosa si vas con cuidado, pero es una aventura real que te exige estar presente en cada paso.',
+        ],
+      },
+      {
+        number: null,
+        title: 'Qué llevar en tu mochila de exploración',
+        paragraphs: [
+          'Para disfrutar de la experiencia sin contratiempos, esto es lo indispensable:',
+        ],
+        list: [
+          { icon: '🥾', label: 'Calzado de montaña', text: 'Con buena suela y agarre. Las rocas húmedas del cañón pueden ser muy resbaladizas.' },
+          { icon: '💧', label: 'Agua y snack', text: 'Aunque estás cerca del pueblo, dentro del desfiladero no hay fuentes de agua potable.' },
+          { icon: '👕', label: 'Ropa cómoda', text: 'Que te permita agacharte y estirarte con total libertad.' },
+          { icon: '🧢', label: 'Protección solar', text: 'Gorra y crema, especialmente para los tramos abiertos fuera del desfiladero.' },
+        ],
+        tip: {
+          icon: '💡',
+          label: 'Tip de explorador',
+          text: 'Si vas en verano o primavera, lleva una camiseta técnica de repuesto. En la zona de "Las Palomas" el frescor del cañón se agradece, pero al salir a la zona abierta agradecerás un cambio seco.',
+        },
+      },
+      {
+        number: null,
+        title: 'Los famosos puentes colgantes de Granada',
+        image: '/images/blog/cahorros/02-puentes.jpg',
+        paragraphs: [
+          'Si hay algo que ha hecho famosa a esta ruta, son sus puentes colgantes. A lo largo del cañón cruzarás varios de ellos, pero el auténtico rey es el primero que te encuentras: un puente de 63 metros de longitud suspendido a más de 15 metros sobre el cauce del río.',
+          'Cruzarlo es pura adrenalina. Construido hace más de un siglo para dar acceso a la presa y reformado con cables de acero para total seguridad, balancearse sobre el rugido del río Monachil es una de esas sensaciones que se te quedan grabadas. Es el momento perfecto para parar, respirar profundo y sentir la inmensidad del cañón.',
+        ],
+      },
+      {
+        number: null,
+        title: 'Consejos de seguridad para disfrutar sin riesgos',
+        list: [
+          { icon: '🧗', label: 'Atención a la cabeza', text: 'En el tramo más estrecho del desfiladero, las rocas sobresalen a la altura de la cabeza. Camina despacio y apóyate en las agarraderas de la pared.' },
+          { icon: '🌧️', label: 'Evita días de lluvia intensa', text: 'Si hay previsión de tormentas fuertes, es mejor posponer la ruta por riesgo de crecidas o desprendimientos.' },
+          { icon: '🌿', label: 'Respeta el entorno', text: 'Llévate contigo toda la basura que generes y respeta a la fauna local.' },
+        ],
+      },
+      {
+        number: null,
+        title: 'Mejor época para visitarlos',
+        image: '/images/blog/cahorros/03-epoca.jpg',
+        list: [
+          { icon: '🌸', label: 'Primavera y Otoño', text: 'Las estaciones ideales. Temperaturas suaves, vegetación frondosa y el río bajando con fuerza por el deshielo de Sierra Nevada.' },
+          { icon: '☀️', label: 'Verano', text: 'Excelente si madrugas. El interior del cañón es notablemente más fresco que la ciudad y el contacto con el agua es un alivio térmico brutal.' },
+          { icon: '❄️', label: 'Invierno', text: 'El paisaje impresiona, pero dentro del cañón las zonas de sombra son muy frías. Ve bien equipado con ropa térmica.' },
+        ],
+      },
+      {
+        number: null,
+        title: 'Experiencias guiadas: Vive Los Cahorros de verdad',
+        paragraphs: [
+          'Puedes hacer Los Cahorros por tu cuenta, por supuesto. Pero si lo que buscas no es solo caminar, sino entender la geología, descubrir los rincones que no salen en los mapas y compartir la energía con un grupo auténtico, una experiencia guiada marca la diferencia.',
+          'En TRUE, no te llevamos a dar un paseo turístico impersonal. Te acompañamos a explorar el cañón paso a paso, conectando con la historia, las leyendas locales y la naturaleza de Sierra Nevada. Porque al final, nadie recuerda el precio de una excursión; lo que recuerdas es la sensación de cruzar el puente colgante, la risa compartida al pasar a gatas por una roca y la desconexión total de la rutina.',
+        ],
+      },
+    ],
+    finalCta: {
+      icon: '🥾',
+      title: '¿Te vienes a explorar la Granada de verdad?',
+      subtitle: 'Diseñamos tu ruta por Los Cahorros combinando e-bike, senderismo y la mejor vibra local.',
+      linkText: 'Hablar con el equipo por WhatsApp →',
+      href: `https://wa.me/34689507099?text=${encodeURIComponent('Hola TRUE 👋 Quiero explorar Los Cahorros de Monachil. ¿Me ayudáis a organizarlo?')}`,
+    },
+  },
+  {
+    slug: 'mejores-miradores-de-granada',
+    title: 'Los mejores miradores de Granada: 6 lugares para tocar el cielo (y huir de las masas)',
+    excerpt: 'Del clásico San Nicolás a los rincones que casi nadie conoce: 6 miradores para vivir Granada desde las alturas.',
+    metaDescription: 'Los mejores miradores de Granada: San Nicolás, San Miguel Alto y 4 rincones menos conocidos para ver la Alhambra sin las masas de turistas.',
+    keywords: [
+      'miradores de Granada',
+      'mejores vistas de Granada',
+      'mirador de San Nicolás',
+      'mirador de San Miguel Alto',
+      'qué ver en el Albaicín',
+      'atardecer en Granada',
+    ],
+    category: 'Granada de Verdad',
+    cover: '/images/blog/miradores/cover.jpg',
+    date: '2026-07-24',
+    readTime: '7 min',
+    intro: [
+      'Dicen que el que no ha visto Granada, no ha visto nada. Pero nosotros vamos un paso más allá: el que solo ve Granada desde la ventanilla de un autobús turístico, se está perdiendo la verdadera magia de esta ciudad.',
+      'Granada es una ciudad esculpida entre colinas, lo que la convierte en un laberinto perfecto lleno de balcones naturales. Buscar las mejores vistas de Granada no es solo una actividad fotográfica; es un ritual. Es el momento del día en el que el tiempo se detiene, la luz cambia de color y conectas de verdad con el lugar.',
+      'Si quieres huir del turismo impersonal y descubrir los miradores de Granada donde realmente se esconde la esencia local, guarda esta lista.',
+    ],
+    items: [
+      {
+        number: 1,
+        title: 'Mirador de San Nicolás: El clásico (que debes saber cuándo visitar)',
+        image: '/images/blog/miradores/01-san-nicolas.jpg',
+        paragraphs: [
+          'No podemos hablar de los miradores de Granada sin empezar por el más famoso del mundo. El Mirador de San Nicolás, en pleno corazón del Albaicín, ofrece una postal perfecta de la Alhambra con los picos de Sierra Nevada al fondo. Bill Clinton dijo que aquí se ve el mejor atardecer del mundo, y no le faltaba razón.',
+          'La realidad TRUE: al ser el punto más famoso, suele estar abarrotado de gente haciendo la misma foto para redes sociales. Si quieres vivirlo de verdad, nuestro consejo es que madrugues. Ver amanecer desde San Nicolás, en silencio absoluto, escuchando solo los primeros pájaros y viendo cómo la luz de la mañana despierta los muros de la Alhambra, es una experiencia que te transforma.',
+        ],
+        tip: {
+          icon: '💡',
+          label: 'Tip de explorador',
+          text: 'Si vas por la tarde y hay demasiada multitud, baja unos metros por las escaleras hacia la Iglesia de San Nicolás o piérdete por el adarve cercano; tendrás la misma vista con la mitad de gente.',
+        },
+      },
+      {
+        number: 2,
+        title: 'Mirador de San Miguel Alto: La panorámica definitiva',
+        image: '/images/blog/miradores/02-san-miguel-alto.jpg',
+        paragraphs: [
+          'Si buscas perspectiva y espacio para respirar, tienes que subir a San Miguel Alto. Es el mirador más elevado de la ciudad, coronado por una pequeña ermita.',
+          'Desde aquí, Granada se despliega por completo a tus pies. No solo ves la Alhambra en toda su extensión, sino también el Albaicín, el Sacromonte y la inmensidad de la vega granadina. La recompensa es un ambiente mucho más auténtico, humano y relajado, donde los locales se sientan en la piedra a compartir una charla mientras el sol se oculta.',
+        ],
+        tip: {
+          icon: '🚲',
+          label: 'Sube sin sudar',
+          text: 'La cuesta hasta San Miguel Alto es de las más empinadas de Granada. En nuestras e-bikes, puedes subir en pocos minutos con el motor en modo asistencia, disfrutando del paisaje sin llegar sin aliento a la cima.',
+        },
+      },
+      {
+        number: 3,
+        title: 'Placeta de Carvajales: El secreto escondido del Albaicín',
+        image: '/images/blog/miradores/03-carvajales.jpg',
+        paragraphs: [
+          'Bajando por el laberinto de callejuelas del Albaicín inferior se encuentra la Placeta de Carvajales. Este no es un mirador elevado, sino una pequeña plaza escondida con una fuente y una perspectiva única.',
+          'Aquí la Alhambra no se ve desde arriba, sino que se alza imponente justo frente a ti, casi dejándote sentir la cercanía de sus murallas. Es un rincón rodeado de sombra, ideal para sentarse a escuchar el correr del agua, desconectar del bullicio y disfrutar de una Granada íntima y cercana.',
+        ],
+      },
+      {
+        number: 4,
+        title: 'Mirador de la Churra: La perspectiva olvidada',
+        image: '/images/blog/miradores/04-la-churra.jpg',
+        paragraphs: [
+          'Mientras todo el mundo cruza el río Darro y sube al Albaicín para fotografiar la Alhambra, muy pocos saben que justo a los pies del propio monumento existe un rincón mágico: el Mirador de la Churra.',
+          'Ubicado en el humilde y pintoresco barrio de la Churra, este mirador ofrece la vista inversa. Estás tan cerca de las paredes de la fortaleza que te sientes diminuto, mientras observas las casas blancas del Albaicín escalando la colina de enfrente. Es un lugar silencioso, solitario y con un magnetismo brutal, ideal para quienes buscan salirse de los caminos marcados.',
+        ],
+      },
+      {
+        number: 5,
+        title: 'La Silla del Moro: Historia y silencio sobre el Generalife',
+        image: '/images/blog/miradores/05-silla-del-moro.jpg',
+        paragraphs: [
+          'También conocido como el Castillo de Santa Elena, la Silla del Moro es una estructura de vigilancia construida en el siglo XIII para proteger el Generalife.',
+          'Se encuentra en el cerro del Sol y, al estar ubicado por encima de la propia Alhambra, te regala una de las perspectivas más majestuosas e inusuales de todo el conjunto monumental. Llegar hasta aquí arriba es hacer un pequeño viaje en el tiempo; el entorno es puramente natural y el silencio es el verdadero protagonista del paisaje.',
+        ],
+        tip: {
+          icon: '💡',
+          label: 'Tip de explorador',
+          text: 'La entrada suele ser gratuita los fines de semana. Es el lugar perfecto para combinarlo con una ruta en bici por la dehesa del Generalife.',
+        },
+      },
+      {
+        number: 6,
+        title: 'Llano de la Perdiz: Conexión y naturaleza pura',
+        image: '/images/blog/miradores/06-llano-de-la-perdiz.jpg',
+        paragraphs: [
+          'Si lo tuyo es la naturaleza en estado puro, el Llano de la Perdiz es el mirador definitivo. Es el parque natural que se extiende detrás de la Alhambra y el Generalife, un pulmón verde donde los granadinos van a correr, montar en bici y hacer senderismo.',
+          'No busques aquí una terraza empedrada con música; el Llano de la Perdiz te ofrece senderos de tierra, pinares y miradores naturales desde donde contemplar Sierra Nevada y los valles circundantes. Es un lugar para respirar aire puro, estirar las piernas y recordar que las mejores historias se viven paso a paso, lejos del asfalto.',
+        ],
+      },
+    ],
+    conclusion: {
+      title: '¿Desde dónde vas a mirar hoy?',
+      paragraphs: [
+        'Los miradores de Granada son mucho más que lugares para coleccionar fotos en la galería del móvil. Son espacios reales para conectar con la historia, con la naturaleza y con uno mismo. Ya sea trepando hasta las alturas de San Miguel Alto o escondiéndote en el silencio de la Churra, cada rincón te cuenta una historia diferente de la ciudad.',
+        'En TRUE, creemos que viajar es implicarse con el destino, no solo contemplarlo desde la barrera. Si estás listo para descubrir la Granada de verdad, estamos listos para llevarte.',
+      ],
+    },
+    finalCta: {
+      icon: '🚲',
+      title: '¿Quieres recorrer los mejores miradores de Granada en e-bike?',
+      subtitle: 'Subimos a los puntos más altos sin esfuerzo, paramos en los rincones secretos y terminamos con la mejor vibra.',
+      linkText: 'Reservar mi ruta por los miradores por WhatsApp →',
+      href: `https://wa.me/34689507099?text=${encodeURIComponent('Hola TRUE 👋 Quiero reservar una ruta por los miradores de Granada en e-bike. ¿Tenéis disponibilidad?')}`,
+    },
+  },
 ];
 
 export const BLOG_LIST = BLOG_POSTS;

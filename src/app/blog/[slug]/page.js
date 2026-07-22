@@ -77,16 +77,18 @@ export default async function BlogPostPage({ params }) {
 
             <div className="flex flex-col gap-14">
               {post.items.map((item) => (
-                <BlogItem key={item.number} item={item} postTitle={post.title} />
+                <BlogItem key={item.title} item={item} postTitle={post.title} />
               ))}
             </div>
 
-            <div className="mt-16 border-t border-black/10 pt-12">
-              <h2 className="mb-4 font-serif text-2xl font-bold text-ink">{post.conclusion.title}</h2>
-              {post.conclusion.paragraphs.map((p, i) => (
-                <p key={i} className="mb-4 text-[16px] leading-[1.8] text-ink2">{p}</p>
-              ))}
-            </div>
+            {post.conclusion && (
+              <div className="mt-16 border-t border-black/10 pt-12">
+                <h2 className="mb-4 font-serif text-2xl font-bold text-ink">{post.conclusion.title}</h2>
+                {post.conclusion.paragraphs.map((p, i) => (
+                  <p key={i} className="mb-4 text-[16px] leading-[1.8] text-ink2">{p}</p>
+                ))}
+              </div>
+            )}
 
             <div className="mt-10 rounded-[14px] bg-ink px-8 py-10 text-center">
               <p className="mb-3 text-2xl">{post.finalCta.icon}</p>
@@ -117,18 +119,34 @@ export default async function BlogPostPage({ params }) {
 function BlogItem({ item, postTitle }) {
   return (
     <div>
-      <span className="mb-2 block font-serif text-4xl font-bold text-gold/30">{String(item.number).padStart(2, '0')}</span>
+      {item.number && (
+        <span className="mb-2 block font-serif text-4xl font-bold text-gold/30">{String(item.number).padStart(2, '0')}</span>
+      )}
       <h2 className="mb-4 font-serif text-2xl font-bold leading-[1.25] text-ink">{item.title}</h2>
-      <Image
-        src={item.image}
-        alt={`${postTitle} — ${item.title}`}
-        width={800}
-        height={500}
-        className="mb-5 aspect-video w-full rounded-[10px] object-cover"
-      />
-      {item.paragraphs.map((p, i) => (
+      {item.image && (
+        <Image
+          src={item.image}
+          alt={`${postTitle} — ${item.title}`}
+          width={800}
+          height={500}
+          className="mb-5 aspect-video w-full rounded-[10px] object-cover"
+        />
+      )}
+      {item.paragraphs && item.paragraphs.map((p, i) => (
         <p key={i} className="mb-4 text-[16px] leading-[1.8] text-ink2">{p}</p>
       ))}
+      {item.list && (
+        <ul className="mb-4 flex flex-col gap-3">
+          {item.list.map((li) => (
+            <li key={li.label} className="flex gap-3">
+              <span className="flex-shrink-0 text-xl">{li.icon}</span>
+              <p className="text-[15.5px] leading-[1.7] text-ink2">
+                <strong className="font-bold text-ink">{li.label}</strong>: {li.text}
+              </p>
+            </li>
+          ))}
+        </ul>
+      )}
       {item.tip && (
         <div className="mt-5 rounded-[10px] border border-gold/30 bg-cream2 p-5">
           <p className="mb-1 text-[11px] font-semibold uppercase tracking-[.1em] text-gold2">

@@ -1,35 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { BLOG_POSTS } from '@/data/blog';
-
-const realPost = BLOG_POSTS[0];
-
-const POSTS = [
-  {
-    img: 'https://images.unsplash.com/photo-1539037116277-4db20889f2d4?w=600&q=80',
-    alt: 'Miradores Granada',
-    tag: 'Granada de Verdad #1',
-    title: 'El mejor atardecer de la ciudad',
-    text: 'Los miradores que los turistas no saben que existen — y cómo llegar a ellos desde el Albaicín.',
-    href: null,
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=600&q=80',
-    alt: 'Barranquismo Granada',
-    tag: 'Granada de Verdad #2',
-    title: 'Barranquismo para principiantes',
-    text: 'Todo lo que necesitas saber antes de tu primera bajada por el cañón del Río Verde.',
-    href: null,
-  },
-  {
-    img: realPost.cover,
-    alt: realPost.title,
-    tag: realPost.category,
-    title: realPost.title,
-    text: realPost.excerpt,
-    href: `/blog/${realPost.slug}`,
-  },
-];
+import { BLOG_LIST } from '@/data/blog';
 
 export default function Blog() {
   return (
@@ -45,27 +16,26 @@ export default function Blog() {
           </Link>
         </div>
         <div className="reveal-group grid grid-cols-3 gap-5 max-[760px]:grid-cols-1">
-          {POSTS.map((post) => {
-            const card = (
-              <>
-                <Image src={post.img} alt={post.alt} width={600} height={338} unoptimized={post.img.startsWith('http')} className="aspect-video w-full object-cover" />
-                <div className="p-[18px]">
-                  <p className="mb-2 text-[10px] font-semibold uppercase tracking-[.14em] text-gold2">{post.tag}</p>
-                  <h3 className="mb-2 font-serif text-base font-bold leading-[1.35]">{post.title}</h3>
-                  <p className="text-[14.5px] leading-[1.6] text-ink2">{post.text}</p>
-                </div>
-              </>
-            );
-            return post.href ? (
-              <Link key={post.title} href={post.href} className="reveal group overflow-hidden rounded-[10px] border border-black/10 bg-paper transition-all hover:-translate-y-1">
-                {card}
-              </Link>
-            ) : (
-              <div key={post.title} className="reveal overflow-hidden rounded-[10px] border border-black/10 bg-paper">
-                {card}
+          {BLOG_LIST.map((post) => (
+            <Link
+              key={post.slug}
+              href={`/blog/${post.slug}`}
+              className="reveal group overflow-hidden rounded-[10px] border border-black/10 bg-paper transition-all hover:-translate-y-1"
+            >
+              <Image
+                src={post.cover}
+                alt={post.title}
+                width={600}
+                height={338}
+                className="aspect-video w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+              />
+              <div className="p-[18px]">
+                <p className="mb-2 text-[10px] font-semibold uppercase tracking-[.14em] text-gold2">{post.category}</p>
+                <h3 className="mb-2 font-serif text-base font-bold leading-[1.35]">{post.title}</h3>
+                <p className="text-[14.5px] leading-[1.6] text-ink2">{post.excerpt}</p>
               </div>
-            );
-          })}
+            </Link>
+          ))}
         </div>
       </div>
     </section>
