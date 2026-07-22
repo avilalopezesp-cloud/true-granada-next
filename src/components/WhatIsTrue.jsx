@@ -15,24 +15,15 @@ export default function WhatIsTrue() {
               No vendemos paquetes de actividades.
             </p>
             <div className="flex flex-col gap-5">
-              <div className="flex items-start gap-3.5">
-                <span className="text-2xl">📍</span>
-                <p className="text-[15px] leading-[1.7] text-ink2">
-                  <strong className="font-bold text-ink">Equipo del Albaicín</strong> — nacimos aquí y ayudamos a viajeros a vivir Granada de la forma que más les gusta.
-                </p>
-              </div>
-              <div className="flex items-start gap-3.5">
-                <span className="text-2xl">👂</span>
-                <p className="text-[15px] leading-[1.7] text-ink2">
-                  <strong className="font-bold text-ink">Te escuchamos primero</strong> — cada persona busca algo diferente, por eso preguntamos antes de recomendar.
-                </p>
-              </div>
-              <div className="flex items-start gap-3.5">
-                <span className="text-2xl">🤝</span>
-                <p className="text-[15px] leading-[1.7] text-ink2">
-                  <strong className="font-bold text-ink">Conexión real</strong> — las actividades son solo la herramienta. Lo que ofrecemos es la Granada que la mayoría no llega a conocer.
-                </p>
-              </div>
+              <p className="text-[15px] leading-[1.7] text-ink2">
+                <strong className="font-bold text-ink">Equipo del Albaicín</strong> — nacimos aquí y ayudamos a viajeros a vivir Granada de la forma que más les gusta.
+              </p>
+              <p className="text-[15px] leading-[1.7] text-ink2">
+                <strong className="font-bold text-ink">Te escuchamos primero</strong> — cada persona busca algo diferente, por eso preguntamos antes de recomendar.
+              </p>
+              <p className="text-[15px] leading-[1.7] text-ink2">
+                <strong className="font-bold text-ink">Conexión real</strong> — las actividades son solo la herramienta. Lo que ofrecemos es la Granada que la mayoría no llega a conocer.
+              </p>
             </div>
           </div>
           <div className="reveal-group grid grid-cols-2 gap-3">
