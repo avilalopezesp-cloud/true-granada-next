@@ -11,10 +11,28 @@ export default function WhatIsTrue() {
               No somos una empresa<br />de tours.<br />
               Somos <em className="font-light italic text-gold2">locales.</em>
             </h2>
-            <div className="text-base font-normal leading-[1.8] text-ink2">
-              <p className="mb-3.5">No vendemos paquetes de actividades. No tenemos un catálogo que rellenar.</p>
-              <p className="mb-3.5">Somos un equipo nacido en el Albaicín que ayuda a viajeros a vivir Granada de la forma que más les gusta. Cada persona busca algo diferente — por eso primero te escuchamos. Después te recomendamos.</p>
-              <p className="mb-3.5">Las actividades son simplemente nuestra herramienta. Lo que vendemos es la conexión con una Granada que la mayoría no llega a conocer.</p>
+            <p className="mb-8 border-l-4 border-gold pl-4 font-serif text-xl font-bold leading-[1.4] text-ink sm:text-2xl">
+              No vendemos paquetes de actividades.
+            </p>
+            <div className="flex flex-col gap-5">
+              <div className="flex items-start gap-3.5">
+                <span className="text-2xl">📍</span>
+                <p className="text-[15px] leading-[1.7] text-ink2">
+                  <strong className="font-bold text-ink">Equipo del Albaicín</strong> — nacimos aquí y ayudamos a viajeros a vivir Granada de la forma que más les gusta.
+                </p>
+              </div>
+              <div className="flex items-start gap-3.5">
+                <span className="text-2xl">👂</span>
+                <p className="text-[15px] leading-[1.7] text-ink2">
+                  <strong className="font-bold text-ink">Te escuchamos primero</strong> — cada persona busca algo diferente, por eso preguntamos antes de recomendar.
+                </p>
+              </div>
+              <div className="flex items-start gap-3.5">
+                <span className="text-2xl">🤝</span>
+                <p className="text-[15px] leading-[1.7] text-ink2">
+                  <strong className="font-bold text-ink">Conexión real</strong> — las actividades son solo la herramienta. Lo que ofrecemos es la Granada que la mayoría no llega a conocer.
+                </p>
+              </div>
             </div>
           </div>
           <div className="reveal-group grid grid-cols-2 gap-3">
