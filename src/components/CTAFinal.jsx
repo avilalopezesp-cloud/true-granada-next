@@ -3,7 +3,7 @@ import WhatsAppIcon from './icons/WhatsAppIcon';
 export default function CTAFinal() {
   return (
     <section className="relative flex min-h-[85vh] items-center justify-center overflow-hidden px-7 py-20 text-center">
-      <div className="absolute inset-0 z-0 bg-[linear-gradient(rgba(30,26,20,.55),rgba(30,26,20,.8)),url('https://images.unsplash.com/photo-1539037116277-4db20889f2d4?w=1600&q=80')] bg-cover bg-center" />
+      <div className="absolute inset-0 z-0 bg-[linear-gradient(rgba(30,26,20,.55),rgba(30,26,20,.8)),url('/images/cta-final-bg.jpg')] bg-cover bg-center" />
       <div className="reveal relative z-10">
         <p className="mb-[18px] text-[11px] font-semibold uppercase tracking-[.22em] text-gold">¿Listo?</p>
         <h2 className="mb-[18px] font-serif text-[clamp(2.4rem,6vw,4.5rem)] font-bold leading-[1.05] tracking-[-.01em] text-white">
