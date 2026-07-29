@@ -1,5 +1,16 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import IconInstagram from './icons/IconInstagram';
+import IconTikTok from './icons/IconTikTok';
+import IconFacebook from './icons/IconFacebook';
+
+// TikTok and Facebook are real accounts, just waiting on the exact URLs —
+// swap these "#" placeholders out once they're provided.
+const SOCIAL_LINKS = [
+  { Icon: IconInstagram, label: 'Instagram', href: 'https://instagram.com/betrue.es' },
+  { Icon: IconTikTok, label: 'TikTok', href: '#' },
+  { Icon: IconFacebook, label: 'Facebook', href: '#' },
+];
 
 export default function Footer() {
   return (
@@ -40,8 +51,15 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="mx-auto flex max-w-[1160px] flex-wrap items-center justify-between gap-2.5 border-t border-white/[.06] pt-6">
+      <div className="mx-auto flex max-w-[1160px] flex-wrap items-center justify-between gap-4 border-t border-white/[.06] pt-6">
         <span className="text-[11.5px] text-white/35">© 2026 TRUE Granada Experiences</span>
+        <div className="flex items-center gap-4">
+          {SOCIAL_LINKS.map(({ Icon, label, href }) => (
+            <a key={label} href={href} target="_blank" rel="noreferrer" aria-label={label} className="text-white/40 transition-colors hover:text-gold">
+              <Icon className="h-[18px] w-[18px]" />
+            </a>
+          ))}
+        </div>
       </div>
     </footer>
   );
