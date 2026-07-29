@@ -469,6 +469,8 @@ function ResultCard({ scores }) {
           </a>
         </div>
 
+        <EmailCaptureBlock exp={exp} />
+
         {exp2 && (
           <>
             <div className="mb-2.5 mt-[18px] flex items-center gap-2.5 text-[10px] uppercase tracking-[.14em] text-ink3 after:h-px after:flex-1 after:bg-black/10 after:content-['']">
@@ -499,6 +501,83 @@ function ResultCard({ scores }) {
           </div>
         </div>
         </div>
+      </div>
+    </div>
+  );
+}
+
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const PHONE_RE = /^[+]?[\d\s()-]{6,}$/;
+
+function EmailCaptureBlock({ exp }) {
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [date, setDate] = useState('');
+  const [justSaved, setJustSaved] = useState(false);
+
+  const isValidEmail = EMAIL_RE.test(email);
+  const showEmailError = email.length > 0 && !isValidEmail;
+  const showPhoneError = phone.length > 0 && !PHONE_RE.test(phone);
+
+  function handleSave() {
+    if (!isValidEmail) return;
+    const subject = `Guardar mi experiencia: ${exp.name}`;
+    const body = `Hola,\n\nMe gustaría guardar esta recomendación para más adelante:\n\n${exp.name}\n\nMi email: ${email}${phone ? `\nMi teléfono: ${phone}` : ''}${date ? `\nFecha aproximada del viaje: ${date}` : ''}\n\n¡Gracias!`;
+    window.location.href = `mailto:info@betrue.es?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    setJustSaved(true);
+  }
+
+  return (
+    <div className="mt-3 rounded-[10px] border border-gold/25 bg-cream2 p-4 text-center">
+      <p className="mb-1 text-[13.5px] font-semibold text-ink">¿Prefieres otra forma de contacto?</p>
+      <p className="mb-3 text-[12px] leading-[1.5] text-ink3">Guarda tu experiencia y te ayudamos cuando estés listo.</p>
+      <div className="flex flex-col gap-2.5">
+        <div>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => { setEmail(e.target.value); setJustSaved(false); }}
+            placeholder="Tu email"
+            aria-invalid={showEmailError}
+            className={`w-full border-b bg-transparent px-1 py-2 text-center text-[13.5px] text-ink placeholder:text-ink3/60 focus:outline-none ${
+              showEmailError ? 'border-[#9A3B2E]' : 'border-black/15 focus:border-gold2'
+            }`}
+          />
+          {showEmailError && <p className="mt-1 text-[11px] text-[#9A3B2E]">Introduce un email con formato válido</p>}
+        </div>
+        <div>
+          <input
+            type="tel"
+            value={phone}
+            onChange={(e) => { setPhone(e.target.value); setJustSaved(false); }}
+            placeholder="Tu teléfono (opcional)"
+            aria-invalid={showPhoneError}
+            className={`w-full border-b bg-transparent px-1 py-2 text-center text-[13.5px] text-ink placeholder:text-ink3/60 focus:outline-none ${
+              showPhoneError ? 'border-[#9A3B2E]' : 'border-black/15 focus:border-gold2'
+            }`}
+          />
+          {showPhoneError && <p className="mt-1 text-[11px] text-[#9A3B2E]">Introduce un teléfono con formato válido</p>}
+        </div>
+        <input
+          type="date"
+          value={date}
+          onChange={(e) => { setDate(e.target.value); setJustSaved(false); }}
+          className="w-full border-b border-black/15 bg-transparent px-1 py-2 text-center text-[13.5px] text-ink3 focus:border-gold2 focus:outline-none [color-scheme:light]"
+        />
+        <button
+          type="button"
+          onClick={handleSave}
+          disabled={!isValidEmail}
+          className="mt-1 rounded border border-gold2 px-4 py-2.5 text-[12.5px] font-semibold uppercase tracking-[.03em] text-gold2 transition-colors hover:bg-gold2 hover:text-white disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent disabled:hover:text-gold2"
+        >
+          Guardar mi experiencia
+        </button>
+        {justSaved && (
+          <p className="text-[11.5px] leading-[1.5] text-ink3">
+            Hemos abierto tu correo con todo listo para enviar. Si no se ha abierto nada, escríbenos directamente a{' '}
+            <a href="mailto:info@betrue.es" className="underline hover:text-gold2">info@betrue.es</a>.
+          </p>
+        )}
       </div>
     </div>
   );
