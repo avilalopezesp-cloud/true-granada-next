@@ -46,7 +46,7 @@ export default function Hero() {
             ✨ Diseñar mi aventura
           </a>
           <a
-            href="#experiences"
+            href="/experiencias"
             className="inline-flex items-center gap-2 rounded border-[1.5px] border-white/40 px-[26px] py-3.5 text-sm font-medium text-white transition-all hover:-translate-y-0.5 hover:border-gold2 hover:text-gold2"
           >
             Explorar experiencias
