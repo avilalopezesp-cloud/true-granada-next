@@ -62,7 +62,7 @@ export default function Nav() {
           </a>
         ))}
         <a
-          href="https://wa.me/34689507099"
+          href="/contacto"
           onClick={() => setOpen(false)}
           className="rounded-md bg-gold px-[22px] py-[11px] font-serif text-base font-bold text-ink transition-colors hover:bg-gold2 hover:text-white max-md:mt-5 max-md:inline-flex max-md:w-full max-md:justify-center max-md:px-5 max-md:py-3.5"
         >
