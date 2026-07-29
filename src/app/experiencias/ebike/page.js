@@ -1,7 +1,7 @@
 import ExperienceJourneyPage from '@/components/ExperienceJourneyPage';
 import { EXPERIENCES } from '@/data/experiences';
 
-const exp = EXPERIENCES.barranquismo;
+const exp = EXPERIENCES.ebike;
 
 export const metadata = {
   title: `${exp.name} — TRUE Granada`,
@@ -15,14 +15,14 @@ export const metadata = {
   },
 };
 
-export default function BarranquismoPage() {
+export default function EbikePage() {
   return (
     <ExperienceJourneyPage
       exp={exp}
-      headline={<>Río Verde no se cuenta. <em className="font-light italic text-gold">Se salta.</em></>}
-      stopsTitle="5 paradas, una sola aventura"
-      closingTitle="¿Listos para saltar?"
-      closingText="Guía certificado, equipo incluido y grupos de máximo 8 personas. Escríbenos y en menos de 1 hora tenéis todo organizado."
+      headline={<>Granada no se recorre. <em className="font-light italic text-gold">Se diseña.</em></>}
+      stopsTitle="5 paradas, la ruta la haces tú"
+      closingTitle="¿Listos para pedalear?"
+      closingText="E-bike y casco incluidos, guía local y grupos de máximo 6 personas. Escríbenos y en menos de 1 hora tenéis todo organizado."
     />
   );
 }

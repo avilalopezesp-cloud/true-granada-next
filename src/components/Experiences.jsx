@@ -56,6 +56,10 @@ export default function Experiences() {
 
 function ExperienceCard({ exp, onOpen }) {
   const ctaLabel = exp.key === 'ebike' ? 'Diseñar mi ruta →' : 'Ver experiencia →';
+  // The e-bike card always opens the interactive builder below instead of
+  // navigating to its static detail page — that configurator is the actual
+  // selling tool for this experience, so a card click shouldn't bypass it.
+  const linksToDetailPage = Boolean(exp.detailPage) && exp.key !== 'ebike';
   const inner = (
     <>
       <div className="h-full w-full overflow-hidden">
@@ -77,7 +81,7 @@ function ExperienceCard({ exp, onOpen }) {
         <p className="mb-3.5 text-[14px] leading-[1.5] text-white/75">{exp.desc}</p>
         <div className="flex items-center justify-between">
           <span className="font-serif text-lg font-bold text-gold">Desde {exp.price}€</span>
-          {exp.detailPage ? (
+          {linksToDetailPage ? (
             <span className="flex items-center gap-1.5 text-xs font-semibold text-white opacity-80 transition-opacity group-hover:opacity-100">
               {ctaLabel}
             </span>
@@ -95,7 +99,7 @@ function ExperienceCard({ exp, onOpen }) {
     </>
   );
 
-  if (exp.detailPage) {
+  if (linksToDetailPage) {
     return (
       <Link href={exp.detailPage} className="group reveal relative block aspect-[3/4] overflow-hidden rounded-xl transition-transform hover:-translate-y-1">
         {inner}
@@ -244,6 +248,11 @@ function EbikeAdventureBuilder({ exp }) {
           >
             {b.intro.cta}
           </button>
+          {exp.detailPage && (
+            <Link href={exp.detailPage} className="mt-4 block text-xs font-semibold text-ink3 underline hover:text-gold2">
+              Ver el recorrido completo →
+            </Link>
+          )}
         </div>
       </>
     );

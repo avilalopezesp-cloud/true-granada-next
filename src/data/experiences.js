@@ -98,7 +98,42 @@ export const EXPERIENCES = {
       '/images/ferrata-7.jpg', '/images/ferrata-8.jpg', '/images/ferrata-9.jpg',
     ],
     url: 'https://betrue.es/trip/via-ferrata-adventure/',
+    detailPage: '/experiencias/ferrata',
     wa: 'Hola TRUE 👋 Quiero reservar la Vía Ferrata. ¿Tenéis disponibilidad pronto?',
+    journey: {
+      stops: [
+        {
+          n: 1,
+          title: 'Llegada y equipamiento',
+          text: 'Llegamos al pie de la pared y tu guía certificado os prepara con arnés, casco y kit de vía ferrata. Un repaso rápido de las maniobras básicas y unas risas nerviosas antes de empezar — nadie se queda con dudas.',
+          media: { type: 'image', src: '/images/ferrata-4.jpg' },
+        },
+        {
+          n: 2,
+          title: 'Aproximación a la pared',
+          text: 'Un breve paseo entre olivos hasta la base de la roca, con Sierra Nevada asomando al fondo. Es el momento de mirar hacia arriba y darte cuenta de por dónde vais a subir — la primera dosis de vértigo, sin haber puesto aún un pie en la pared.',
+          media: { type: 'image', src: '/images/ferrata-6.jpg' },
+        },
+        {
+          n: 3,
+          title: 'Primeros peldaños',
+          text: 'Empiezan los primeros grapones y cables. El cuerpo aprende rápido a confiar en el arnés, y el ritmo lo marcas tú — sin prisas, con tu guía siempre cerca.',
+          media: { type: 'image', src: '/images/ferrata-7.jpg' },
+        },
+        {
+          n: 4,
+          title: 'La zona de mayor exposición',
+          text: 'Aquí está lo que veniste a buscar: roca vertical, aire por todos lados y una vista de Sierra Nevada que solo se gana subiendo. El corazón va a mil, pero el equipo y la técnica hacen que nunca estés realmente en peligro.',
+          media: { type: 'image', src: '/images/ferrata-3.jpg' },
+        },
+        {
+          n: 5,
+          title: 'Los últimos metros',
+          text: 'El tramo final se hace entre risas — ya sabéis que lo habéis conseguido. Llegáis arriba con las piernas temblando y la sensación de haber hecho algo que hace un par de horas ni os imaginabais.',
+          media: { type: 'image', src: '/images/ferrata-9.jpg' },
+        },
+      ],
+    },
   },
   ebike: {
     key: 'ebike',
@@ -125,7 +160,42 @@ export const EXPERIENCES = {
     ],
     cover: '/images/ebike-cover.jpg',
     url: 'https://betrue.es/trip/albayzin/',
+    detailPage: '/experiencias/ebike',
     wa: 'Hola TRUE 👋 El planificador me recomendó el Sunset E-Bike Tour. ¿Tenéis disponibilidad pronto?',
+    journey: {
+      stops: [
+        {
+          n: 1,
+          title: 'Recogida y primeras pedaladas',
+          text: 'Te entregamos tu e-bike ya ajustada y salimos juntos, sin prisa, para que le cojas el punto al motor antes de meternos en calle de verdad. En dos minutos olvidas que llevas asistencia eléctrica.',
+          media: { type: 'image', src: '/images/ebike-cover.jpg' },
+        },
+        {
+          n: 2,
+          title: 'El Albaicín sin esfuerzo',
+          text: 'Subimos las cuestas del Albaicín que dejan sin aliento a cualquiera — menos a ti. La e-bike hace el esfuerzo mientras tú miras los callejones blancos y las macetas en las ventanas.',
+          media: { type: 'image', src: '/images/ebike-2.jpg' },
+        },
+        {
+          n: 3,
+          title: 'Mirador de San Nicolás',
+          text: 'Paramos donde hay que parar: la Alhambra de frente y Sierra Nevada al fondo. Es la foto que buscabas, pero también el momento de quedarte un rato en silencio.',
+          media: { type: 'image', src: '/images/blog/miradores/01-san-nicolas.jpg' },
+        },
+        {
+          n: 4,
+          title: 'Tú decides el resto',
+          text: 'Sacromonte y sus cuevas, grafitis escondidos, la orilla del Genil — a partir de aquí la ruta la marcáis vosotros. Nosotros conocemos los atajos; vosotros elegís qué os apetece ver.',
+          media: { type: 'image', src: '/images/ebike-3.jpg' },
+        },
+        {
+          n: 5,
+          title: 'Atardecer y cierre',
+          text: 'Terminamos con tapas, una copa o flamenco en Sacromonte, como prefiráis — el broche perfecto después de un día viendo Granada desde donde casi nadie la ve.',
+          media: { type: 'image', src: '/images/ebike-4.jpg' },
+        },
+      ],
+    },
     // Data for the "choose your adventure" e-bike configurator (see EbikeAdventureBuilder
     // in Experiences.jsx). Each step appends a chapter to the journey timeline; the result
     // screen strings them together into one narrative route instead of a flat checklist.

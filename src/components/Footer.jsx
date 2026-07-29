@@ -13,15 +13,15 @@ export default function Footer() {
           <div>
             <a href="tel:+34689507099" className="mb-[5px] block text-[13.5px] text-white/60 transition-colors hover:text-gold">+34 689 50 70 99</a>
             <a href="mailto:info@betrue.es" className="mb-[5px] block text-[13.5px] text-white/60 transition-colors hover:text-gold">info@betrue.es</a>
-            <a href="#" className="mb-[5px] block text-[13.5px] text-white/60 transition-colors hover:text-gold">Plaza Larga, Albaicín, Granada</a>
+            <span className="mb-[5px] block text-[13.5px] text-white/60">Plaza Larga, Albaicín, Granada</span>
           </div>
         </div>
 
         <div>
           <div className="mb-3.5 text-[10px] font-semibold uppercase tracking-[.16em] text-gold">Experiencias</div>
           <Link href="/experiencias/barranquismo" className="mb-2 block text-[13.5px] text-white/55 transition-colors hover:text-white">Barranquismo</Link>
-          <a href="https://betrue.es/trip/via-ferrata-adventure/" className="mb-2 block text-[13.5px] text-white/55 transition-colors hover:text-white">Vía Ferrata</a>
-          <a href="https://betrue.es/trip/albayzin/" className="mb-2 block text-[13.5px] text-white/55 transition-colors hover:text-white">E-Bike Tour</a>
+          <Link href="/experiencias/ferrata" className="mb-2 block text-[13.5px] text-white/55 transition-colors hover:text-white">Vía Ferrata</Link>
+          <Link href="/experiencias/ebike" className="mb-2 block text-[13.5px] text-white/55 transition-colors hover:text-white">E-Bike Tour</Link>
         </div>
 
         <div>
@@ -29,7 +29,7 @@ export default function Footer() {
           <Link href="/nosotros" className="mb-2 block text-[13.5px] text-white/55 transition-colors hover:text-white">Quiénes somos</Link>
           <Link href="/#adventure" className="mb-2 block text-[13.5px] text-white/55 transition-colors hover:text-white">Elige tu aventura</Link>
           <Link href="/blog" className="mb-2 block text-[13.5px] text-white/55 transition-colors hover:text-white">Blog</Link>
-          <a href="https://betrue.es/contact-us/" className="mb-2 block text-[13.5px] text-white/55 transition-colors hover:text-white">Contacto</a>
+          <Link href="/contacto" className="mb-2 block text-[13.5px] text-white/55 transition-colors hover:text-white">Contacto</Link>
         </div>
 
         <div>

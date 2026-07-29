@@ -4,7 +4,7 @@ export default function InstagramStrip() {
       <div className="reveal mx-auto max-w-[1160px] px-7 text-center">
         <p className="mb-7 text-[13px] text-ink2">
           Síguenos en{' '}
-          <a href="#" className="font-semibold text-ink underline decoration-black/10">@betrue.granada</a>
+          <a href="https://instagram.com/betrue.es" target="_blank" rel="noreferrer" className="font-semibold text-ink underline decoration-black/10">@betrue.es</a>
         </p>
         <blockquote className="mx-auto mb-6 max-w-[520px] font-serif text-[clamp(1.2rem,3vw,1.8rem)] font-normal italic leading-[1.5] text-ink">
           &quot;Así se vive Granada. <em className="not-italic font-bold text-gold2">De verdad.</em>&quot;
