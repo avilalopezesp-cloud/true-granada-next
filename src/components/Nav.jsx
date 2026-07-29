@@ -5,10 +5,10 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 const LINKS = [
-  { href: '/#experiences', label: 'Experiencias' },
+  { href: '/experiencias', label: 'Experiencias' },
   { href: '/#adventure', label: 'Elige tu aventura' },
-  { href: '/#why', label: 'Nosotros' },
-  { href: '/#blog', label: 'Blog' },
+  { href: '/nosotros', label: 'Nosotros' },
+  { href: '/blog', label: 'Blog' },
 ];
 
 export default function Nav() {

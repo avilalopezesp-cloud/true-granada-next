@@ -26,9 +26,9 @@ export default function Footer() {
 
         <div>
           <div className="mb-3.5 text-[10px] font-semibold uppercase tracking-[.16em] text-gold">TRUE</div>
-          <Link href="/#about" className="mb-2 block text-[13.5px] text-white/55 transition-colors hover:text-white">Quiénes somos</Link>
+          <Link href="/nosotros" className="mb-2 block text-[13.5px] text-white/55 transition-colors hover:text-white">Quiénes somos</Link>
           <Link href="/#adventure" className="mb-2 block text-[13.5px] text-white/55 transition-colors hover:text-white">Elige tu aventura</Link>
-          <Link href="/#blog" className="mb-2 block text-[13.5px] text-white/55 transition-colors hover:text-white">Blog</Link>
+          <Link href="/blog" className="mb-2 block text-[13.5px] text-white/55 transition-colors hover:text-white">Blog</Link>
           <a href="https://betrue.es/contact-us/" className="mb-2 block text-[13.5px] text-white/55 transition-colors hover:text-white">Contacto</a>
         </div>
 
