@@ -7,7 +7,7 @@
 const RESEND_ENDPOINT = 'https://api.resend.com/emails';
 
 export async function POST(request) {
-  const { name, email, travelDate, answers, experience } = await request.json();
+  const { name, email, phone, travelDate, answers, experience } = await request.json();
 
   if (!email || typeof email !== 'string') {
     return Response.json({ ok: false, reason: 'missing_email' }, { status: 400 });
@@ -36,7 +36,7 @@ export async function POST(request) {
     from: fromAddress,
     to: notifyTo,
     subject: `Nuevo lead del Adventure Planner — ${experience}`,
-    text: `Nombre: ${name || '(no indicado)'}\nEmail: ${email}\nFecha aproximada del viaje: ${travelDate || '(no indicada)'}\n\nExperiencia recomendada: ${experience}\n\nRespuestas del Adventure Planner:\n${answersText}`,
+    text: `Nombre: ${name || '(no indicado)'}\nEmail: ${email}\nTeléfono: ${phone || '(no indicado)'}\nFecha aproximada del viaje: ${travelDate || '(no indicada)'}\n\nExperiencia recomendada: ${experience}\n\nRespuestas del Adventure Planner:\n${answersText}`,
   });
 
   const userOk = await sendEmail({

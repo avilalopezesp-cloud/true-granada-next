@@ -106,8 +106,8 @@ export default function ContactForm() {
               <a href="mailto:info@betrue.es" className="transition-colors hover:text-gold2">info@betrue.es</a>
               <a href="tel:+34689507099" className="transition-colors hover:text-gold2">+34 689 50 70 99</a>
               <span>Plaza Larga, Albaicín, Granada</span>
-              <a href="https://instagram.com/betrue.es" target="_blank" rel="noreferrer" className="transition-colors hover:text-gold2">
-                @betrue.es
+              <a href="https://instagram.com/betrue.esp" target="_blank" rel="noreferrer" className="transition-colors hover:text-gold2">
+                @betrue.esp
               </a>
             </div>
           </div>

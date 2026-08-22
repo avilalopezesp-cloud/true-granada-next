@@ -4,12 +4,10 @@ import IconInstagram from './icons/IconInstagram';
 import IconTikTok from './icons/IconTikTok';
 import IconFacebook from './icons/IconFacebook';
 
-// TikTok and Facebook are real accounts, just waiting on the exact URLs —
-// swap these "#" placeholders out once they're provided.
 const SOCIAL_LINKS = [
-  { Icon: IconInstagram, label: 'Instagram', href: 'https://instagram.com/betrue.es' },
-  { Icon: IconTikTok, label: 'TikTok', href: '#' },
-  { Icon: IconFacebook, label: 'Facebook', href: '#' },
+  { Icon: IconInstagram, label: 'Instagram', href: 'https://instagram.com/betrue.esp' },
+  { Icon: IconTikTok, label: 'TikTok', href: 'https://www.tiktok.com/@betrue.es?is_from_webapp=1&sender_device=pc' },
+  { Icon: IconFacebook, label: 'Facebook', href: 'https://www.facebook.com/betrue.esp' },
 ];
 
 export default function Footer() {

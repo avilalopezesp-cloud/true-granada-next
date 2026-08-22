@@ -566,15 +566,18 @@ function ResultCard({ scores, hist }) {
 }
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const PHONE_RE = /^[+]?[\d\s()-]{6,}$/;
 
 function LeadCaptureBlock({ exp, hist }) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
   const [date, setDate] = useState('');
   const [status, setStatus] = useState('idle'); // idle | sending | success | fallback
 
   const isValidEmail = EMAIL_RE.test(email);
   const showEmailError = email.length > 0 && !isValidEmail;
+  const showPhoneError = phone.length > 0 && !PHONE_RE.test(phone);
 
   function resetStatus() {
     if (status !== 'idle') setStatus('idle');
@@ -590,7 +593,7 @@ function LeadCaptureBlock({ exp, hist }) {
       const res = await fetch('/api/quiz-lead', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, travelDate: date, answers, experience: exp.name }),
+        body: JSON.stringify({ name, email, phone, travelDate: date, answers, experience: exp.name }),
       });
       const data = await res.json();
       if (data.ok) {
@@ -602,7 +605,7 @@ function LeadCaptureBlock({ exp, hist }) {
     }
 
     const subject = `Quiero mi recomendación: ${exp.name}`;
-    const body = `Hola,\n\nMe gustaría recibir los detalles de esta recomendación:\n\n${exp.name}\n\nMi nombre: ${name || '(no indicado)'}\nMi email: ${email}${date ? `\nFecha aproximada del viaje: ${date}` : ''}\n\n¡Gracias!`;
+    const body = `Hola,\n\nMe gustaría recibir los detalles de esta recomendación:\n\n${exp.name}\n\nMi nombre: ${name || '(no indicado)'}\nMi email: ${email}${phone ? `\nMi teléfono: ${phone}` : ''}${date ? `\nFecha aproximada del viaje: ${date}` : ''}\n\n¡Gracias!`;
     window.location.href = `mailto:info@betrue.es?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     setStatus('fallback');
   }
@@ -619,8 +622,8 @@ function LeadCaptureBlock({ exp, hist }) {
 
   return (
     <div className="mt-3 rounded-[10px] border border-gold/25 bg-cream2 p-4 text-center">
-      <p className="mb-1 text-[13.5px] font-semibold text-ink">¿Quieres recibir tu recomendación?</p>
-      <p className="mb-3 text-[12px] leading-[1.5] text-ink3">Te enviaremos los detalles y nuestro equipo podrá ayudarte con tu experiencia.</p>
+      <p className="mb-1 text-[13.5px] font-semibold text-ink">Te lo enviamos a tu correo</p>
+      <p className="mb-3 text-[12px] leading-[1.5] text-ink3">Te mandamos la propuesta detallada con horarios, mapa y recomendaciones para tu día.</p>
       <div className="flex flex-col gap-2.5">
         <input
           type="text"
@@ -642,6 +645,19 @@ function LeadCaptureBlock({ exp, hist }) {
           />
           {showEmailError && <p className="mt-1 text-[11px] text-[#9A3B2E]">Introduce un email con formato válido</p>}
         </div>
+        <div>
+          <input
+            type="tel"
+            value={phone}
+            onChange={(e) => { setPhone(e.target.value); resetStatus(); }}
+            placeholder="Tu teléfono (opcional)"
+            aria-invalid={showPhoneError}
+            className={`w-full border-b bg-transparent px-1 py-2 text-center text-[13.5px] text-ink placeholder:text-ink3/60 focus:outline-none ${
+              showPhoneError ? 'border-[#9A3B2E]' : 'border-black/15 focus:border-gold2'
+            }`}
+          />
+          {showPhoneError && <p className="mt-1 text-[11px] text-[#9A3B2E]">Introduce un teléfono con formato válido</p>}
+        </div>
         <input
           type="date"
           value={date}
@@ -654,7 +670,7 @@ function LeadCaptureBlock({ exp, hist }) {
           disabled={!isValidEmail || status === 'sending'}
           className="mt-1 rounded border border-gold2 px-4 py-2.5 text-[12.5px] font-semibold uppercase tracking-[.03em] text-gold2 transition-colors hover:bg-gold2 hover:text-white disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent disabled:hover:text-gold2"
         >
-          {status === 'sending' ? 'Enviando...' : 'Recibir mi recomendación'}
+          {status === 'sending' ? 'Enviando...' : 'Reservar y recibir mi ruta'}
         </button>
         {status === 'fallback' && (
           <p className="text-[11.5px] leading-[1.5] text-ink3">
