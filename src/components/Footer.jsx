@@ -38,6 +38,7 @@ export default function Footer() {
           <Link href="/nosotros" className="mb-2 block text-[13.5px] text-white/55 transition-colors hover:text-white">Quiénes somos</Link>
           <Link href="/#adventure" className="mb-2 block text-[13.5px] text-white/55 transition-colors hover:text-white">Elige tu aventura</Link>
           <Link href="/blog" className="mb-2 block text-[13.5px] text-white/55 transition-colors hover:text-white">Blog</Link>
+          <Link href="/preguntas-frecuentes" className="mb-2 block text-[13.5px] text-white/55 transition-colors hover:text-white">Preguntas frecuentes</Link>
           <Link href="/contacto" className="mb-2 block text-[13.5px] text-white/55 transition-colors hover:text-white">Contacto</Link>
         </div>
 
