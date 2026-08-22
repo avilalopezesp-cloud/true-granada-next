@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { EXPERIENCES, QUIZ_QUESTIONS } from '@/data/experiences';
@@ -57,29 +57,40 @@ export default function AdventurePlanner() {
   const [hist, setHist] = useState([]);
   const [scores, setScores] = useState(EMPTY_SCORES);
   const [selected, setSelected] = useState(null);
+  const [analyzing, setAnalyzing] = useState(false);
   const [showResult, setShowResult] = useState(false);
   const [direction, setDirection] = useState(1);
 
   const total = QUIZ_QUESTIONS.length;
   const q = QUIZ_QUESTIONS[step];
 
+  // A short "analyzing" beat between the last question and the reveal — see
+  // LoadingScreen — so the recommendation feels considered rather than instant.
+  function finishQuiz() {
+    setAnalyzing(true);
+    setTimeout(() => {
+      setAnalyzing(false);
+      setShowResult(true);
+    }, 2600);
+  }
+
   function commit(opt) {
     const nextScores = { ...scores };
     Object.keys(opt.w).forEach((k) => { nextScores[k] += opt.w[k]; });
-    setHist((h) => [...h, { w: opt.w }]);
+    setHist((h) => [...h, { w: opt.w, l: opt.l, short: q.short }]);
     setScores(nextScores);
     setDirection(1);
     setSelected(null);
 
-    if (step + 1 >= total) setShowResult(true);
+    if (step + 1 >= total) finishQuiz();
     else setStep((s) => s + 1);
   }
 
   function skip() {
-    setHist((h) => [...h, { w: {} }]);
+    setHist((h) => [...h, { w: {}, l: null, short: q.short }]);
     setDirection(1);
     setSelected(null);
-    if (step + 1 >= total) setShowResult(true);
+    if (step + 1 >= total) finishQuiz();
     else setStep((s) => s + 1);
   }
 
@@ -100,6 +111,7 @@ export default function AdventurePlanner() {
     setHist([]);
     setScores(EMPTY_SCORES);
     setSelected(null);
+    setAnalyzing(false);
     setShowResult(false);
     setDirection(1);
   }
@@ -142,6 +154,8 @@ export default function AdventurePlanner() {
 
               <TrustBar />
             </motion.div>
+          ) : analyzing ? (
+            <LoadingScreen />
           ) : !showResult ? (
             <motion.div
               key="quiz"
@@ -243,7 +257,7 @@ export default function AdventurePlanner() {
               </p>
 
               <div className="mx-auto max-w-[520px] rounded-[14px] bg-cream2 p-1">
-                <ResultCard scores={scores} />
+                <ResultCard scores={scores} hist={hist} />
               </div>
 
               {(() => {
@@ -268,6 +282,51 @@ export default function AdventurePlanner() {
           )}
       </div>
     </div>
+  );
+}
+
+const LOADING_MESSAGES = [
+  'Analizando tus preferencias...',
+  'Comparando experiencias...',
+  'Diseñando tu recomendación...',
+];
+
+// A "sonar" pulse rather than a spinning ring — nothing here rotates, so it
+// reads as a considered analysis rather than a generic loading indicator.
+function LoadingScreen() {
+  const [msgIndex, setMsgIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setMsgIndex((i) => Math.min(i + 1, LOADING_MESSAGES.length - 1));
+    }, 850);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <motion.div
+      key="loading"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.4, ease: EASE }}
+      className="flex flex-col items-center justify-center py-20 text-center"
+    >
+      <div className="relative mb-8 flex h-16 w-16 items-center justify-center">
+        <span className="absolute inset-0 rounded-full border border-gold/40 [animation:goldPing_1.8s_ease-out_infinite]" />
+        <span className="absolute inset-0 rounded-full border border-gold/40 [animation:goldPing_1.8s_ease-out_infinite_.6s]" />
+        <span className="absolute inset-0 rounded-full border border-gold/40 [animation:goldPing_1.8s_ease-out_infinite_1.2s]" />
+        <IconCompass className="relative h-6 w-6 text-gold" />
+      </div>
+      <motion.p
+        key={msgIndex}
+        initial={{ opacity: 0, y: 6 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.35, ease: EASE }}
+        className="font-serif text-xl font-bold text-white sm:text-2xl"
+      >
+        {LOADING_MESSAGES[msgIndex]}
+      </motion.p>
+    </motion.div>
   );
 }
 
@@ -385,7 +444,7 @@ function TrustBar() {
 
 const EXPERIENCE_ICONS = { barranquismo: IconMountain, ferrata: IconCompass, ebike: IconBike };
 
-function ResultCard({ scores }) {
+function ResultCard({ scores, hist }) {
   const sorted = Object.entries(scores).sort((a, b) => b[1] - a[1]);
   const top = sorted[0][0];
   const second = sorted[1] && sorted[1][1] > 0 ? sorted[1][0] : null;
@@ -469,7 +528,7 @@ function ResultCard({ scores }) {
           </a>
         </div>
 
-        <EmailCaptureBlock exp={exp} />
+        <LeadCaptureBlock exp={exp} hist={hist} />
 
         {exp2 && (
           <>
@@ -507,36 +566,74 @@ function ResultCard({ scores }) {
 }
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const PHONE_RE = /^[+]?[\d\s()-]{6,}$/;
 
-function EmailCaptureBlock({ exp }) {
+function LeadCaptureBlock({ exp, hist }) {
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
   const [date, setDate] = useState('');
-  const [justSaved, setJustSaved] = useState(false);
+  const [status, setStatus] = useState('idle'); // idle | sending | success | fallback
 
   const isValidEmail = EMAIL_RE.test(email);
   const showEmailError = email.length > 0 && !isValidEmail;
-  const showPhoneError = phone.length > 0 && !PHONE_RE.test(phone);
 
-  function handleSave() {
+  function resetStatus() {
+    if (status !== 'idle') setStatus('idle');
+  }
+
+  async function handleSubmit() {
     if (!isValidEmail) return;
-    const subject = `Guardar mi experiencia: ${exp.name}`;
-    const body = `Hola,\n\nMe gustaría guardar esta recomendación para más adelante:\n\n${exp.name}\n\nMi email: ${email}${phone ? `\nMi teléfono: ${phone}` : ''}${date ? `\nFecha aproximada del viaje: ${date}` : ''}\n\n¡Gracias!`;
+    setStatus('sending');
+
+    const answers = hist.filter((h) => h.l).map((h) => `${h.short}: ${h.l}`);
+
+    try {
+      const res = await fetch('/api/quiz-lead', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, travelDate: date, answers, experience: exp.name }),
+      });
+      const data = await res.json();
+      if (data.ok) {
+        setStatus('success');
+        return;
+      }
+    } catch {
+      // Falls through to the mailto fallback below.
+    }
+
+    const subject = `Quiero mi recomendación: ${exp.name}`;
+    const body = `Hola,\n\nMe gustaría recibir los detalles de esta recomendación:\n\n${exp.name}\n\nMi nombre: ${name || '(no indicado)'}\nMi email: ${email}${date ? `\nFecha aproximada del viaje: ${date}` : ''}\n\n¡Gracias!`;
     window.location.href = `mailto:info@betrue.es?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    setJustSaved(true);
+    setStatus('fallback');
+  }
+
+  if (status === 'success') {
+    return (
+      <div className="mt-3 rounded-[10px] border border-gold/25 bg-cream2 p-5 text-center">
+        <IconCheck className="mx-auto mb-2 h-6 w-6 text-gold2" />
+        <p className="mb-1 text-[14px] font-semibold text-ink">¡Enviado correctamente!</p>
+        <p className="text-[12.5px] leading-[1.5] text-ink3">Te hemos enviado los detalles y nuestro equipo podrá ayudarte con tu experiencia.</p>
+      </div>
+    );
   }
 
   return (
     <div className="mt-3 rounded-[10px] border border-gold/25 bg-cream2 p-4 text-center">
-      <p className="mb-1 text-[13.5px] font-semibold text-ink">¿Prefieres otra forma de contacto?</p>
-      <p className="mb-3 text-[12px] leading-[1.5] text-ink3">Guarda tu experiencia y te ayudamos cuando estés listo.</p>
+      <p className="mb-1 text-[13.5px] font-semibold text-ink">¿Quieres recibir tu recomendación?</p>
+      <p className="mb-3 text-[12px] leading-[1.5] text-ink3">Te enviaremos los detalles y nuestro equipo podrá ayudarte con tu experiencia.</p>
       <div className="flex flex-col gap-2.5">
+        <input
+          type="text"
+          value={name}
+          onChange={(e) => { setName(e.target.value); resetStatus(); }}
+          placeholder="Tu nombre (opcional)"
+          className="w-full border-b border-black/15 bg-transparent px-1 py-2 text-center text-[13.5px] text-ink placeholder:text-ink3/60 focus:border-gold2 focus:outline-none"
+        />
         <div>
           <input
             type="email"
             value={email}
-            onChange={(e) => { setEmail(e.target.value); setJustSaved(false); }}
+            onChange={(e) => { setEmail(e.target.value); resetStatus(); }}
             placeholder="Tu email"
             aria-invalid={showEmailError}
             className={`w-full border-b bg-transparent px-1 py-2 text-center text-[13.5px] text-ink placeholder:text-ink3/60 focus:outline-none ${
@@ -545,34 +642,21 @@ function EmailCaptureBlock({ exp }) {
           />
           {showEmailError && <p className="mt-1 text-[11px] text-[#9A3B2E]">Introduce un email con formato válido</p>}
         </div>
-        <div>
-          <input
-            type="tel"
-            value={phone}
-            onChange={(e) => { setPhone(e.target.value); setJustSaved(false); }}
-            placeholder="Tu teléfono (opcional)"
-            aria-invalid={showPhoneError}
-            className={`w-full border-b bg-transparent px-1 py-2 text-center text-[13.5px] text-ink placeholder:text-ink3/60 focus:outline-none ${
-              showPhoneError ? 'border-[#9A3B2E]' : 'border-black/15 focus:border-gold2'
-            }`}
-          />
-          {showPhoneError && <p className="mt-1 text-[11px] text-[#9A3B2E]">Introduce un teléfono con formato válido</p>}
-        </div>
         <input
           type="date"
           value={date}
-          onChange={(e) => { setDate(e.target.value); setJustSaved(false); }}
+          onChange={(e) => { setDate(e.target.value); resetStatus(); }}
           className="w-full border-b border-black/15 bg-transparent px-1 py-2 text-center text-[13.5px] text-ink3 focus:border-gold2 focus:outline-none [color-scheme:light]"
         />
         <button
           type="button"
-          onClick={handleSave}
-          disabled={!isValidEmail}
+          onClick={handleSubmit}
+          disabled={!isValidEmail || status === 'sending'}
           className="mt-1 rounded border border-gold2 px-4 py-2.5 text-[12.5px] font-semibold uppercase tracking-[.03em] text-gold2 transition-colors hover:bg-gold2 hover:text-white disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent disabled:hover:text-gold2"
         >
-          Guardar mi experiencia
+          {status === 'sending' ? 'Enviando...' : 'Recibir mi recomendación'}
         </button>
-        {justSaved && (
+        {status === 'fallback' && (
           <p className="text-[11.5px] leading-[1.5] text-ink3">
             Hemos abierto tu correo con todo listo para enviar. Si no se ha abierto nada, escríbenos directamente a{' '}
             <a href="mailto:info@betrue.es" className="underline hover:text-gold2">info@betrue.es</a>.
