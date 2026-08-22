@@ -13,7 +13,7 @@ const SOCIAL_LINKS = [
 export default function Footer() {
   return (
     <footer className="border-t border-white/[.06] bg-ink px-7 pb-8 pt-[60px]">
-      <div className="mx-auto mb-12 grid max-w-[1160px] grid-cols-[2fr_1fr_1fr_1fr] gap-10 max-sm:grid-cols-1 sm:max-md:grid-cols-2">
+      <div className="mx-auto mb-12 grid max-w-[1160px] grid-cols-[2fr_1fr_1fr_1fr_1fr] gap-10 max-sm:grid-cols-1 sm:max-md:grid-cols-2">
         <div>
           <Image src="/images/logo-true.png" alt="T.R.U.E. Albaycín" width={917} height={500} className="mb-3 h-[58px] w-auto opacity-95" />
           <p className="mb-[18px] text-[13.5px] leading-[1.7] text-white/45">
@@ -47,17 +47,20 @@ export default function Footer() {
           <span className="mb-2 block text-[13.5px] text-white/25">Privacidad <em className="not-italic text-white/15">(Próximamente)</em></span>
           <span className="mb-2 block text-[13.5px] text-white/25">Cookies <em className="not-italic text-white/15">(Próximamente)</em></span>
         </div>
-      </div>
 
-      <div className="mx-auto flex max-w-[1160px] flex-wrap items-center justify-between gap-4 border-t border-white/[.06] pt-6">
-        <span className="text-[11.5px] text-white/35">© 2026 TRUE Granada Experiences</span>
-        <div className="flex items-center gap-4">
+        <div>
+          <div className="mb-3.5 text-[10px] font-semibold uppercase tracking-[.16em] text-gold">Síguenos</div>
           {SOCIAL_LINKS.map(({ Icon, label, href }) => (
-            <a key={label} href={href} target="_blank" rel="noreferrer" aria-label={label} className="text-white/40 transition-colors hover:text-gold">
-              <Icon className="h-[18px] w-[18px]" />
+            <a key={label} href={href} target="_blank" rel="noreferrer" className="mb-2 flex items-center gap-2 text-[13.5px] text-white/55 transition-colors hover:text-white">
+              <Icon className="h-4 w-4 flex-shrink-0" />
+              {label}
             </a>
           ))}
         </div>
+      </div>
+
+      <div className="mx-auto flex max-w-[1160px] items-center justify-center border-t border-white/[.06] pt-6">
+        <span className="text-[11.5px] text-white/35">© 2026 TRUE Granada Experiences</span>
       </div>
     </footer>
   );
