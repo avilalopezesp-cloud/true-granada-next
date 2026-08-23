@@ -40,7 +40,7 @@ export default function Experiences() {
           </a>
         </div>
 
-        <div className="reveal-group grid grid-cols-3 gap-4 max-[860px]:grid-cols-2 max-[540px]:grid-cols-1">
+        <div className="reveal-group grid grid-cols-3 gap-4 max-[860px]:grid-cols-2 max-[540px]:flex max-[540px]:snap-x max-[540px]:snap-mandatory max-[540px]:overflow-x-auto max-[540px]:pb-2 max-[540px]:[-ms-overflow-style:none] max-[540px]:[scrollbar-width:none] max-[540px]:[&::-webkit-scrollbar]:hidden">
           {EXPERIENCE_LIST.map((exp) => (
             <ExperienceCard key={exp.key} exp={exp} onOpen={() => setOpenKey(exp.key)} />
           ))}
@@ -102,14 +102,14 @@ function ExperienceCard({ exp, onOpen }) {
 
   if (linksToDetailPage) {
     return (
-      <Link href={exp.detailPage} className="group reveal relative block aspect-[3/4] overflow-hidden rounded-xl transition-transform hover:-translate-y-1">
+      <Link href={exp.detailPage} className="group reveal relative block aspect-[3/4] overflow-hidden rounded-xl transition-transform hover:-translate-y-1 max-[540px]:w-[78%] max-[540px]:flex-shrink-0 max-[540px]:snap-center">
         {inner}
       </Link>
     );
   }
 
   return (
-    <div className="group reveal relative aspect-[3/4] overflow-hidden rounded-xl transition-transform hover:-translate-y-1">
+    <div className="group reveal relative aspect-[3/4] overflow-hidden rounded-xl transition-transform hover:-translate-y-1 max-[540px]:w-[78%] max-[540px]:flex-shrink-0 max-[540px]:snap-center">
       {inner}
     </div>
   );
@@ -117,7 +117,7 @@ function ExperienceCard({ exp, onOpen }) {
 
 function ComingSoonCard({ item }) {
   return (
-    <div className="reveal relative aspect-[3/4] overflow-hidden rounded-xl">
+    <div className="reveal relative aspect-[3/4] overflow-hidden rounded-xl max-[540px]:w-[78%] max-[540px]:flex-shrink-0 max-[540px]:snap-center">
       <Image src={item.img} alt={item.alt} width={800} height={1067} className="h-full w-full object-cover" />
       <div className="absolute inset-0 bg-[linear-gradient(to_top,rgba(30,26,20,.94)_0%,rgba(30,26,20,.5)_100%)]" />
       <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap rounded border border-gold bg-ink/85 px-5 py-[9px] text-[11px] font-semibold uppercase tracking-[.12em] text-gold">
