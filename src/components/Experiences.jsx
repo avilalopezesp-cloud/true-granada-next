@@ -31,7 +31,8 @@ export default function Experiences() {
         <div className="reveal mb-11 flex flex-wrap items-end justify-between gap-4">
           <div>
             <p className="text-[11px] font-semibold uppercase tracking-[.22em] text-gold2">Nuestras experiencias</p>
-            <h2 className="mt-3 font-serif text-[clamp(1.8rem,3.5vw,2.6rem)] font-bold">O explora por tu cuenta</h2>
+            <h2 className="mt-3 font-serif text-[clamp(1.8rem,3.5vw,2.6rem)] font-bold">No elijas un tour. Elige una experiencia.</h2>
+            <p className="mt-2.5 max-w-[480px] text-[15px] leading-[1.6] text-ink2">Descubre nuestras propuestas o deja que diseñemos algo que encaje contigo.</p>
           </div>
           <a href="https://wa.me/34689507099" className="inline-flex items-center gap-2.5 rounded bg-wa px-7 py-[15px] text-sm font-semibold text-white transition-all hover:brightness-110">
             <WhatsAppIcon size={16} />
