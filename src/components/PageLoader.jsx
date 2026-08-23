@@ -1,11 +1,14 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 
-// Full-screen splash shown once per hard page load — fades out on its own
-// after a short beat, purely decorative (no data to wait for).
+// Full-screen splash shown only when the site is opened at the homepage —
+// fades out on its own after a short beat. Any other URL (a direct link to
+// /experiencias, a refresh on /contacto, etc.) skips it entirely.
 export default function PageLoader() {
+  const pathname = usePathname();
   const [visible, setVisible] = useState(true);
   const [fading, setFading] = useState(false);
 
@@ -18,7 +21,7 @@ export default function PageLoader() {
     };
   }, []);
 
-  if (!visible) return null;
+  if (pathname !== '/' || !visible) return null;
 
   return (
     <div
