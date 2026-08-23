@@ -12,7 +12,7 @@ const COMING_SOON = [
   { img: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&q=80', alt: 'Sierra Nevada', cat: 'Naturaleza', name: 'Senderismo Sierra Nevada' },
 ];
 
-export default function Experiences() {
+export default function Experiences({ mobileCarousel = true }) {
   const [openKey, setOpenKey] = useState(null);
 
   useEffect(() => {
@@ -40,12 +40,18 @@ export default function Experiences() {
           </a>
         </div>
 
-        <div className="reveal-group grid grid-cols-3 gap-4 max-[860px]:grid-cols-2 max-[540px]:flex max-[540px]:snap-x max-[540px]:snap-mandatory max-[540px]:overflow-x-auto max-[540px]:pb-2 max-[540px]:[-ms-overflow-style:none] max-[540px]:[scrollbar-width:none] max-[540px]:[&::-webkit-scrollbar]:hidden">
+        <div
+          className={`reveal-group grid grid-cols-3 gap-4 max-[860px]:grid-cols-2 ${
+            mobileCarousel
+              ? 'max-[540px]:flex max-[540px]:snap-x max-[540px]:snap-mandatory max-[540px]:overflow-x-auto max-[540px]:pb-2 max-[540px]:[-ms-overflow-style:none] max-[540px]:[scrollbar-width:none] max-[540px]:[&::-webkit-scrollbar]:hidden'
+              : 'max-[540px]:grid-cols-1'
+          }`}
+        >
           {EXPERIENCE_LIST.map((exp) => (
-            <ExperienceCard key={exp.key} exp={exp} onOpen={() => setOpenKey(exp.key)} />
+            <ExperienceCard key={exp.key} exp={exp} onOpen={() => setOpenKey(exp.key)} mobileCarousel={mobileCarousel} />
           ))}
           {COMING_SOON.map((item) => (
-            <ComingSoonCard key={item.name} item={item} />
+            <ComingSoonCard key={item.name} item={item} mobileCarousel={mobileCarousel} />
           ))}
         </div>
       </div>
@@ -55,8 +61,9 @@ export default function Experiences() {
   );
 }
 
-function ExperienceCard({ exp, onOpen }) {
+function ExperienceCard({ exp, onOpen, mobileCarousel }) {
   const ctaLabel = exp.key === 'ebike' ? 'Diseñar mi ruta →' : 'Ver experiencia →';
+  const carouselCardClass = mobileCarousel ? 'max-[540px]:w-[78%] max-[540px]:flex-shrink-0 max-[540px]:snap-center' : '';
   // The e-bike card always opens the interactive builder below instead of
   // navigating to its static detail page — that configurator is the actual
   // selling tool for this experience, so a card click shouldn't bypass it.
@@ -79,7 +86,7 @@ function ExperienceCard({ exp, onOpen }) {
       <div className="absolute inset-x-0 bottom-0 p-5">
         <p className="mb-[5px] text-[10px] font-semibold uppercase tracking-[.14em] text-gold">{exp.cat}</p>
         <h3 className="mb-1 font-serif text-xl font-bold leading-[1.2] text-white">{exp.name}</h3>
-        <p className="mb-3.5 text-[14px] leading-[1.5] text-white/75">{exp.desc}</p>
+        <p className="mb-3.5 text-[14px] leading-[1.5] text-white/75 max-[540px]:hidden">{exp.desc}</p>
         <div className="flex items-center justify-between">
           <span className="font-serif text-lg font-bold text-gold">Desde {exp.price}€</span>
           {linksToDetailPage ? (
@@ -102,22 +109,23 @@ function ExperienceCard({ exp, onOpen }) {
 
   if (linksToDetailPage) {
     return (
-      <Link href={exp.detailPage} className="group reveal relative block aspect-[3/4] overflow-hidden rounded-xl transition-transform hover:-translate-y-1 max-[540px]:w-[78%] max-[540px]:flex-shrink-0 max-[540px]:snap-center">
+      <Link href={exp.detailPage} className={`group reveal relative block aspect-[3/4] overflow-hidden rounded-xl transition-transform hover:-translate-y-1 ${carouselCardClass}`}>
         {inner}
       </Link>
     );
   }
 
   return (
-    <div className="group reveal relative aspect-[3/4] overflow-hidden rounded-xl transition-transform hover:-translate-y-1 max-[540px]:w-[78%] max-[540px]:flex-shrink-0 max-[540px]:snap-center">
+    <div className={`group reveal relative aspect-[3/4] overflow-hidden rounded-xl transition-transform hover:-translate-y-1 ${carouselCardClass}`}>
       {inner}
     </div>
   );
 }
 
-function ComingSoonCard({ item }) {
+function ComingSoonCard({ item, mobileCarousel }) {
+  const carouselCardClass = mobileCarousel ? 'max-[540px]:w-[78%] max-[540px]:flex-shrink-0 max-[540px]:snap-center' : '';
   return (
-    <div className="reveal relative aspect-[3/4] overflow-hidden rounded-xl max-[540px]:w-[78%] max-[540px]:flex-shrink-0 max-[540px]:snap-center">
+    <div className={`reveal relative aspect-[3/4] overflow-hidden rounded-xl ${carouselCardClass}`}>
       <Image src={item.img} alt={item.alt} width={800} height={1067} className="h-full w-full object-cover" />
       <div className="absolute inset-0 bg-[linear-gradient(to_top,rgba(30,26,20,.94)_0%,rgba(30,26,20,.5)_100%)]" />
       <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap rounded border border-gold bg-ink/85 px-5 py-[9px] text-[11px] font-semibold uppercase tracking-[.12em] text-gold">

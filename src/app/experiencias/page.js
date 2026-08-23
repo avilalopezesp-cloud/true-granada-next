@@ -25,7 +25,7 @@ export default function ExperienciasPage() {
         </h1>
       </section>
 
-      <Experiences />
+      <Experiences mobileCarousel={false} />
 
       <Footer />
     </>
