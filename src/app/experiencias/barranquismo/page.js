@@ -1,7 +1,7 @@
-import ExperienceJourneyPage from '@/components/ExperienceJourneyPage';
-import { EXPERIENCES } from '@/data/experiences';
+import { EXPERIENCES_ES } from '@/data/experiences';
+import BarranquismoClient from './BarranquismoClient';
 
-const exp = EXPERIENCES.barranquismo;
+const exp = EXPERIENCES_ES.barranquismo;
 
 export const metadata = {
   title: `${exp.name} — TRUE Granada`,
@@ -16,13 +16,5 @@ export const metadata = {
 };
 
 export default function BarranquismoPage() {
-  return (
-    <ExperienceJourneyPage
-      exp={exp}
-      headline={<>Río Verde no se cuenta. <em className="font-light italic text-gold">Se salta.</em></>}
-      stopsTitle="5 paradas, una sola aventura"
-      closingTitle="¿Listos para saltar?"
-      closingText="Guía certificado, equipo incluido y grupos de máximo 8 personas. Escríbenos y en menos de 1 hora tenéis todo organizado."
-    />
-  );
+  return <BarranquismoClient />;
 }

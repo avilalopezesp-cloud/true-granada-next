@@ -1,22 +1,34 @@
+'use client';
+
 import Image from 'next/image';
 import Link from 'next/link';
-import { BLOG_LIST } from '@/data/blog';
+import { getBlogPosts } from '@/data/blog';
+import { useLanguage } from '@/i18n/LanguageContext';
+
+const COPY = {
+  es: { kicker: 'Granada de Verdad', title: 'Guías para viajeros reales', cta: 'Ver todas →' },
+  en: { kicker: 'The Real Granada', title: 'Guides for real travelers', cta: 'See all →' },
+};
 
 export default function Blog() {
+  const { lang } = useLanguage();
+  const c = COPY[lang];
+  const posts = getBlogPosts(lang);
+
   return (
     <section className="bg-cream2 py-[100px]" id="blog">
       <div className="mx-auto max-w-[1160px] px-7">
         <div className="reveal mb-10 flex flex-wrap items-end justify-between gap-3.5">
           <div>
-            <p className="text-[11px] font-semibold uppercase tracking-[.22em] text-gold2">Granada de Verdad</p>
-            <h2 className="mt-2.5 font-serif text-[clamp(1.8rem,3vw,2.4rem)] font-bold">Guías para viajeros reales</h2>
+            <p className="text-[11px] font-semibold uppercase tracking-[.22em] text-gold2">{c.kicker}</p>
+            <h2 className="mt-2.5 font-serif text-[clamp(1.8rem,3vw,2.4rem)] font-bold">{c.title}</h2>
           </div>
           <Link href="/blog" className="inline-flex items-center gap-2 rounded border-[1.5px] border-ink px-[26px] py-3.5 text-sm font-medium text-ink transition-all hover:-translate-y-0.5 hover:border-gold2 hover:text-gold2">
-            Ver todas →
+            {c.cta}
           </Link>
         </div>
         <div className="reveal-group grid grid-cols-3 gap-5 max-[760px]:grid-cols-1">
-          {BLOG_LIST.map((post) => (
+          {posts.map((post) => (
             <Link
               key={post.slug}
               href={`/blog/${post.slug}`}

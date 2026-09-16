@@ -2,6 +2,7 @@ import "./globals.css";
 import ScrollRevealInit from "@/components/ScrollRevealInit";
 import WhatsAppFloat from "@/components/WhatsAppFloat";
 import PageLoader from "@/components/PageLoader";
+import { LanguageProvider } from "@/i18n/LanguageContext";
 
 export const metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://betrue.es"),
@@ -32,10 +33,12 @@ export default function RootLayout({ children }) {
   return (
     <html lang="es">
       <body>
-        <PageLoader />
-        {children}
-        <WhatsAppFloat />
-        <ScrollRevealInit />
+        <LanguageProvider>
+          <PageLoader />
+          {children}
+          <WhatsAppFloat />
+          <ScrollRevealInit />
+        </LanguageProvider>
       </body>
     </html>
   );

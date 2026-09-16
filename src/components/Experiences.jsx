@@ -1,27 +1,57 @@
+'use client';
+
 import Image from 'next/image';
 import Link from 'next/link';
-import { EXPERIENCE_LIST } from '@/data/experiences';
+import { getExperienceList } from '@/data/experiences';
 import WhatsAppIcon from './icons/WhatsAppIcon';
+import { useLanguage, pick } from '@/i18n/LanguageContext';
 
 const COMING_SOON = [
-  { img: 'https://images.unsplash.com/photo-1585208798174-6cedd86e019a?w=800&q=80', alt: 'Flamenco Granada', cat: 'Cultural', name: 'Flamenco Sacromonte' },
-  { img: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800&q=80', alt: 'Tapas Granada', cat: 'Gastronomía', name: 'Tapas & Culture Route' },
-  { img: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&q=80', alt: 'Sierra Nevada', cat: 'Naturaleza', name: 'Senderismo Sierra Nevada' },
+  { img: 'https://images.unsplash.com/photo-1585208798174-6cedd86e019a?w=800&q=80', alt: 'Flamenco Granada', cat: { es: 'Cultural', en: 'Cultural' }, name: { es: 'Flamenco Sacromonte', en: 'Flamenco in Sacromonte' } },
+  { img: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800&q=80', alt: 'Tapas Granada', cat: { es: 'Gastronomía', en: 'Food' }, name: { es: 'Tapas & Culture Route', en: 'Tapas & Culture Route' } },
+  { img: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&q=80', alt: 'Sierra Nevada', cat: { es: 'Naturaleza', en: 'Nature' }, name: { es: 'Senderismo Sierra Nevada', en: 'Sierra Nevada Hiking' } },
 ];
 
+const COPY = {
+  es: {
+    kicker: 'Nuestras experiencias',
+    title: 'No elijas un tour. Elige una experiencia.',
+    subtitle: 'Descubre nuestras propuestas o deja que diseñemos algo que encaje contigo.',
+    waButton: 'Preguntar por WhatsApp',
+    ctaEbike: 'Diseñar mi ruta →',
+    ctaOther: 'Ver experiencia →',
+    from: 'Desde',
+    comingSoon: 'Próximamente',
+  },
+  en: {
+    kicker: 'Our experiences',
+    title: "Don't pick a tour. Pick an experience.",
+    subtitle: "Discover our experiences, or let us design something that fits you.",
+    waButton: 'Ask on WhatsApp',
+    ctaEbike: 'Design my route →',
+    ctaOther: 'View experience →',
+    from: 'From',
+    comingSoon: 'Coming soon',
+  },
+};
+
 export default function Experiences({ mobileCarousel = true }) {
+  const { lang } = useLanguage();
+  const c = COPY[lang];
+  const experienceList = getExperienceList(lang);
+
   return (
     <section className="bg-paper py-[100px]" id="experiences">
       <div className="mx-auto max-w-[1160px] px-7">
         <div className="reveal mb-11 flex flex-wrap items-end justify-between gap-4">
           <div>
-            <p className="text-[11px] font-semibold uppercase tracking-[.22em] text-gold2">Nuestras experiencias</p>
-            <h2 className="mt-3 font-serif text-[clamp(1.8rem,3.5vw,2.6rem)] font-bold">No elijas un tour. Elige una experiencia.</h2>
-            <p className="mt-2.5 max-w-[480px] text-[15px] leading-[1.6] text-ink2">Descubre nuestras propuestas o deja que diseñemos algo que encaje contigo.</p>
+            <p className="text-[11px] font-semibold uppercase tracking-[.22em] text-gold2">{c.kicker}</p>
+            <h2 className="mt-3 font-serif text-[clamp(1.8rem,3.5vw,2.6rem)] font-bold">{c.title}</h2>
+            <p className="mt-2.5 max-w-[480px] text-[15px] leading-[1.6] text-ink2">{c.subtitle}</p>
           </div>
           <a href="https://wa.me/34689507099" className="inline-flex items-center gap-2.5 rounded bg-wa px-7 py-[15px] text-sm font-semibold text-white transition-all hover:brightness-110">
             <WhatsAppIcon size={16} />
-            Preguntar por WhatsApp
+            {c.waButton}
           </a>
         </div>
 
@@ -32,11 +62,11 @@ export default function Experiences({ mobileCarousel = true }) {
               : 'max-[540px]:grid-cols-1'
           }`}
         >
-          {EXPERIENCE_LIST.map((exp) => (
-            <ExperienceCard key={exp.key} exp={exp} mobileCarousel={mobileCarousel} />
+          {experienceList.map((exp) => (
+            <ExperienceCard key={exp.key} exp={exp} mobileCarousel={mobileCarousel} c={c} />
           ))}
           {COMING_SOON.map((item) => (
-            <ComingSoonCard key={item.name} item={item} mobileCarousel={mobileCarousel} />
+            <ComingSoonCard key={item.name.es} item={item} mobileCarousel={mobileCarousel} lang={lang} comingSoonLabel={c.comingSoon} />
           ))}
         </div>
       </div>
@@ -44,8 +74,8 @@ export default function Experiences({ mobileCarousel = true }) {
   );
 }
 
-function ExperienceCard({ exp, mobileCarousel }) {
-  const ctaLabel = exp.key === 'ebike' ? 'Diseñar mi ruta →' : 'Ver experiencia →';
+function ExperienceCard({ exp, mobileCarousel, c }) {
+  const ctaLabel = exp.key === 'ebike' ? c.ctaEbike : c.ctaOther;
   const carouselCardClass = mobileCarousel ? 'max-[540px]:w-[78%] max-[540px]:flex-shrink-0 max-[540px]:snap-center' : '';
 
   return (
@@ -68,7 +98,7 @@ function ExperienceCard({ exp, mobileCarousel }) {
         <h3 className="mb-1 font-serif text-xl font-bold leading-[1.2] text-white">{exp.name}</h3>
         <p className="mb-3.5 text-[14px] leading-[1.5] text-white/75 max-[540px]:hidden">{exp.desc}</p>
         <div className="flex items-center justify-between">
-          <span className="font-serif text-lg font-bold text-gold">Desde {exp.price}€</span>
+          <span className="font-serif text-lg font-bold text-gold">{c.from} {exp.price}€</span>
           <span className="flex items-center gap-1.5 text-xs font-semibold text-white opacity-80 transition-opacity group-hover:opacity-100">
             {ctaLabel}
           </span>
@@ -78,18 +108,18 @@ function ExperienceCard({ exp, mobileCarousel }) {
   );
 }
 
-function ComingSoonCard({ item, mobileCarousel }) {
+function ComingSoonCard({ item, mobileCarousel, lang, comingSoonLabel }) {
   const carouselCardClass = mobileCarousel ? 'max-[540px]:w-[78%] max-[540px]:flex-shrink-0 max-[540px]:snap-center' : '';
   return (
     <div className={`reveal relative aspect-[3/4] overflow-hidden rounded-xl ${carouselCardClass}`}>
       <Image src={item.img} alt={item.alt} width={800} height={1067} className="h-full w-full object-cover" />
       <div className="absolute inset-0 bg-[linear-gradient(to_top,rgba(30,26,20,.94)_0%,rgba(30,26,20,.5)_100%)]" />
       <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap rounded border border-gold bg-ink/85 px-5 py-[9px] text-[11px] font-semibold uppercase tracking-[.12em] text-gold">
-        Próximamente
+        {comingSoonLabel}
       </span>
       <div className="absolute inset-x-0 bottom-0 p-5">
-        <p className="mb-[5px] text-[10px] font-semibold uppercase tracking-[.14em] text-gold">{item.cat}</p>
-        <h3 className="font-serif text-xl font-bold leading-[1.2] text-white">{item.name}</h3>
+        <p className="mb-[5px] text-[10px] font-semibold uppercase tracking-[.14em] text-gold">{pick(lang, item.cat)}</p>
+        <h3 className="font-serif text-xl font-bold leading-[1.2] text-white">{pick(lang, item.name)}</h3>
       </div>
     </div>
   );

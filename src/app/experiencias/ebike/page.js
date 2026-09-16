@@ -1,7 +1,7 @@
-import ExperienceJourneyPage from '@/components/ExperienceJourneyPage';
-import { EXPERIENCES } from '@/data/experiences';
+import { EXPERIENCES_ES } from '@/data/experiences';
+import EbikeClient from './EbikeClient';
 
-const exp = EXPERIENCES.ebike;
+const exp = EXPERIENCES_ES.ebike;
 
 export const metadata = {
   title: `${exp.name} — TRUE Granada`,
@@ -16,13 +16,5 @@ export const metadata = {
 };
 
 export default function EbikePage() {
-  return (
-    <ExperienceJourneyPage
-      exp={exp}
-      headline={<>Granada no se recorre. <em className="font-light italic text-gold">Se diseña.</em></>}
-      stopsTitle="5 paradas, la ruta la haces tú"
-      closingTitle="¿Listos para pedalear?"
-      closingText="E-bike y casco incluidos, guía local y grupos de máximo 6 personas. Escríbenos y en menos de 1 hora tenéis todo organizado."
-    />
-  );
+  return <EbikeClient />;
 }

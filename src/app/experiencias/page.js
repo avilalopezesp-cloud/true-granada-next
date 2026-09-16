@@ -1,6 +1,7 @@
 import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
 import Experiences from '@/components/Experiences';
+import ExperienciasHero from './ExperienciasHero';
 
 export const metadata = {
   title: 'Experiencias en Granada — Barranquismo, Vía Ferrata y E-Bike | TRUE Granada',
@@ -17,16 +18,8 @@ export default function ExperienciasPage() {
   return (
     <>
       <Nav />
-
-      <section className="bg-ink px-7 pb-16 pt-32 text-center">
-        <p className="mb-3 text-[11px] font-semibold uppercase tracking-[.22em] text-gold">Vive Granada</p>
-        <h1 className="mx-auto max-w-[640px] font-serif text-[clamp(2rem,4.5vw,3.2rem)] font-bold leading-[1.1] text-white">
-          Experiencias diseñadas por locales, no por catálogo
-        </h1>
-      </section>
-
+      <ExperienciasHero />
       <Experiences mobileCarousel={false} />
-
       <Footer />
     </>
   );

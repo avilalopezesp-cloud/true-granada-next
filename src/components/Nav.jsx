@@ -3,15 +3,34 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useLanguage } from '@/i18n/LanguageContext';
 
-const LINKS = [
-  { href: '/experiencias', label: 'Experiencias' },
-  { href: '/#adventure', label: 'Elige tu aventura' },
-  { href: '/nosotros', label: 'Nosotros' },
-  { href: '/blog', label: 'Blog' },
-];
+const COPY = {
+  es: {
+    links: [
+      { href: '/experiencias', label: 'Experiencias' },
+      { href: '/#adventure', label: 'Elige tu aventura' },
+      { href: '/nosotros', label: 'Nosotros' },
+      { href: '/blog', label: 'Blog' },
+    ],
+    cta: 'Hablemos →',
+    openMenu: 'Abrir menú',
+  },
+  en: {
+    links: [
+      { href: '/experiencias', label: 'Experiences' },
+      { href: '/#adventure', label: "Choose your adventure" },
+      { href: '/nosotros', label: 'About Us' },
+      { href: '/blog', label: 'Blog' },
+    ],
+    cta: "Let's talk →",
+    openMenu: 'Open menu',
+  },
+};
 
 export default function Nav() {
+  const { lang, setLang } = useLanguage();
+  const c = COPY[lang];
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -54,7 +73,7 @@ export default function Nav() {
           open ? 'max-md:translate-x-0' : 'max-md:translate-x-full'
         }`}
       >
-        {LINKS.map((link) => (
+        {c.links.map((link) => (
           <a
             key={link.href}
             href={link.href}
@@ -65,18 +84,21 @@ export default function Nav() {
             <span className="absolute inset-x-0 bottom-0 h-px origin-right scale-x-0 bg-gold transition-transform duration-300 group-hover:origin-left group-hover:scale-x-100 max-md:hidden" />
           </a>
         ))}
+
+        <LangToggle lang={lang} setLang={setLang} className="max-md:mt-5" />
+
         <a
           href="/contacto"
           onClick={() => setOpen(false)}
           className="rounded-md bg-gold px-[22px] py-[11px] font-serif text-base font-bold text-ink transition-colors hover:bg-gold2 hover:text-white max-md:mt-5 max-md:inline-flex max-md:w-full max-md:justify-center max-md:px-5 max-md:py-3.5"
         >
-          Hablemos →
+          {c.cta}
         </a>
       </div>
 
       <button
         type="button"
-        aria-label="Abrir menú"
+        aria-label={c.openMenu}
         aria-expanded={open}
         aria-controls="nav-links"
         onClick={() => setOpen((v) => !v)}
@@ -87,5 +109,28 @@ export default function Nav() {
         <span className={`block h-0.5 w-[22px] rounded bg-cream transition-transform ${open ? '-translate-y-[7px] -rotate-45' : ''}`} />
       </button>
     </nav>
+  );
+}
+
+export function LangToggle({ lang, setLang, className = '' }) {
+  return (
+    <div className={`flex items-center overflow-hidden rounded-full border border-white/15 text-[11px] font-bold tracking-[.05em] ${className}`}>
+      <button
+        type="button"
+        onClick={() => setLang('es')}
+        aria-pressed={lang === 'es'}
+        className={`px-2.5 py-1 transition-colors ${lang === 'es' ? 'bg-gold text-ink' : 'text-white/60 hover:text-white'}`}
+      >
+        ES
+      </button>
+      <button
+        type="button"
+        onClick={() => setLang('en')}
+        aria-pressed={lang === 'en'}
+        className={`px-2.5 py-1 transition-colors ${lang === 'en' ? 'bg-gold text-ink' : 'text-white/60 hover:text-white'}`}
+      >
+        EN
+      </button>
+    </div>
   );
 }

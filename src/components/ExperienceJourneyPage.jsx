@@ -1,12 +1,40 @@
+'use client';
+
 import Image from 'next/image';
 import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
 import WhatsAppIcon from '@/components/icons/WhatsAppIcon';
+import { useLanguage } from '@/i18n/LanguageContext';
+
+const UI = {
+  es: {
+    bookWhatsApp: 'Reservar por WhatsApp',
+    seeJourney: 'Ver el recorrido ↓',
+    from: 'Desde',
+    duration: 'Duración',
+    group: 'Grupo',
+    level: 'Nivel',
+    theExperience: 'La experiencia',
+    theJourney: 'El recorrido',
+  },
+  en: {
+    bookWhatsApp: 'Book on WhatsApp',
+    seeJourney: 'See the journey ↓',
+    from: 'From',
+    duration: 'Duration',
+    group: 'Group',
+    level: 'Level',
+    theExperience: 'The experience',
+    theJourney: 'The journey',
+  },
+};
 
 // Shared "recorrido" detail-page template for a single bookable experience —
 // each experience's own route file just supplies its data + bespoke hero/
 // closing copy, so the layout only lives in one place.
 export default function ExperienceJourneyPage({ exp, headline, stopsTitle, closingTitle, closingText }) {
+  const { lang } = useLanguage();
+  const ui = UI[lang];
   const waHref = `https://wa.me/34689507099?text=${encodeURIComponent(exp.wa)}`;
   const { journey } = exp;
 
@@ -32,10 +60,10 @@ export default function ExperienceJourneyPage({ exp, headline, stopsTitle, closi
           </p>
 
           <div className="fade-up mb-9 flex flex-wrap gap-x-8 gap-y-3 border-y border-white/15 py-4 [animation-delay:.4s]">
-            <Fact label="Desde" value={`${exp.price}€`} />
-            <Fact label="Duración" value={exp.dur} />
-            <Fact label="Grupo" value={exp.group} />
-            <Fact label="Nivel" value={exp.level} />
+            <Fact label={ui.from} value={`${exp.price}€`} />
+            <Fact label={ui.duration} value={exp.dur} />
+            <Fact label={ui.group} value={exp.group} />
+            <Fact label={ui.level} value={exp.level} />
           </div>
 
           <div className="fade-up flex flex-wrap gap-3.5 [animation-delay:.55s]">
@@ -46,13 +74,13 @@ export default function ExperienceJourneyPage({ exp, headline, stopsTitle, closi
               className="inline-flex items-center gap-2.5 rounded bg-wa px-7 py-[15px] text-sm font-semibold tracking-[.02em] text-white transition-all hover:-translate-y-0.5 hover:brightness-110"
             >
               <WhatsAppIcon size={16} />
-              Reservar por WhatsApp
+              {ui.bookWhatsApp}
             </a>
             <a
               href="#recorrido"
               className="inline-flex items-center gap-2 rounded border-[1.5px] border-white/40 px-[26px] py-3.5 text-sm font-medium text-white transition-all hover:-translate-y-0.5 hover:border-gold2 hover:text-gold2"
             >
-              Ver el recorrido ↓
+              {ui.seeJourney}
             </a>
           </div>
         </div>
@@ -60,7 +88,7 @@ export default function ExperienceJourneyPage({ exp, headline, stopsTitle, closi
 
       <section className="bg-paper py-20">
         <div className="reveal mx-auto max-w-[760px] px-7 text-center">
-          <p className="mb-4 text-[11px] font-semibold uppercase tracking-[.22em] text-gold2">La experiencia</p>
+          <p className="mb-4 text-[11px] font-semibold uppercase tracking-[.22em] text-gold2">{ui.theExperience}</p>
           <p className="mb-5 text-lg font-normal leading-[1.75] text-ink">{exp.desc}</p>
           <p className="font-serif text-[19px] font-normal italic leading-[1.6] text-ink2">&quot;{exp.why}&quot;</p>
         </div>
@@ -69,7 +97,7 @@ export default function ExperienceJourneyPage({ exp, headline, stopsTitle, closi
       <section className="bg-cream py-24" id="recorrido">
         <div className="mx-auto max-w-[1160px] px-7">
           <div className="reveal mb-20 text-center">
-            <p className="mb-3 text-[11px] font-semibold uppercase tracking-[.22em] text-gold2">El recorrido</p>
+            <p className="mb-3 text-[11px] font-semibold uppercase tracking-[.22em] text-gold2">{ui.theJourney}</p>
             <h2 className="mx-auto max-w-[560px] font-serif text-[clamp(1.8rem,3.5vw,2.6rem)] font-bold leading-[1.15]">
               {stopsTitle}
             </h2>
@@ -99,7 +127,7 @@ export default function ExperienceJourneyPage({ exp, headline, stopsTitle, closi
             className="inline-flex items-center gap-2.5 rounded bg-wa px-8 py-4 text-sm font-semibold tracking-[.02em] text-white transition-all hover:-translate-y-0.5 hover:brightness-110"
           >
             <WhatsAppIcon size={16} />
-            Reservar por WhatsApp
+            {ui.bookWhatsApp}
           </a>
         </div>
       </section>

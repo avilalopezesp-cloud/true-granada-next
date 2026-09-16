@@ -3,8 +3,116 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { EXPERIENCES, QUIZ_QUESTIONS } from '@/data/experiences';
+import { getExperiences, getQuizQuestions } from '@/data/experiences';
 import WhatsAppIcon from './icons/WhatsAppIcon';
+import { useLanguage } from '@/i18n/LanguageContext';
+
+const UI = {
+  es: {
+    introTitle: 'Descubre tu experiencia perfecta en Granada',
+    introText: 'No todas las personas viven Granada de la misma forma. Responde unas preguntas y encontraremos la aventura que encaja contigo.',
+    introCta: 'Descubrir mi experiencia →',
+    loadingMessages: ['Analizando tus preferencias...', 'Comparando experiencias...', 'Diseñando tu recomendación...'],
+    questionOf: (step, total) => `Pregunta ${step} de ${total}`,
+    creatingRec: 'Estamos creando tu recomendación...',
+    notSure: 'No estoy seguro',
+    back: '← Atrás',
+    continue: 'Continuar →',
+    weFoundSomething: 'Hemos encontrado algo para ti',
+    yourProfile: 'Tu perfil de viajero',
+    thatsWhy: 'Por eso creemos que esta experiencia es para ti.',
+    startOver: 'Volver a empezar',
+    trustItems: [
+      { l: 'Guías expertos locales', s: 'Pasión por Granada' },
+      { l: 'Grupos pequeños', s: 'Experiencias más auténticas' },
+      { l: 'Cancelación flexible', s: 'Reserva con tranquilidad' },
+    ],
+    thisMatches: 'Esta experiencia encaja contigo',
+    from: 'Desde',
+    perPerson: 'por persona',
+    weChoseBecause: 'Elegimos esta experiencia porque...',
+    includes: 'Incluye',
+    checkAvailability: 'Consultar disponibilidad',
+    viewDetails: 'Ver detalles',
+    alsoLike: 'También podría gustarte',
+    granada: 'Granada',
+    completeYourDay: 'Completa tu día',
+    before: 'Antes',
+    after: 'Después',
+    plan1: 'Bar Los Diamantes',
+    plan2: 'Mirador de San Nicolás',
+    emailTitle: 'Te lo enviamos a tu correo',
+    emailText: 'Te mandamos la propuesta detallada con horarios, mapa y recomendaciones para tu día.',
+    namePlaceholder: 'Tu nombre (opcional)',
+    emailPlaceholder: 'Tu email',
+    emailError: 'Introduce un email con formato válido',
+    phonePlaceholder: 'Tu teléfono (opcional)',
+    phoneError: 'Introduce un teléfono con formato válido',
+    sending: 'Enviando...',
+    submitCta: 'Reservar y recibir mi ruta',
+    fallbackNotice: (
+      <>Hemos abierto tu correo con todo listo para enviar. Si no se ha abierto nada, escríbenos directamente a{' '}
+        <a href="mailto:info@betrue.es" className="underline hover:text-gold2">info@betrue.es</a>.
+      </>
+    ),
+    successTitle: '¡Enviado correctamente!',
+    successText: 'Te hemos enviado los detalles y nuestro equipo podrá ayudarte con tu experiencia.',
+    subject: (name) => `Quiero mi recomendación: ${name}`,
+    body: (name, formName, email, phone, date) => `Hola,\n\nMe gustaría recibir los detalles de esta recomendación:\n\n${name}\n\nMi nombre: ${formName || '(no indicado)'}\nMi email: ${email}${phone ? `\nMi teléfono: ${phone}` : ''}${date ? `\nFecha aproximada del viaje: ${date}` : ''}\n\n¡Gracias!`,
+  },
+  en: {
+    introTitle: 'Discover your perfect experience in Granada',
+    introText: "Not everyone experiences Granada the same way. Answer a few questions and we'll find the adventure that fits you.",
+    introCta: 'Discover my experience →',
+    loadingMessages: ['Analyzing your preferences...', 'Comparing experiences...', 'Designing your recommendation...'],
+    questionOf: (step, total) => `Question ${step} of ${total}`,
+    creatingRec: 'We are building your recommendation...',
+    notSure: "I'm not sure",
+    back: '← Back',
+    continue: 'Continue →',
+    weFoundSomething: 'We found something for you',
+    yourProfile: 'Your traveler profile',
+    thatsWhy: "That's why we think this experience is for you.",
+    startOver: 'Start over',
+    trustItems: [
+      { l: 'Expert local guides', s: 'Passionate about Granada' },
+      { l: 'Small groups', s: 'More authentic experiences' },
+      { l: 'Flexible cancellation', s: 'Book with peace of mind' },
+    ],
+    thisMatches: 'This experience matches you',
+    from: 'From',
+    perPerson: 'per person',
+    weChoseBecause: 'We chose this experience because...',
+    includes: 'Includes',
+    checkAvailability: 'Check availability',
+    viewDetails: 'View details',
+    alsoLike: 'You might also like',
+    granada: 'Granada',
+    completeYourDay: 'Complete your day',
+    before: 'Before',
+    after: 'After',
+    plan1: 'Bar Los Diamantes',
+    plan2: 'San Nicolás Viewpoint',
+    emailTitle: "We'll send it to your email",
+    emailText: "We'll send you the detailed proposal with schedule, map and recommendations for your day.",
+    namePlaceholder: 'Your name (optional)',
+    emailPlaceholder: 'Your email',
+    emailError: 'Enter a valid email address',
+    phonePlaceholder: 'Your phone (optional)',
+    phoneError: 'Enter a valid phone number',
+    sending: 'Sending...',
+    submitCta: 'Book and get my route',
+    fallbackNotice: (
+      <>We&apos;ve opened your email client with everything ready to send. If nothing opened, email us directly at{' '}
+        <a href="mailto:info@betrue.es" className="underline hover:text-gold2">info@betrue.es</a>.
+      </>
+    ),
+    successTitle: 'Sent successfully!',
+    successText: 'We have sent you the details and our team will be able to help you with your experience.',
+    subject: (name) => `I want my recommendation: ${name}`,
+    body: (name, formName, email, phone, date) => `Hi,\n\nI'd like to receive the details for this recommendation:\n\n${name}\n\nMy name: ${formName || '(not provided)'}\nMy email: ${email}${phone ? `\nMy phone: ${phone}` : ''}${date ? `\nApproximate travel date: ${date}` : ''}\n\nThanks!`,
+  },
+};
 
 const EMPTY_SCORES = { barranquismo: 0, ferrata: 0, ebike: 0 };
 const EASE = [0.22, 0.61, 0.36, 1];
@@ -52,6 +160,11 @@ const staggerItem = {
 };
 
 export default function AdventurePlanner() {
+  const { lang } = useLanguage();
+  const ui = UI[lang];
+  const quizQuestions = getQuizQuestions(lang);
+  const experiences = getExperiences(lang);
+
   const [started, setStarted] = useState(false);
   const [step, setStep] = useState(0);
   const [hist, setHist] = useState([]);
@@ -61,8 +174,8 @@ export default function AdventurePlanner() {
   const [showResult, setShowResult] = useState(false);
   const [direction, setDirection] = useState(1);
 
-  const total = QUIZ_QUESTIONS.length;
-  const q = QUIZ_QUESTIONS[step];
+  const total = quizQuestions.length;
+  const q = quizQuestions[step];
 
   // A short "analyzing" beat between the last question and the reveal — see
   // LoadingScreen — so the recommendation feels considered rather than instant.
@@ -137,10 +250,10 @@ export default function AdventurePlanner() {
             >
               <motion.div variants={staggerParent} initial="hidden" animate="show" className="mx-auto max-w-[560px] py-4 text-center">
                 <motion.h3 variants={staggerItem} className="mb-3 font-serif text-2xl font-bold text-white sm:text-[28px]">
-                  Descubre tu experiencia perfecta en Granada
+                  {ui.introTitle}
                 </motion.h3>
                 <motion.p variants={staggerItem} className="mx-auto mb-7 max-w-[440px] text-[15px] leading-[1.6] text-white/65">
-                  No todas las personas viven Granada de la misma forma. Responde unas preguntas y encontraremos la aventura que encaja contigo.
+                  {ui.introText}
                 </motion.p>
                 <motion.button
                   variants={staggerItem}
@@ -148,14 +261,14 @@ export default function AdventurePlanner() {
                   onClick={() => setStarted(true)}
                   className="rounded-md bg-gold px-8 py-3.5 text-sm font-bold uppercase tracking-[.03em] text-ink shadow-[0_0_22px_rgba(201,165,90,.45)] transition-all hover:-translate-y-0.5 hover:bg-gold2 hover:text-white hover:shadow-[0_0_28px_rgba(201,165,90,.6)]"
                 >
-                  Descubrir mi experiencia →
+                  {ui.introCta}
                 </motion.button>
               </motion.div>
 
-              <TrustBar />
+              <TrustBar ui={ui} />
             </motion.div>
           ) : analyzing ? (
-            <LoadingScreen />
+            <LoadingScreen ui={ui} />
           ) : !showResult ? (
             <motion.div
               key="quiz"
@@ -163,7 +276,7 @@ export default function AdventurePlanner() {
               animate={{ opacity: 1 }}
               transition={{ duration: 0.35, ease: EASE }}
             >
-              <Stepper step={step} total={total} />
+              <Stepper step={step} total={total} quizQuestions={quizQuestions} />
 
               {/* No AnimatePresence here on purpose: with exit tracking, Framer Motion
                   never reliably signalled the outgoing question as removed (both the
@@ -182,10 +295,10 @@ export default function AdventurePlanner() {
               >
                   <motion.div variants={staggerParent} initial={false} animate="show">
                     <motion.p variants={staggerItem} className="mb-1 text-[10.5px] font-semibold uppercase tracking-[.18em] text-gold">
-                      Pregunta {step + 1} de {total}
+                      {ui.questionOf(step + 1, total)}
                     </motion.p>
                     <motion.p variants={staggerItem} className="mb-3 text-[11px] italic text-white/40">
-                      Estamos creando tu recomendación...
+                      {ui.creatingRec}
                     </motion.p>
                     <motion.h3 variants={staggerItem} className="mb-2 font-serif text-2xl font-bold text-white sm:text-[28px]">
                       {q.q}
@@ -219,12 +332,12 @@ export default function AdventurePlanner() {
 
                   <div className="mt-6 flex flex-wrap items-center justify-between gap-4">
                     <button type="button" onClick={skip} className="text-[11px] font-medium text-white/40 transition-colors hover:text-white/60 hover:underline">
-                      No estoy seguro
+                      {ui.notSure}
                     </button>
                     <div className="ml-auto flex items-center gap-4">
                       {step > 0 && (
                         <button type="button" onClick={goBack} className="text-xs font-semibold text-white/50 transition-colors hover:text-white/70">
-                          ← Atrás
+                          {ui.back}
                         </button>
                       )}
                       <button
@@ -237,13 +350,13 @@ export default function AdventurePlanner() {
                             : 'bg-gold text-ink shadow-[0_0_22px_rgba(201,165,90,.45)] hover:-translate-y-0.5 hover:bg-gold2 hover:text-white hover:shadow-[0_0_28px_rgba(201,165,90,.6)]'
                         }`}
                       >
-                        Continuar →
+                        {ui.continue}
                       </button>
                     </div>
                   </div>
                 </motion.div>
 
-              <TrustBar />
+              <TrustBar ui={ui} />
             </motion.div>
           ) : (
             <motion.div
@@ -253,21 +366,21 @@ export default function AdventurePlanner() {
               transition={{ duration: 0.45, ease: EASE }}
             >
               <p className="mb-4 text-center font-serif text-2xl font-bold text-white sm:text-[28px]">
-                Hemos encontrado algo para ti
+                {ui.weFoundSomething}
               </p>
 
               <div className="mx-auto max-w-[520px] rounded-[14px] bg-cream2 p-1">
-                <ResultCard scores={scores} hist={hist} />
+                <ResultCard scores={scores} hist={hist} experiences={experiences} ui={ui} />
               </div>
 
               {(() => {
-                const profile = EXPERIENCES[topExperienceKey(scores)].profile;
+                const profile = experiences[topExperienceKey(scores)].profile;
                 return (
                   <div className="mx-auto mt-4 max-w-[520px] rounded-[14px] border border-gold/25 bg-black/20 px-5 py-5 text-center">
-                    <p className="mb-1.5 text-[10px] font-semibold uppercase tracking-[.18em] text-gold">Tu perfil de viajero</p>
+                    <p className="mb-1.5 text-[10px] font-semibold uppercase tracking-[.18em] text-gold">{ui.yourProfile}</p>
                     <p className="mb-2 font-serif text-xl font-bold text-white">{profile.name}</p>
                     <p className="mx-auto max-w-[380px] text-[13.5px] leading-[1.6] text-white/70">
-                      {profile.desc} Por eso creemos que esta experiencia es para ti.
+                      {profile.desc} {ui.thatsWhy}
                     </p>
                   </div>
                 );
@@ -275,7 +388,7 @@ export default function AdventurePlanner() {
 
               <div className="mt-5 text-center">
                 <button type="button" onClick={restart} className="text-xs font-semibold text-white/50 underline hover:text-white/70">
-                  Volver a empezar
+                  {ui.startOver}
                 </button>
               </div>
             </motion.div>
@@ -285,23 +398,18 @@ export default function AdventurePlanner() {
   );
 }
 
-const LOADING_MESSAGES = [
-  'Analizando tus preferencias...',
-  'Comparando experiencias...',
-  'Diseñando tu recomendación...',
-];
-
 // A "sonar" pulse rather than a spinning ring — nothing here rotates, so it
 // reads as a considered analysis rather than a generic loading indicator.
-function LoadingScreen() {
+function LoadingScreen({ ui }) {
   const [msgIndex, setMsgIndex] = useState(0);
+  const messages = ui.loadingMessages;
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setMsgIndex((i) => Math.min(i + 1, LOADING_MESSAGES.length - 1));
+      setMsgIndex((i) => Math.min(i + 1, messages.length - 1));
     }, 850);
     return () => clearInterval(interval);
-  }, []);
+  }, [messages.length]);
 
   return (
     <motion.div
@@ -324,16 +432,16 @@ function LoadingScreen() {
         transition={{ duration: 0.35, ease: EASE }}
         className="font-serif text-xl font-bold text-white sm:text-2xl"
       >
-        {LOADING_MESSAGES[msgIndex]}
+        {messages[msgIndex]}
       </motion.p>
     </motion.div>
   );
 }
 
-function Stepper({ step, total }) {
+function Stepper({ step, total, quizQuestions }) {
   return (
     <div className="mx-auto mb-8 flex max-w-[720px] items-start justify-between max-[640px]:hidden">
-      {QUIZ_QUESTIONS.map((question, i) => {
+      {quizQuestions.map((question, i) => {
         const Icon = STEP_ICONS[i % STEP_ICONS.length];
         const active = i === step;
         const done = i < step;
@@ -421,12 +529,9 @@ function OptionCard({ opt, active, onClick }) {
   );
 }
 
-function TrustBar() {
-  const items = [
-    { Icon: IconBadge, l: 'Guías expertos locales', s: 'Pasión por Granada' },
-    { Icon: IconUsers, l: 'Grupos pequeños', s: 'Experiencias más auténticas' },
-    { Icon: IconShield, l: 'Cancelación flexible', s: 'Reserva con tranquilidad' },
-  ];
+function TrustBar({ ui }) {
+  const icons = [IconBadge, IconUsers, IconShield];
+  const items = ui.trustItems.map((item, i) => ({ ...item, Icon: icons[i] }));
   return (
     <div className="mx-auto mt-8 flex max-w-[720px] flex-wrap justify-center gap-x-9 gap-y-3 border-t border-white/10 pt-6 max-[640px]:hidden">
       {items.map(({ Icon, l, s }) => (
@@ -444,12 +549,12 @@ function TrustBar() {
 
 const EXPERIENCE_ICONS = { barranquismo: IconMountain, ferrata: IconCompass, ebike: IconBike };
 
-function ResultCard({ scores, hist }) {
+function ResultCard({ scores, hist, experiences, ui }) {
   const sorted = Object.entries(scores).sort((a, b) => b[1] - a[1]);
   const top = sorted[0][0];
   const second = sorted[1] && sorted[1][1] > 0 ? sorted[1][0] : null;
-  const exp = EXPERIENCES[top];
-  const exp2 = second ? EXPERIENCES[second] : null;
+  const exp = experiences[top];
+  const exp2 = second ? experiences[second] : null;
 
   // Short, punchy version of "why" — just the core desire, without the
   // supporting clause — so the match block never runs past two lines.
@@ -458,7 +563,7 @@ function ResultCard({ scores, hist }) {
   return (
     <div className="overflow-hidden rounded-[14px] border border-black/10 bg-[linear-gradient(165deg,var(--color-cream)_0%,var(--color-cream2)_100%)]">
       <p className="px-4 pt-4 text-[10.5px] font-semibold uppercase tracking-[.18em] text-gold2 sm:px-[22px] sm:pt-5">
-        Esta experiencia encaja contigo
+        {ui.thisMatches}
       </p>
 
       <div className="relative mt-2">
@@ -481,25 +586,25 @@ function ResultCard({ scores, hist }) {
 
         <div className="mb-4 grid grid-cols-2 gap-x-3 gap-y-2">
           <QuickFact icon={IconClock}>{exp.dur}</QuickFact>
-          <QuickFact icon={IconUsers}>{exp.group.replace(/\s*personas?$/i, '')}</QuickFact>
+          <QuickFact icon={IconUsers}>{exp.group.replace(/\s*(personas?|people)$/i, '')}</QuickFact>
           <QuickFact icon={IconBolt}>{exp.level}</QuickFact>
-          <QuickFact icon={IconPin}>Granada</QuickFact>
+          <QuickFact icon={IconPin}>{ui.granada}</QuickFact>
         </div>
 
         <div className="mb-4 rounded-[10px] bg-ink px-4 py-3">
-          <span className="block text-[9.5px] font-semibold uppercase tracking-[.1em] text-white/50">Desde</span>
+          <span className="block text-[9.5px] font-semibold uppercase tracking-[.1em] text-white/50">{ui.from}</span>
           <span className="font-serif text-[22px] font-bold text-gold">
-            {exp.price}€ <span className="font-sans text-[11px] font-normal text-white/60">por persona</span>
+            {exp.price}€ <span className="font-sans text-[11px] font-normal text-white/60">{ui.perPerson}</span>
           </span>
         </div>
 
         <div className="mb-4 rounded-[10px] border border-gold/25 bg-paper p-3.5 shadow-[0_1px_3px_rgba(30,26,20,.06)] sm:p-4">
-          <p className="mb-1 text-[10.5px] font-semibold uppercase tracking-[.1em] text-gold2">Elegimos esta experiencia porque...</p>
+          <p className="mb-1 text-[10.5px] font-semibold uppercase tracking-[.1em] text-gold2">{ui.weChoseBecause}</p>
           <p className="line-clamp-2 text-[13.5px] leading-[1.4] text-ink2">{shortWhy}.</p>
         </div>
 
         <div className="mb-5">
-          <p className="mb-2 text-[10.5px] font-semibold uppercase tracking-[.1em] text-ink3">Incluye</p>
+          <p className="mb-2 text-[10.5px] font-semibold uppercase tracking-[.1em] text-ink3">{ui.includes}</p>
           <ul className="flex flex-col gap-1.5">
             {exp.includes.map((item) => (
               <li key={item} className="flex items-center gap-2 text-[13.5px] text-ink2">
@@ -517,23 +622,23 @@ function ResultCard({ scores, hist }) {
             className="flex items-center justify-center gap-2 rounded bg-gold px-4 py-3.5 text-[13px] font-bold uppercase tracking-[.03em] text-ink transition-all hover:-translate-y-0.5 hover:bg-gold2 hover:text-white"
           >
             <WhatsAppIcon size={14} />
-            Consultar disponibilidad
+            {ui.checkAvailability}
           </a>
           <a
             href={exp.detailPage || exp.url}
             target="_blank"
             className="flex items-center justify-center gap-2 rounded border-[1.5px] border-ink px-[26px] py-3.5 text-sm font-medium text-ink transition-all hover:border-gold2 hover:text-gold2"
           >
-            Ver detalles
+            {ui.viewDetails}
           </a>
         </div>
 
-        <LeadCaptureBlock exp={exp} hist={hist} />
+        <LeadCaptureBlock exp={exp} hist={hist} ui={ui} />
 
         {exp2 && (
           <>
             <div className="mb-2.5 mt-[18px] flex items-center gap-2.5 text-[10px] uppercase tracking-[.14em] text-ink3 after:h-px after:flex-1 after:bg-black/10 after:content-['']">
-              También podría gustarte
+              {ui.alsoLike}
             </div>
             <div className="grid grid-cols-1 gap-2">
               <div className="flex items-center gap-2.5 rounded-lg border border-black/10 bg-cream p-3">
@@ -543,7 +648,7 @@ function ResultCard({ scores, hist }) {
                 })()}
                 <div>
                   <div className="text-[12.5px] font-semibold">{exp2.name}</div>
-                  <div className="text-[12px] text-ink3">Desde {exp2.price}€ · {exp2.dur}</div>
+                  <div className="text-[12px] text-ink3">{ui.from} {exp2.price}€ · {exp2.dur}</div>
                 </div>
               </div>
             </div>
@@ -552,11 +657,11 @@ function ResultCard({ scores, hist }) {
 
         <div className="mt-4 border-t border-black/10 pt-4">
           <p className="mb-2.5 flex items-center gap-2.5 text-[10px] uppercase tracking-[.14em] text-ink3 after:h-px after:flex-1 after:bg-black/10 after:content-['']">
-            Completa tu día
+            {ui.completeYourDay}
           </p>
           <div className="flex flex-wrap gap-2">
-            <PlanPill time="Antes" name="Bar Los Diamantes" />
-            <PlanPill time="Después" name="Mirador de San Nicolás" />
+            <PlanPill time={ui.before} name={ui.plan1} />
+            <PlanPill time={ui.after} name={ui.plan2} />
           </div>
         </div>
         </div>
@@ -568,7 +673,7 @@ function ResultCard({ scores, hist }) {
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PHONE_RE = /^[+]?[\d\s()-]{6,}$/;
 
-function LeadCaptureBlock({ exp, hist }) {
+function LeadCaptureBlock({ exp, hist, ui }) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
@@ -604,8 +709,8 @@ function LeadCaptureBlock({ exp, hist }) {
       // Falls through to the mailto fallback below.
     }
 
-    const subject = `Quiero mi recomendación: ${exp.name}`;
-    const body = `Hola,\n\nMe gustaría recibir los detalles de esta recomendación:\n\n${exp.name}\n\nMi nombre: ${name || '(no indicado)'}\nMi email: ${email}${phone ? `\nMi teléfono: ${phone}` : ''}${date ? `\nFecha aproximada del viaje: ${date}` : ''}\n\n¡Gracias!`;
+    const subject = ui.subject(exp.name);
+    const body = ui.body(exp.name, name, email, phone, date);
     window.location.href = `mailto:info@betrue.es?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     setStatus('fallback');
   }
@@ -614,22 +719,22 @@ function LeadCaptureBlock({ exp, hist }) {
     return (
       <div className="mt-3 rounded-[10px] border border-gold/25 bg-cream2 p-5 text-center">
         <IconCheck className="mx-auto mb-2 h-6 w-6 text-gold2" />
-        <p className="mb-1 text-[14px] font-semibold text-ink">¡Enviado correctamente!</p>
-        <p className="text-[12.5px] leading-[1.5] text-ink3">Te hemos enviado los detalles y nuestro equipo podrá ayudarte con tu experiencia.</p>
+        <p className="mb-1 text-[14px] font-semibold text-ink">{ui.successTitle}</p>
+        <p className="text-[12.5px] leading-[1.5] text-ink3">{ui.successText}</p>
       </div>
     );
   }
 
   return (
     <div className="mt-3 rounded-[10px] border border-gold/25 bg-cream2 p-4 text-center">
-      <p className="mb-1 text-[13.5px] font-semibold text-ink">Te lo enviamos a tu correo</p>
-      <p className="mb-3 text-[12px] leading-[1.5] text-ink3">Te mandamos la propuesta detallada con horarios, mapa y recomendaciones para tu día.</p>
+      <p className="mb-1 text-[13.5px] font-semibold text-ink">{ui.emailTitle}</p>
+      <p className="mb-3 text-[12px] leading-[1.5] text-ink3">{ui.emailText}</p>
       <div className="flex flex-col gap-2.5">
         <input
           type="text"
           value={name}
           onChange={(e) => { setName(e.target.value); resetStatus(); }}
-          placeholder="Tu nombre (opcional)"
+          placeholder={ui.namePlaceholder}
           className="w-full border-b border-black/15 bg-transparent px-1 py-2 text-center text-[13.5px] text-ink placeholder:text-ink3/60 focus:border-gold2 focus:outline-none"
         />
         <div>
@@ -637,26 +742,26 @@ function LeadCaptureBlock({ exp, hist }) {
             type="email"
             value={email}
             onChange={(e) => { setEmail(e.target.value); resetStatus(); }}
-            placeholder="Tu email"
+            placeholder={ui.emailPlaceholder}
             aria-invalid={showEmailError}
             className={`w-full border-b bg-transparent px-1 py-2 text-center text-[13.5px] text-ink placeholder:text-ink3/60 focus:outline-none ${
               showEmailError ? 'border-[#9A3B2E]' : 'border-black/15 focus:border-gold2'
             }`}
           />
-          {showEmailError && <p className="mt-1 text-[11px] text-[#9A3B2E]">Introduce un email con formato válido</p>}
+          {showEmailError && <p className="mt-1 text-[11px] text-[#9A3B2E]">{ui.emailError}</p>}
         </div>
         <div>
           <input
             type="tel"
             value={phone}
             onChange={(e) => { setPhone(e.target.value); resetStatus(); }}
-            placeholder="Tu teléfono (opcional)"
+            placeholder={ui.phonePlaceholder}
             aria-invalid={showPhoneError}
             className={`w-full border-b bg-transparent px-1 py-2 text-center text-[13.5px] text-ink placeholder:text-ink3/60 focus:outline-none ${
               showPhoneError ? 'border-[#9A3B2E]' : 'border-black/15 focus:border-gold2'
             }`}
           />
-          {showPhoneError && <p className="mt-1 text-[11px] text-[#9A3B2E]">Introduce un teléfono con formato válido</p>}
+          {showPhoneError && <p className="mt-1 text-[11px] text-[#9A3B2E]">{ui.phoneError}</p>}
         </div>
         <input
           type="date"
@@ -670,12 +775,11 @@ function LeadCaptureBlock({ exp, hist }) {
           disabled={!isValidEmail || status === 'sending'}
           className="mt-1 rounded border border-gold2 px-4 py-2.5 text-[12.5px] font-semibold uppercase tracking-[.03em] text-gold2 transition-colors hover:bg-gold2 hover:text-white disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent disabled:hover:text-gold2"
         >
-          {status === 'sending' ? 'Enviando...' : 'Reservar y recibir mi ruta'}
+          {status === 'sending' ? ui.sending : ui.submitCta}
         </button>
         {status === 'fallback' && (
           <p className="text-[11.5px] leading-[1.5] text-ink3">
-            Hemos abierto tu correo con todo listo para enviar. Si no se ha abierto nada, escríbenos directamente a{' '}
-            <a href="mailto:info@betrue.es" className="underline hover:text-gold2">info@betrue.es</a>.
+            {ui.fallbackNotice}
           </p>
         )}
       </div>

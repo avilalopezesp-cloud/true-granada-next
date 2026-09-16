@@ -1,19 +1,42 @@
-const STEPS = [
-  { n: 1, title: 'Cuéntanos qué buscas', text: 'Responde 6 preguntas rápidas sobre cómo quieres vivir Granada.' },
-  { n: 2, title: 'Diseñamos una propuesta', text: 'Nuestro sistema elige la experiencia que más encaja con tu perfil.' },
-  { n: 3, title: 'Confirmamos contigo', text: 'Un mensaje de WhatsApp y en menos de 1 hora todo está listo.' },
-  { n: 4, title: 'Vive Granada', text: 'Sin estrés. Sin catálogos. Solo la experiencia que querías.' },
-];
+'use client';
+
+import { useLanguage } from '@/i18n/LanguageContext';
+
+const COPY = {
+  es: {
+    kicker: 'Simple',
+    title: '¿Cómo funciona?',
+    steps: [
+      { n: 1, title: 'Cuéntanos qué buscas', text: 'Responde 6 preguntas rápidas sobre cómo quieres vivir Granada.' },
+      { n: 2, title: 'Diseñamos una propuesta', text: 'Nuestro sistema elige la experiencia que más encaja con tu perfil.' },
+      { n: 3, title: 'Confirmamos contigo', text: 'Un mensaje de WhatsApp y en menos de 1 hora todo está listo.' },
+      { n: 4, title: 'Vive Granada', text: 'Sin estrés. Sin catálogos. Solo la experiencia que querías.' },
+    ],
+  },
+  en: {
+    kicker: 'Simple',
+    title: 'How does it work?',
+    steps: [
+      { n: 1, title: 'Tell us what you want', text: 'Answer 6 quick questions about how you want to experience Granada.' },
+      { n: 2, title: 'We design a proposal', text: 'Our system picks the experience that best fits your profile.' },
+      { n: 3, title: 'We confirm with you', text: 'One WhatsApp message and everything is ready in under an hour.' },
+      { n: 4, title: 'Live Granada', text: 'No stress. No catalogs. Just the experience you wanted.' },
+    ],
+  },
+};
 
 export default function HowItWorks() {
+  const { lang } = useLanguage();
+  const c = COPY[lang];
+
   return (
     <section className="bg-cream2 py-[100px]">
       <div className="mx-auto max-w-[1160px] px-7">
-        <p className="text-center text-[11px] font-semibold uppercase tracking-[.22em] text-gold2">Simple</p>
-        <h2 className="my-3.5 mb-14 text-center font-serif text-[clamp(1.8rem,3.5vw,2.6rem)] font-bold">¿Cómo funciona?</h2>
+        <p className="text-center text-[11px] font-semibold uppercase tracking-[.22em] text-gold2">{c.kicker}</p>
+        <h2 className="my-3.5 mb-14 text-center font-serif text-[clamp(1.8rem,3.5vw,2.6rem)] font-bold">{c.title}</h2>
         <div className="reveal-group relative grid grid-cols-4 max-[680px]:grid-cols-2">
           <div className="absolute inset-x-[12%] top-7 hidden h-px bg-black/10 min-[681px]:block" />
-          {STEPS.map((step) => (
+          {c.steps.map((step) => (
             <div key={step.n} className="reveal relative z-10 px-4 text-center">
               <div className="mx-auto mb-[18px] flex h-14 w-14 items-center justify-center rounded-full border-[1.5px] border-black/10 bg-paper font-serif text-xl font-bold text-gold2">
                 {step.n}
