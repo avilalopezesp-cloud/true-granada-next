@@ -2,7 +2,7 @@ import Nav from "@/components/Nav";
 import Hero from "@/components/Hero";
 import WhatIsTrue from "@/components/WhatIsTrue";
 import AdventurePlanner from "@/components/AdventurePlannerBoundary";
-import HowItWorks from "@/components/HowItWorks";
+import PlazaLargaMap from "@/components/PlazaLargaMap";
 import Experiences from "@/components/Experiences";
 import WhyTrue from "@/components/WhyTrue";
 import Community from "@/components/Community";
@@ -28,7 +28,7 @@ export default function Home() {
         </div>
       </section>
 
-      <HowItWorks />
+      <PlazaLargaMap />
       <Experiences />
       <WhyTrue />
       <Community />
