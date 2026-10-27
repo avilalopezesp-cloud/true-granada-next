@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { motion, useReducedMotion } from 'framer-motion';
 import { getExperiences, getQuizQuestions } from '@/data/experiences';
@@ -18,7 +18,6 @@ const UI = {
     creatingRec: 'Estamos creando tu recomendación...',
     notSure: 'No estoy seguro',
     back: '← Atrás',
-    continue: 'Continuar →',
     weFoundSomething: 'Hemos encontrado algo para ti',
     yourProfile: 'Tu perfil de viajero',
     thatsWhy: 'Por eso creemos que esta experiencia es para ti.',
@@ -71,7 +70,6 @@ const UI = {
     creatingRec: 'We are building your recommendation...',
     notSure: "I'm not sure",
     back: '← Back',
-    continue: 'Continue →',
     weFoundSomething: 'We found something for you',
     yourProfile: 'Your traveler profile',
     thatsWhy: "That's why we think this experience is for you.",
@@ -175,9 +173,46 @@ export default function AdventurePlanner() {
   const [analyzing, setAnalyzing] = useState(false);
   const [showResult, setShowResult] = useState(false);
   const [direction, setDirection] = useState(1);
+  const rootRef = useRef(null);
+  const advanceTimer = useRef(null);
 
   const total = quizQuestions.length;
   const q = quizQuestions[step];
+
+  useEffect(() => () => clearTimeout(advanceTimer.current), []);
+
+  // Each question, the loading beat and the result have different heights, so
+  // after every change bring the top of the planner back under the fixed nav
+  // (66px) — otherwise on mobile the next question can start off-screen.
+  const firstRender = useRef(true);
+  useEffect(() => {
+    if (firstRender.current) {
+      firstRender.current = false;
+      return;
+    }
+    const el = rootRef.current;
+    if (!el) return;
+    const top = el.getBoundingClientRect().top;
+    if (top < 66 || top > window.innerHeight * 0.35) {
+      window.scrollTo({ top: window.scrollY + top - 82, behavior: 'smooth' });
+    }
+  }, [started, step, analyzing, showResult]);
+
+  // Tapping an answer is enough: show the selection (and its tip) for a beat,
+  // then move on. Taps during that beat are ignored so nothing double-counts.
+  // A ref rather than `selected`, because two quick taps can land before the
+  // re-render that would make `selected` non-null.
+  const advancing = useRef(false);
+  function choose(i) {
+    if (advancing.current) return;
+    advancing.current = true;
+    setSelected(i);
+    const opt = q.opts[i];
+    advanceTimer.current = setTimeout(() => {
+      advancing.current = false;
+      commit(opt);
+    }, 650);
+  }
 
   // A short "analyzing" beat between the last question and the reveal — see
   // LoadingScreen — so the recommendation feels considered rather than instant.
@@ -202,6 +237,7 @@ export default function AdventurePlanner() {
   }
 
   function skip() {
+    if (advancing.current) return;
     setHist((h) => [...h, { w: {}, l: null, short: q.short }]);
     setDirection(1);
     setSelected(null);
@@ -210,7 +246,7 @@ export default function AdventurePlanner() {
   }
 
   function goBack() {
-    if (step === 0) return;
+    if (step === 0 || advancing.current) return;
     const newHist = hist.slice(0, -1);
     const newScores = { ...EMPTY_SCORES };
     newHist.forEach((h) => Object.keys(h.w).forEach((k) => { newScores[k] += h.w[k]; }));
@@ -222,6 +258,8 @@ export default function AdventurePlanner() {
   }
 
   function restart() {
+    clearTimeout(advanceTimer.current);
+    advancing.current = false;
     setStep(0);
     setHist([]);
     setScores(EMPTY_SCORES);
@@ -232,7 +270,7 @@ export default function AdventurePlanner() {
   }
 
   return (
-    <div className="relative overflow-hidden rounded-2xl border border-gold/25 shadow-[0_30px_80px_rgba(0,0,0,.45)]">
+    <div ref={rootRef} className="relative overflow-hidden rounded-2xl border border-gold/25 shadow-[0_30px_80px_rgba(0,0,0,.45)]">
       <div className="ken-burns absolute inset-0 z-0">
         <Image src="/images/quiz/quiz-bg.jpg" alt="" fill className="object-cover" priority />
         <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(15,13,10,.88)_0%,rgba(15,13,10,.94)_55%,rgba(15,13,10,.97)_100%)]" />
@@ -323,7 +361,7 @@ export default function AdventurePlanner() {
                         opt={opt}
                         index={i}
                         active={selected === i}
-                        onClick={() => setSelected(i)}
+                        onClick={() => choose(i)}
                       />
                     ))}
                   </div>
@@ -336,25 +374,11 @@ export default function AdventurePlanner() {
                     <button type="button" onClick={skip} className="text-[11px] font-medium text-white/40 transition-colors hover:text-white/60 hover:underline">
                       {ui.notSure}
                     </button>
-                    <div className="ml-auto flex items-center gap-4">
-                      {step > 0 && (
-                        <button type="button" onClick={goBack} className="text-xs font-semibold text-white/50 transition-colors hover:text-white/70">
-                          {ui.back}
-                        </button>
-                      )}
-                      <button
-                        type="button"
-                        disabled={selected === null}
-                        onClick={() => commit(q.opts[selected])}
-                        className={`rounded-md px-7 py-3 text-sm font-bold transition-all duration-300 ${
-                          selected === null
-                            ? 'pointer-events-none bg-white/10 text-white/30'
-                            : 'bg-gold text-ink shadow-[0_0_22px_rgba(201,165,90,.45)] hover:-translate-y-0.5 hover:bg-gold2 hover:text-white hover:shadow-[0_0_28px_rgba(201,165,90,.6)]'
-                        }`}
-                      >
-                        {ui.continue}
+                    {step > 0 && (
+                      <button type="button" onClick={goBack} disabled={selected !== null} className="ml-auto text-xs font-semibold text-white/50 transition-colors hover:text-white/70">
+                        {ui.back}
                       </button>
-                    </div>
+                    )}
                   </div>
                 </motion.div>
 
