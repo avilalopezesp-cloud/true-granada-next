@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { useLanguage, pick } from '@/i18n/LanguageContext';
@@ -87,8 +88,17 @@ export default function PlazaLargaMap() {
   const [active, setActive] = useState(null);
 
   return (
-    <section className="relative overflow-hidden border-t border-white/[.06] bg-ink py-[100px]" id="mapa">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_35%_40%,rgba(201,165,90,.07),transparent_60%)]" />
+    // A warmer, lighter brown than the planner's ink above it, plus a gold
+    // divider with the goat on the seam, so the two dark sections read apart.
+    <section className="relative bg-[#2A231A] pb-[100px] pt-[120px]" id="mapa">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_35%_40%,rgba(201,165,90,.09),transparent_60%)]" />
+      <div className="pointer-events-none absolute inset-x-0 top-0 z-10 flex -translate-y-1/2 items-center justify-center gap-4 px-7" aria-hidden="true">
+        <span className="h-px max-w-[420px] flex-1 bg-gradient-to-r from-transparent to-gold/60" />
+        <span className="flex h-14 w-14 items-center justify-center rounded-full border border-gold/60 bg-[#2A231A] shadow-[0_0_24px_rgba(201,165,90,.25)]">
+          <Image src="/images/true-goat.png" alt="" width={40} height={40} className="h-10 w-10" />
+        </span>
+        <span className="h-px max-w-[420px] flex-1 bg-gradient-to-l from-transparent to-gold/60" />
+      </div>
       <div className="relative mx-auto grid max-w-[1160px] gap-x-12 gap-y-8 px-7 [grid-template-areas:'head'_'map'_'list'] lg:grid-cols-[1.15fr_1fr] lg:grid-rows-[auto_1fr] lg:[grid-template-areas:'map_head'_'map_list']">
         <motion.svg
           viewBox="0 0 600 520"
