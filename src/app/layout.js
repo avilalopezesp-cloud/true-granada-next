@@ -9,9 +9,6 @@ export const metadata = {
   title: "TRUE Granada — Granada no se visita, se vive",
   description:
     "TRUE Granada — Cuéntanos cómo quieres descubrir Granada y diseñamos una experiencia para ti. Barranquismo, Vía Ferrata, E-Bike Tours y más, guiados por locales del Albaicín.",
-  icons: {
-    icon: "/images/logo-arc.png",
-  },
   openGraph: {
     type: "website",
     title: "TRUE Granada — Granada no se visita, se vive",
