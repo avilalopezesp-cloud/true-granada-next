@@ -2,16 +2,17 @@
 
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { getExperiences, getQuizQuestions } from '@/data/experiences';
 import WhatsAppIcon from './icons/WhatsAppIcon';
 import { useLanguage } from '@/i18n/LanguageContext';
 
 const UI = {
   es: {
-    introTitle: 'Descubre tu experiencia perfecta en Granada',
-    introText: 'No todas las personas viven Granada de la misma forma. Responde unas preguntas y encontraremos la aventura que encaja contigo.',
-    introCta: 'Descubrir mi experiencia →',
+    introText: (total) => `${total} preguntas, 30 segundos y te proponemos la experiencia que encaja contigo.`,
+    introBubble: 'Prometo no hacer preguntas raras.',
+    introCta: 'Empezar →',
+    goatAlt: 'La cabra de TRUE',
     loadingMessages: ['Analizando tus preferencias...', 'Comparando experiencias...', 'Diseñando tu recomendación...'],
     questionOf: (step, total) => `Pregunta ${step} de ${total}`,
     creatingRec: 'Estamos creando tu recomendación...',
@@ -61,9 +62,10 @@ const UI = {
     body: (name, formName, email, phone, date) => `Hola,\n\nMe gustaría recibir los detalles de esta recomendación:\n\n${name}\n\nMi nombre: ${formName || '(no indicado)'}\nMi email: ${email}${phone ? `\nMi teléfono: ${phone}` : ''}${date ? `\nFecha aproximada del viaje: ${date}` : ''}\n\n¡Gracias!`,
   },
   en: {
-    introTitle: 'Discover your perfect experience in Granada',
-    introText: "Not everyone experiences Granada the same way. Answer a few questions and we'll find the adventure that fits you.",
-    introCta: 'Discover my experience →',
+    introText: (total) => `${total} questions, 30 seconds, and we'll suggest the experience that fits you.`,
+    introBubble: 'I promise, no weird questions.',
+    introCta: 'Start →',
+    goatAlt: 'The TRUE goat',
     loadingMessages: ['Analyzing your preferences...', 'Comparing experiences...', 'Designing your recommendation...'],
     questionOf: (step, total) => `Question ${step} of ${total}`,
     creatingRec: 'We are building your recommendation...',
@@ -248,22 +250,22 @@ export default function AdventurePlanner() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, ease: EASE }}
             >
-              <motion.div variants={staggerParent} initial="hidden" animate="show" className="mx-auto max-w-[560px] py-4 text-center">
-                <motion.h3 variants={staggerItem} className="mb-3 font-serif text-2xl font-bold text-white sm:text-[28px]">
-                  {ui.introTitle}
-                </motion.h3>
-                <motion.p variants={staggerItem} className="mx-auto mb-7 max-w-[440px] text-[15px] leading-[1.6] text-white/65">
-                  {ui.introText}
-                </motion.p>
-                <motion.button
-                  variants={staggerItem}
-                  type="button"
-                  onClick={() => setStarted(true)}
-                  className="rounded-md bg-gold px-8 py-3.5 text-sm font-bold uppercase tracking-[.03em] text-ink shadow-[0_0_22px_rgba(201,165,90,.45)] transition-all hover:-translate-y-0.5 hover:bg-gold2 hover:text-white hover:shadow-[0_0_28px_rgba(201,165,90,.6)]"
-                >
-                  {ui.introCta}
-                </motion.button>
-              </motion.div>
+              <div className="mx-auto flex max-w-[760px] items-center justify-center gap-10 py-2 max-sm:flex-col-reverse max-sm:gap-4">
+                <motion.div variants={staggerParent} initial="hidden" animate="show" className="max-w-[400px] text-left max-sm:text-center">
+                  <motion.p variants={staggerItem} className="mb-7 font-serif text-[clamp(1.25rem,2.4vw,1.6rem)] font-bold leading-[1.35] text-white">
+                    {ui.introText(total)}
+                  </motion.p>
+                  <motion.button
+                    variants={staggerItem}
+                    type="button"
+                    onClick={() => setStarted(true)}
+                    className="rounded-md bg-gold px-9 py-3.5 text-sm font-bold uppercase tracking-[.03em] text-ink shadow-[0_0_22px_rgba(201,165,90,.45)] transition-all hover:-translate-y-0.5 hover:bg-gold2 hover:text-white hover:shadow-[0_0_28px_rgba(201,165,90,.6)]"
+                  >
+                    {ui.introCta}
+                  </motion.button>
+                </motion.div>
+                <IntroGoat ui={ui} onStart={() => setStarted(true)} />
+              </div>
 
               <TrustBar ui={ui} />
             </motion.div>
@@ -526,6 +528,46 @@ function OptionCard({ opt, active, onClick }) {
       <span className="text-[14px] font-bold text-white">{opt.l}</span>
       <span className="text-[11px] font-semibold text-white/60">{opt.s}</span>
     </button>
+  );
+}
+
+// The TRUE goat next to the intro: floats gently with a pulsing gold glow and
+// a speech bubble; clicking it starts the quiz too. Loops are skipped when
+// the visitor prefers reduced motion.
+function IntroGoat({ ui, onStart }) {
+  const reduceMotion = useReducedMotion();
+  const loop = (duration) => ({ duration, repeat: Infinity, ease: 'easeInOut' });
+
+  return (
+    <div className="relative flex-shrink-0 pt-10 max-sm:pt-12">
+      <motion.span
+        initial={{ opacity: 0, scale: 0.6, y: 8 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        transition={{ delay: 0.6, type: 'spring', stiffness: 260, damping: 18 }}
+        className="absolute -left-6 top-0 z-10 whitespace-nowrap rounded-xl rounded-br-sm bg-white px-3.5 py-2 text-[12.5px] font-semibold text-ink shadow-[0_8px_24px_rgba(0,0,0,.35)] max-sm:left-1/2 max-sm:-translate-x-1/2 max-sm:rounded-br-xl"
+      >
+        {ui.introBubble}
+      </motion.span>
+      <motion.div
+        aria-hidden="true"
+        className="absolute inset-x-4 bottom-2 top-14 rounded-full bg-[radial-gradient(circle,rgba(201,165,90,.6)_0%,rgba(201,165,90,0)_70%)] blur-2xl"
+        animate={reduceMotion ? undefined : { opacity: [0.55, 1, 0.55], scale: [0.92, 1.05, 0.92] }}
+        transition={loop(3.2)}
+      />
+      <motion.button
+        type="button"
+        onClick={onStart}
+        aria-label={ui.introCta}
+        className="relative block cursor-pointer"
+        initial={{ opacity: 0, y: 24, rotate: -6 }}
+        animate={reduceMotion ? { opacity: 1, y: 0, rotate: 0 } : { opacity: 1, y: [0, -10, 0], rotate: [-2, 2, -2] }}
+        transition={reduceMotion ? { duration: 0.4 } : { opacity: { duration: 0.5 }, y: loop(4.5), rotate: loop(6) }}
+        whileHover={{ scale: 1.06, rotate: 6 }}
+        whileTap={{ scale: 0.96 }}
+      >
+        <Image src="/images/true-goat.png" alt={ui.goatAlt} width={200} height={200} className="h-[200px] w-[200px] drop-shadow-[0_14px_24px_rgba(0,0,0,.5)] max-sm:h-[150px] max-sm:w-[150px]" />
+      </motion.button>
+    </div>
   );
 }
 
