@@ -17,6 +17,7 @@ export const EXPERIENCES = {
     dur: { es: '4–5 horas', en: '4–5 hours' },
     group: { es: 'Máx. 8 personas', en: 'Max. 8 people' },
     level: { es: 'Principiantes bienvenidos', en: 'Beginners welcome' },
+    tags: { es: ['4–5 h', 'Principiantes', 'Máx. 8', 'Equipo incluido'], en: ['4–5 h', 'Beginners', 'Max. 8', 'Gear included'] },
     desc: {
       es: 'Saltos, toboganes naturales y rápeles en aguas turquesa a los pies de Sierra Nevada, a solo 45 minutos de Granada. Guía certificado y equipo incluido — apto para principiantes.',
       en: 'Jumps, natural slides and rappels in turquoise water at the foot of Sierra Nevada, just 45 minutes from Granada. Certified guide and gear included — beginner-friendly.',
@@ -114,6 +115,7 @@ export const EXPERIENCES = {
     dur: { es: '3–4 horas', en: '3–4 hours' },
     group: { es: 'Máx. 8 personas', en: 'Max. 8 people' },
     level: { es: 'Iniciación', en: 'Beginner level' },
+    tags: { es: ['3–4 h', 'Iniciación', 'Máx. 8', 'Equipo incluido'], en: ['3–4 h', 'Beginner level', 'Max. 8', 'Gear included'] },
     desc: {
       es: 'Puentes colgantes, pasos verticales y vistas de Sierra Nevada desde las alturas. No hace falta experiencia previa — equipo de seguridad y guía incluidos.',
       en: 'Hanging bridges, vertical sections and Sierra Nevada views from up high. No prior experience needed — safety gear and guide included.',
@@ -209,6 +211,7 @@ export const EXPERIENCES = {
     dur: { es: '2,5 horas', en: '2.5 hours' },
     group: { es: 'Máx. 6 personas', en: 'Max. 6 people' },
     level: { es: 'Fácil — apto para todos', en: 'Easy — suitable for everyone' },
+    tags: { es: ['2,5 h', 'Fácil', 'Máx. 6', 'E-bike y casco'], en: ['2.5 h', 'Easy', 'Max. 6', 'E-bike and helmet'] },
     desc: {
       es: 'Diseñamos tu ruta en e-bike según tu nivel, el tiempo que tengas y lo que te apetezca vivir: Alhambra, Sacromonte, Albaicín, grafitis, playa por el Genil, tapas o flamenco.',
       en: 'We design your e-bike route based on your level, how much time you have and what you feel like doing: Alhambra, Sacromonte, Albaicín, street art, the Genil riverside, tapas or flamenco.',
@@ -313,6 +316,7 @@ function resolveExperience(exp, lang) {
     dur: t(exp.dur, lang),
     group: t(exp.group, lang),
     level: t(exp.level, lang),
+    tags: t(exp.tags, lang),
     desc: t(exp.desc, lang),
     why: t(exp.why, lang),
     profile: { name: t(exp.profile.name, lang), desc: t(exp.profile.desc, lang) },
@@ -356,55 +360,55 @@ const QUIZ_QUESTIONS = [
     short: { es: 'Compañía', en: 'Company' },
     sub: { es: 'Cuéntanos para quién estás planeando esta aventura.', en: "Tell us who you're planning this adventure for." },
     opts: [
-      { l: { es: 'En pareja', en: 'As a couple' }, s: { es: 'Solo los dos', en: 'Just the two of you' }, img: '/images/quiz/quiz-en-pareja.webp', tip: { es: 'Las escapadas en pareja suelen pedir menos ritmo y más momentos para los dos.', en: 'Couple getaways usually call for a slower pace and more time together.' }, w: { ebike: 3, barranquismo: 1, ferrata: 1 } },
-      { l: { es: 'En familia', en: 'As a family' }, s: { es: 'Con niños o mayores', en: 'With kids or elders' }, img: '/images/quiz/quiz-en-familia.webp', tip: { es: 'Las aventuras en familia suelen crear los mejores recuerdos.', en: 'Family adventures tend to create the best memories.' }, w: { ebike: 3, barranquismo: 0, ferrata: 0 } },
-      { l: { es: 'Con amigos', en: 'With friends' }, s: { es: 'Grupo de 3 o más', en: 'Group of 3 or more' }, img: '/images/quiz/quiz-con-amigos.webp', tip: { es: 'Con amigos, cuanta más adrenalina, mejor anécdota para contar.', en: 'With friends, the more adrenaline, the better the story to tell.' }, w: { barranquismo: 3, ferrata: 2, ebike: 1 } },
-      { l: { es: 'Solo/a', en: 'Solo' }, s: { es: 'Aventura en solitario', en: 'A solo adventure' }, img: '/images/quiz/quiz-solo.webp', tip: { es: 'Ir por libre es la forma más rápida de desconectar de verdad.', en: 'Going it alone is the fastest way to really disconnect.' }, w: { ferrata: 2, barranquismo: 2, ebike: 1 } },
+      { l: { es: 'En pareja', en: 'As a couple' }, because: { es: "vienes en pareja", en: "you're travelling as a couple" }, s: { es: 'Solo los dos', en: 'Just the two of you' }, img: '/images/quiz/quiz-en-pareja.webp', tip: { es: 'Las escapadas en pareja suelen pedir menos ritmo y más momentos para los dos.', en: 'Couple getaways usually call for a slower pace and more time together.' }, w: { ebike: 3, barranquismo: 1, ferrata: 1 } },
+      { l: { es: 'En familia', en: 'As a family' }, because: { es: "viajas en familia", en: "you're travelling with family" }, s: { es: 'Con niños o mayores', en: 'With kids or elders' }, img: '/images/quiz/quiz-en-familia.webp', tip: { es: 'Las aventuras en familia suelen crear los mejores recuerdos.', en: 'Family adventures tend to create the best memories.' }, w: { ebike: 3, barranquismo: 0, ferrata: 0 } },
+      { l: { es: 'Con amigos', en: 'With friends' }, because: { es: "vienes con amigos", en: "you're coming with friends" }, s: { es: 'Grupo de 3 o más', en: 'Group of 3 or more' }, img: '/images/quiz/quiz-con-amigos.webp', tip: { es: 'Con amigos, cuanta más adrenalina, mejor anécdota para contar.', en: 'With friends, the more adrenaline, the better the story to tell.' }, w: { barranquismo: 3, ferrata: 2, ebike: 1 } },
+      { l: { es: 'Solo/a', en: 'Solo' }, because: { es: "viajas por tu cuenta", en: "you're travelling solo" }, s: { es: 'Aventura en solitario', en: 'A solo adventure' }, img: '/images/quiz/quiz-solo.webp', tip: { es: 'Ir por libre es la forma más rápida de desconectar de verdad.', en: 'Going it alone is the fastest way to really disconnect.' }, w: { ferrata: 2, barranquismo: 2, ebike: 1 } },
     ],
   },
   {
     q: { es: '¿Qué quieres vivir?', en: 'What do you want to experience?' },
     short: { es: 'Emoción', en: 'Feeling' },
     opts: [
-      { icon: 'flame', l: { es: 'Adrenalina', en: 'Adrenaline' }, s: { es: 'Supera tus límites y siente la emoción.', en: 'Push your limits and feel the rush.' }, w: { barranquismo: 3, ferrata: 3, ebike: 0 } },
-      { icon: 'leaf', l: { es: 'Naturaleza y calma', en: 'Nature and calm' }, s: { es: 'Desconecta, respira y disfruta del entorno.', en: 'Disconnect, breathe and enjoy the surroundings.' }, w: { ebike: 2, barranquismo: 1, ferrata: 0 } },
-      { icon: 'columns', l: { es: 'Cultura y descubrimiento', en: 'Culture and discovery' }, s: { es: 'Conoce Granada más allá de lo habitual.', en: 'Get to know Granada beyond the usual.' }, w: { ebike: 3, barranquismo: 0, ferrata: 0 } },
-      { icon: 'target', l: { es: 'Reto personal', en: 'Personal challenge' }, s: { es: 'Una experiencia que recordarás siempre.', en: "An experience you'll always remember." }, w: { ferrata: 3, barranquismo: 2, ebike: 0 } },
+      { icon: 'flame', l: { es: 'Adrenalina', en: 'Adrenaline' }, because: { es: "buscas adrenalina", en: "you want adrenaline" }, s: { es: 'Supera tus límites y siente la emoción.', en: 'Push your limits and feel the rush.' }, w: { barranquismo: 3, ferrata: 3, ebike: 0 } },
+      { icon: 'leaf', l: { es: 'Naturaleza y calma', en: 'Nature and calm' }, because: { es: "quieres naturaleza y calma", en: "you want nature and calm" }, s: { es: 'Desconecta, respira y disfruta del entorno.', en: 'Disconnect, breathe and enjoy the surroundings.' }, w: { ebike: 2, barranquismo: 1, ferrata: 0 } },
+      { icon: 'columns', l: { es: 'Cultura y descubrimiento', en: 'Culture and discovery' }, because: { es: "quieres descubrir la Granada de verdad", en: "you want to discover the real Granada" }, s: { es: 'Conoce Granada más allá de lo habitual.', en: 'Get to know Granada beyond the usual.' }, w: { ebike: 3, barranquismo: 0, ferrata: 0 } },
+      { icon: 'target', l: { es: 'Reto personal', en: 'Personal challenge' }, because: { es: "buscas un reto personal", en: "you're after a personal challenge" }, s: { es: 'Una experiencia que recordarás siempre.', en: "An experience you'll always remember." }, w: { ferrata: 3, barranquismo: 2, ebike: 0 } },
     ],
   },
   {
     q: { es: '¿Cómo prefieres desplazarte?', en: 'How do you prefer to get around?' },
     short: { es: 'Movilidad', en: 'Mobility' },
     opts: [
-      { icon: 'car', l: { es: 'Tengo coche', en: 'I have a car' }, s: { es: 'Puedo desplazarme con facilidad.', en: 'I can get around easily.' }, w: { barranquismo: 2, ferrata: 2, ebike: 1 } },
-      { icon: 'footprints', l: { es: 'Prefiero quedarme cerca', en: "I'd rather stay close" }, s: { es: 'Busco experiencias accesibles desde Granada.', en: 'Looking for experiences accessible from Granada.' }, w: { ebike: 3, barranquismo: 0, ferrata: 0 } },
-      { icon: 'bus', l: { es: 'Necesito transporte', en: 'I need transport' }, s: { es: 'Prefiero opciones con traslado incluido.', en: 'I prefer options with transfer included.' }, w: { barranquismo: 2, ferrata: 2, ebike: 0 } },
+      { icon: 'car', l: { es: 'Tengo coche', en: 'I have a car' }, because: { es: "tienes coche para moverte", en: "you have a car to get around" }, s: { es: 'Puedo desplazarme con facilidad.', en: 'I can get around easily.' }, w: { barranquismo: 2, ferrata: 2, ebike: 1 } },
+      { icon: 'footprints', l: { es: 'Prefiero quedarme cerca', en: "I'd rather stay close" }, because: { es: "prefieres no salir de la ciudad", en: "you'd rather not leave the city" }, s: { es: 'Busco experiencias accesibles desde Granada.', en: 'Looking for experiences accessible from Granada.' }, w: { ebike: 3, barranquismo: 0, ferrata: 0 } },
+      { icon: 'bus', l: { es: 'Necesito transporte', en: 'I need transport' }, because: { es: "prefieres no preocuparte del transporte", en: "you'd rather not worry about transport" }, s: { es: 'Prefiero opciones con traslado incluido.', en: 'I prefer options with transfer included.' }, w: { barranquismo: 2, ferrata: 2, ebike: 0 } },
     ],
   },
   {
     q: { es: '¿Cuánto tiempo tenéis?', en: 'How much time do you have?' },
     short: { es: 'Tiempo', en: 'Time' },
     opts: [
-      { icon: 'clock', l: { es: '2 horas', en: '2 hours' }, s: { es: 'Algo corto', en: 'Something short' }, w: { ebike: 2, barranquismo: 0, ferrata: 0 } },
-      { icon: 'sunHalf', l: { es: 'Medio día', en: 'Half a day' }, s: { es: '3–5 horas', en: '3–5 hours' }, w: { ebike: 1, barranquismo: 3, ferrata: 3 } },
-      { icon: 'sun', l: { es: 'Día completo', en: 'Full day' }, s: { es: 'Sin prisa', en: 'No rush' }, w: { barranquismo: 2, ferrata: 2, ebike: 1 } },
+      { icon: 'clock', l: { es: '2 horas', en: '2 hours' }, because: { es: "tienes un par de horas", en: "you have a couple of hours" }, s: { es: 'Algo corto', en: 'Something short' }, w: { ebike: 2, barranquismo: 0, ferrata: 0 } },
+      { icon: 'sunHalf', l: { es: 'Medio día', en: 'Half a day' }, because: { es: "tienes medio día", en: "you have half a day" }, s: { es: '3–5 horas', en: '3–5 hours' }, w: { ebike: 1, barranquismo: 3, ferrata: 3 } },
+      { icon: 'sun', l: { es: 'Día completo', en: 'Full day' }, because: { es: "tienes el día entero", en: "you have the whole day" }, s: { es: 'Sin prisa', en: 'No rush' }, w: { barranquismo: 2, ferrata: 2, ebike: 1 } },
     ],
   },
   {
     q: { es: '¿Qué nivel de aventura buscas?', en: 'What level of adventure are you after?' },
     short: { es: 'Nivel físico', en: 'Fitness level' },
     opts: [
-      { icon: 'leaf', l: { es: 'Tranquilo', en: 'Relaxed' }, s: { es: 'Disfrutar sin grandes esfuerzos.', en: 'Enjoy without much effort.' }, w: { ebike: 3, barranquismo: 0, ferrata: 0 } },
-      { icon: 'bolt', l: { es: 'Activo', en: 'Active' }, s: { es: 'Caminar, explorar y moverte.', en: 'Walk, explore and move around.' }, w: { ebike: 1, barranquismo: 3, ferrata: 2 } },
-      { icon: 'flame', l: { es: 'Intenso', en: 'Intense' }, s: { es: 'Busco un verdadero desafío.', en: "I'm looking for a real challenge." }, w: { barranquismo: 2, ferrata: 3, ebike: 0 } },
+      { icon: 'leaf', l: { es: 'Tranquilo', en: 'Relaxed' }, because: { es: "quieres algo tranquilo", en: "you want something relaxed" }, s: { es: 'Disfrutar sin grandes esfuerzos.', en: 'Enjoy without much effort.' }, w: { ebike: 3, barranquismo: 0, ferrata: 0 } },
+      { icon: 'bolt', l: { es: 'Activo', en: 'Active' }, because: { es: "quieres moverte", en: "you want to stay active" }, s: { es: 'Caminar, explorar y moverte.', en: 'Walk, explore and move around.' }, w: { ebike: 1, barranquismo: 3, ferrata: 2 } },
+      { icon: 'flame', l: { es: 'Intenso', en: 'Intense' }, because: { es: "buscas un desafío de verdad", en: "you want a real challenge" }, s: { es: 'Busco un verdadero desafío.', en: "I'm looking for a real challenge." }, w: { barranquismo: 2, ferrata: 3, ebike: 0 } },
     ],
   },
   {
     q: { es: '¿Qué momento del día prefieres?', en: 'What time of day do you prefer?' },
     short: { es: 'Último paso', en: 'Last step' },
     opts: [
-      { icon: 'sunrise', l: { es: 'Mañana', en: 'Morning' }, s: { es: 'Empezar pronto', en: 'Start early' }, w: { barranquismo: 2, ferrata: 2, ebike: 1 } },
-      { icon: 'sunset', l: { es: 'Atardecer', en: 'Sunset' }, s: { es: 'Las mejores luces', en: 'The best light' }, w: { ebike: 3, barranquismo: 0, ferrata: 0 } },
+      { icon: 'sunrise', l: { es: 'Mañana', en: 'Morning' }, because: { es: "prefieres empezar temprano", en: "you like an early start" }, s: { es: 'Empezar pronto', en: 'Start early' }, w: { barranquismo: 2, ferrata: 2, ebike: 1 } },
+      { icon: 'sunset', l: { es: 'Atardecer', en: 'Sunset' }, because: { es: "te gustan las luces del atardecer", en: "you love the sunset light" }, s: { es: 'Las mejores luces', en: 'The best light' }, w: { ebike: 3, barranquismo: 0, ferrata: 0 } },
     ],
   },
 ];
@@ -414,7 +418,7 @@ function resolveQuestion(question, lang) {
     q: t(question.q, lang),
     short: t(question.short, lang),
     sub: question.sub ? t(question.sub, lang) : undefined,
-    opts: question.opts.map((o) => ({ ...o, l: t(o.l, lang), s: t(o.s, lang), tip: o.tip ? t(o.tip, lang) : undefined })),
+    opts: question.opts.map((o) => ({ ...o, l: t(o.l, lang), s: t(o.s, lang), tip: o.tip ? t(o.tip, lang) : undefined, because: t(o.because, lang) })),
   };
 }
 

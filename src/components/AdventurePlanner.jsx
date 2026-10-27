@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { motion, useReducedMotion } from 'framer-motion';
 import { getExperiences, getQuizQuestions } from '@/data/experiences';
 import WhatsAppIcon from './icons/WhatsAppIcon';
@@ -18,38 +19,34 @@ const UI = {
     creatingRec: 'Estamos creando tu recomendación...',
     notSure: 'No estoy seguro',
     back: '← Atrás',
-    weFoundSomething: 'Hemos encontrado algo para ti',
     yourProfile: 'Tu perfil de viajero',
-    thatsWhy: 'Por eso creemos que esta experiencia es para ti.',
     startOver: 'Volver a empezar',
     trustItems: [
       { l: 'Guías expertos locales', s: 'Pasión por Granada' },
       { l: 'Grupos pequeños', s: 'Experiencias más auténticas' },
       { l: 'Cancelación flexible', s: 'Reserva con tranquilidad' },
     ],
-    thisMatches: 'Esta experiencia encaja contigo',
-    from: 'Desde',
-    perPerson: 'por persona',
-    weChoseBecause: 'Elegimos esta experiencia porque...',
-    includes: 'Incluye',
-    checkAvailability: 'Consultar disponibilidad',
-    viewDetails: 'Ver detalles',
-    alsoLike: 'También podría gustarte',
-    granada: 'Granada',
-    completeYourDay: 'Completa tu día',
+    yourMatch: 'Tu experiencia',
+    priceLine: (price) => `Desde ${price} € por persona`,
+    whyThis: 'Por qué esta',
+    joinReasons: (parts) => (parts.length > 1 ? `${parts.slice(0, -1).join(', ')} y ${parts[parts.length - 1]}` : parts[0]),
+    bookWhatsApp: 'Reservar por WhatsApp',
+    waMessage: (profile, name) => `Hola TRUE 👋 Según vuestro planificador soy «${profile}» 🐐 y me encaja ${name}. ¿Tenéis disponibilidad?`,
+    emailOpen: 'Enviarme el plan por email',
+    notConvinced: '¿No te convence? Prueba estas',
+    completeYourDay: 'Completa tu día como un local',
     before: 'Antes',
     after: 'Después',
     plan1: 'Bar Los Diamantes',
     plan2: 'Mirador de San Nicolás',
-    emailTitle: 'Te lo enviamos a tu correo',
-    emailText: 'Te mandamos la propuesta detallada con horarios, mapa y recomendaciones para tu día.',
+    emailText: 'Te mandamos el plan con horarios, mapa y recomendaciones para tu día.',
     namePlaceholder: 'Tu nombre (opcional)',
     emailPlaceholder: 'Tu email',
     emailError: 'Introduce un email con formato válido',
     phonePlaceholder: 'Tu teléfono (opcional)',
     phoneError: 'Introduce un teléfono con formato válido',
     sending: 'Enviando...',
-    submitCta: 'Reservar y recibir mi ruta',
+    submitCta: 'Enviar',
     fallbackNotice: (
       <>Hemos abierto tu correo con todo listo para enviar. Si no se ha abierto nada, escríbenos directamente a{' '}
         <a href="mailto:info@betrue.es" className="underline hover:text-gold2">info@betrue.es</a>.
@@ -70,38 +67,34 @@ const UI = {
     creatingRec: 'We are building your recommendation...',
     notSure: "I'm not sure",
     back: '← Back',
-    weFoundSomething: 'We found something for you',
     yourProfile: 'Your traveler profile',
-    thatsWhy: "That's why we think this experience is for you.",
     startOver: 'Start over',
     trustItems: [
       { l: 'Expert local guides', s: 'Passionate about Granada' },
       { l: 'Small groups', s: 'More authentic experiences' },
       { l: 'Flexible cancellation', s: 'Book with peace of mind' },
     ],
-    thisMatches: 'This experience matches you',
-    from: 'From',
-    perPerson: 'per person',
-    weChoseBecause: 'We chose this experience because...',
-    includes: 'Includes',
-    checkAvailability: 'Check availability',
-    viewDetails: 'View details',
-    alsoLike: 'You might also like',
-    granada: 'Granada',
-    completeYourDay: 'Complete your day',
+    yourMatch: 'Your experience',
+    priceLine: (price) => `From €${price} per person`,
+    whyThis: 'Why this one',
+    joinReasons: (parts) => (parts.length > 1 ? `${parts.slice(0, -1).join(', ')} and ${parts[parts.length - 1]}` : parts[0]),
+    bookWhatsApp: 'Book on WhatsApp',
+    waMessage: (profile, name) => `Hi TRUE 👋 Your planner says I'm "${profile}" 🐐 and ${name} is my match. Do you have availability?`,
+    emailOpen: 'Email me the plan',
+    notConvinced: 'Not convinced? Try these',
+    completeYourDay: 'Complete your day like a local',
     before: 'Before',
     after: 'After',
     plan1: 'Bar Los Diamantes',
     plan2: 'San Nicolás Viewpoint',
-    emailTitle: "We'll send it to your email",
-    emailText: "We'll send you the detailed proposal with schedule, map and recommendations for your day.",
+    emailText: "We'll send you the plan with schedule, map and recommendations for your day.",
     namePlaceholder: 'Your name (optional)',
     emailPlaceholder: 'Your email',
     emailError: 'Enter a valid email address',
     phonePlaceholder: 'Your phone (optional)',
     phoneError: 'Enter a valid phone number',
     sending: 'Sending...',
-    submitCta: 'Book and get my route',
+    submitCta: 'Send',
     fallbackNotice: (
       <>We&apos;ve opened your email client with everything ready to send. If nothing opened, email us directly at{' '}
         <a href="mailto:info@betrue.es" className="underline hover:text-gold2">info@betrue.es</a>.
@@ -227,7 +220,7 @@ export default function AdventurePlanner() {
   function commit(opt) {
     const nextScores = { ...scores };
     Object.keys(opt.w).forEach((k) => { nextScores[k] += opt.w[k]; });
-    setHist((h) => [...h, { w: opt.w, l: opt.l, short: q.short }]);
+    setHist((h) => [...h, { w: opt.w, l: opt.l, short: q.short, because: opt.because }]);
     setScores(nextScores);
     setDirection(1);
     setSelected(null);
@@ -391,28 +384,9 @@ export default function AdventurePlanner() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.45, ease: EASE }}
             >
-              <p className="mb-4 text-center font-serif text-2xl font-bold text-white sm:text-[28px]">
-                {ui.weFoundSomething}
-              </p>
+              <ResultCard scores={scores} hist={hist} experiences={experiences} ui={ui} />
 
-              <div className="mx-auto max-w-[520px] rounded-[14px] bg-cream2 p-1">
-                <ResultCard scores={scores} hist={hist} experiences={experiences} ui={ui} />
-              </div>
-
-              {(() => {
-                const profile = experiences[topExperienceKey(scores)].profile;
-                return (
-                  <div className="mx-auto mt-4 max-w-[520px] rounded-[14px] border border-gold/25 bg-black/20 px-5 py-5 text-center">
-                    <p className="mb-1.5 text-[10px] font-semibold uppercase tracking-[.18em] text-gold">{ui.yourProfile}</p>
-                    <p className="mb-2 font-serif text-xl font-bold text-white">{profile.name}</p>
-                    <p className="mx-auto max-w-[380px] text-[13.5px] leading-[1.6] text-white/70">
-                      {profile.desc} {ui.thatsWhy}
-                    </p>
-                  </div>
-                );
-              })()}
-
-              <div className="mt-5 text-center">
+              <div className="mt-6 text-center">
                 <button type="button" onClick={restart} className="text-xs font-semibold text-white/50 underline hover:text-white/70">
                   {ui.startOver}
                 </button>
@@ -613,124 +587,97 @@ function TrustBar({ ui }) {
   );
 }
 
-const EXPERIENCE_ICONS = { barranquismo: IconMountain, ferrata: IconCompass, ebike: IconBike };
+// The answers that pushed the winning experience most, kept in quiz order,
+// phrased as "vienes en pareja", "quieres algo tranquilo"… for "Por qué esta".
+function pickReasons(hist, top) {
+  return hist
+    .map((h, i) => ({ ...h, i }))
+    .filter((h) => h.because && (h.w[top] || 0) > 0)
+    .sort((a, b) => b.w[top] - a.w[top] || a.i - b.i)
+    .slice(0, 3)
+    .sort((a, b) => a.i - b.i)
+    .map((h) => h.because);
+}
 
 function ResultCard({ scores, hist, experiences, ui }) {
-  const sorted = Object.entries(scores).sort((a, b) => b[1] - a[1]);
-  const top = sorted[0][0];
-  const second = sorted[1] && sorted[1][1] > 0 ? sorted[1][0] : null;
+  const top = topExperienceKey(scores);
   const exp = experiences[top];
-  const exp2 = second ? experiences[second] : null;
+  const others = Object.keys(experiences).filter((k) => k !== top).map((k) => experiences[k]);
 
-  // Short, punchy version of "why" — just the core desire, without the
-  // supporting clause — so the match block never runs past two lines.
-  const shortWhy = exp.why.split(/\s*[—.]\s*/)[0];
+  const reasons = pickReasons(hist, top);
+  const why = reasons.length ? ui.joinReasons(reasons) : exp.why.split(/\s*[—.]\s*/)[0];
+  const whyText = `${why.charAt(0).toUpperCase()}${why.slice(1)}.`;
+  const waHref = `https://wa.me/34689507099?text=${encodeURIComponent(ui.waMessage(exp.profile.name, exp.name))}`;
 
   return (
-    <div className="overflow-hidden rounded-[14px] border border-black/10 bg-[linear-gradient(165deg,var(--color-cream)_0%,var(--color-cream2)_100%)]">
-      <p className="px-4 pt-4 text-[10.5px] font-semibold uppercase tracking-[.18em] text-gold2 sm:px-[22px] sm:pt-5">
-        {ui.thisMatches}
-      </p>
+    <div className="mx-auto max-w-[480px]">
+      <motion.div variants={staggerParent} initial="hidden" animate="show" className="mb-6 text-center">
+        <motion.p variants={staggerItem} className="mb-2 text-[10.5px] font-semibold uppercase tracking-[.2em] text-gold">
+          {ui.yourProfile}
+        </motion.p>
+        <motion.h3 variants={staggerItem} className="font-serif text-[clamp(1.9rem,5vw,2.6rem)] font-bold leading-[1.1] text-white">
+          {exp.profile.name}
+        </motion.h3>
+        <motion.p variants={staggerItem} className="mx-auto mt-2.5 max-w-[340px] text-[14px] leading-[1.55] text-white/65">
+          {exp.profile.desc}
+        </motion.p>
+      </motion.div>
 
-      <div className="relative mt-2">
-        <Image src={exp.cover} alt={exp.name} width={900} height={506} className="aspect-video w-full object-cover" />
-        <div className="absolute inset-0 bg-[linear-gradient(to_top,rgba(30,26,20,.55)_0%,rgba(30,26,20,.05)_50%,transparent_100%)]" />
-        <div className="absolute left-4 top-4 rounded-[3px] bg-gold px-3 py-1.5 text-[10px] font-bold uppercase tracking-[.1em] text-ink">
-          {exp.badge}
-        </div>
-      </div>
+      <div className="overflow-hidden rounded-[14px] bg-cream">
+        <Image src={exp.cover} alt={exp.name} width={900} height={506} className="aspect-[16/9] w-full object-cover" />
 
-      <div className="relative p-4 sm:p-[22px]">
-        <div
-          className="pointer-events-none absolute inset-0 opacity-[0.05] mix-blend-multiply"
-          style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")" }}
-        />
-        <div className="relative z-10">
-        <p className="mb-[5px] text-[10px] font-semibold uppercase tracking-[.14em] text-gold2">{exp.cat}</p>
-        <h3 className="mb-1.5 font-serif text-xl font-bold text-ink sm:text-2xl">{exp.name}</h3>
-        <p className="mb-4 text-[13.5px] italic leading-[1.5] text-ink3 sm:text-[14px] sm:leading-[1.6]">{exp.tagline}</p>
+        <div className="p-5 sm:p-6">
+          <p className="mb-1 text-[10px] font-semibold uppercase tracking-[.16em] text-gold2">{ui.yourMatch}</p>
+          <h4 className="font-serif text-[22px] font-bold leading-[1.2] text-ink">{exp.name}</h4>
 
-        <div className="mb-4 grid grid-cols-2 gap-x-3 gap-y-2">
-          <QuickFact icon={IconClock}>{exp.dur}</QuickFact>
-          <QuickFact icon={IconUsers}>{exp.group.replace(/\s*(personas?|people)$/i, '')}</QuickFact>
-          <QuickFact icon={IconBolt}>{exp.level}</QuickFact>
-          <QuickFact icon={IconPin}>{ui.granada}</QuickFact>
-        </div>
-
-        <div className="mb-4 rounded-[10px] bg-ink px-4 py-3">
-          <span className="block text-[9.5px] font-semibold uppercase tracking-[.1em] text-white/50">{ui.from}</span>
-          <span className="font-serif text-[22px] font-bold text-gold">
-            {exp.price}€ <span className="font-sans text-[11px] font-normal text-white/60">{ui.perPerson}</span>
-          </span>
-        </div>
-
-        <div className="mb-4 rounded-[10px] border border-gold/25 bg-paper p-3.5 shadow-[0_1px_3px_rgba(30,26,20,.06)] sm:p-4">
-          <p className="mb-1 text-[10.5px] font-semibold uppercase tracking-[.1em] text-gold2">{ui.weChoseBecause}</p>
-          <p className="line-clamp-2 text-[13.5px] leading-[1.4] text-ink2">{shortWhy}.</p>
-        </div>
-
-        <div className="mb-5">
-          <p className="mb-2 text-[10.5px] font-semibold uppercase tracking-[.1em] text-ink3">{ui.includes}</p>
-          <ul className="flex flex-col gap-1.5">
-            {exp.includes.map((item) => (
-              <li key={item} className="flex items-center gap-2 text-[13.5px] text-ink2">
-                <IconCheck className="h-4 w-4 flex-shrink-0 text-gold2" />
-                {item}
+          <ul className="mt-3 flex flex-wrap gap-1.5">
+            {exp.tags.map((tag) => (
+              <li key={tag} className="rounded-full border border-black/10 bg-cream2 px-2.5 py-1 text-[11.5px] font-semibold text-ink2">
+                {tag}
               </li>
             ))}
           </ul>
-        </div>
 
-        <div className="flex flex-col gap-2.5">
-          <a
-            href={`https://wa.me/34689507099?text=${encodeURIComponent(exp.wa)}`}
-            target="_blank"
-            className="flex items-center justify-center gap-2 rounded bg-gold px-4 py-3.5 text-[13px] font-bold uppercase tracking-[.03em] text-ink transition-all hover:-translate-y-0.5 hover:bg-gold2 hover:text-white"
-          >
-            <WhatsAppIcon size={14} />
-            {ui.checkAvailability}
-          </a>
-          <a
-            href={exp.detailPage || exp.url}
-            target="_blank"
-            className="flex items-center justify-center gap-2 rounded border-[1.5px] border-ink px-[26px] py-3.5 text-sm font-medium text-ink transition-all hover:border-gold2 hover:text-gold2"
-          >
-            {ui.viewDetails}
-          </a>
-        </div>
+          <p className="mt-3 text-[14px] font-semibold text-ink2">{ui.priceLine(exp.price)}</p>
 
-        <LeadCaptureBlock exp={exp} hist={hist} ui={ui} />
-
-        {exp2 && (
-          <>
-            <div className="mb-2.5 mt-[18px] flex items-center gap-2.5 text-[10px] uppercase tracking-[.14em] text-ink3 after:h-px after:flex-1 after:bg-black/10 after:content-['']">
-              {ui.alsoLike}
-            </div>
-            <div className="grid grid-cols-1 gap-2">
-              <div className="flex items-center gap-2.5 rounded-lg border border-black/10 bg-cream p-3">
-                {(() => {
-                  const Icon2 = EXPERIENCE_ICONS[second];
-                  return <Icon2 className="h-5 w-5 flex-shrink-0 text-gold2" />;
-                })()}
-                <div>
-                  <div className="text-[12.5px] font-semibold">{exp2.name}</div>
-                  <div className="text-[12px] text-ink3">{ui.from} {exp2.price}€ · {exp2.dur}</div>
-                </div>
-              </div>
-            </div>
-          </>
-        )}
-
-        <div className="mt-4 border-t border-black/10 pt-4">
-          <p className="mb-2.5 flex items-center gap-2.5 text-[10px] uppercase tracking-[.14em] text-ink3 after:h-px after:flex-1 after:bg-black/10 after:content-['']">
-            {ui.completeYourDay}
-          </p>
-          <div className="flex flex-wrap gap-2">
-            <PlanPill time={ui.before} name={ui.plan1} />
-            <PlanPill time={ui.after} name={ui.plan2} />
+          <div className="mt-4 border-l-2 border-gold pl-3">
+            <p className="text-[10px] font-semibold uppercase tracking-[.14em] text-gold2">{ui.whyThis}</p>
+            <p className="mt-0.5 text-[14px] leading-[1.5] text-ink2">{whyText}</p>
           </div>
+
+          <a
+            href={waHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-5 flex items-center justify-center gap-2 rounded bg-gold px-4 py-3.5 text-[13px] font-bold uppercase tracking-[.03em] text-ink transition-all hover:-translate-y-0.5 hover:bg-gold2 hover:text-white"
+          >
+            <WhatsAppIcon size={15} />
+            {ui.bookWhatsApp}
+          </a>
+
+          <LeadCaptureBlock exp={exp} hist={hist} ui={ui} />
         </div>
-        </div>
+      </div>
+
+      <p className="mb-3 mt-8 text-center text-[10.5px] font-semibold uppercase tracking-[.16em] text-white/55">{ui.notConvinced}</p>
+      <div className="grid grid-cols-2 gap-3">
+        {others.map((other) => (
+          <Link key={other.key} href={other.detailPage} className="group overflow-hidden rounded-[12px] border border-white/10 bg-black/30 transition-colors hover:border-gold/50">
+            <div className="overflow-hidden">
+              <Image src={other.cover} alt={other.name} width={400} height={300} className="aspect-[4/3] w-full object-cover transition-transform duration-500 group-hover:scale-[1.05]" />
+            </div>
+            <div className="px-3 py-2.5">
+              <p className="text-[13px] font-semibold leading-[1.3] text-white">{other.name}</p>
+              <p className="mt-0.5 text-[11.5px] text-white/55">{ui.priceLine(other.price)}</p>
+            </div>
+          </Link>
+        ))}
+      </div>
+
+      <div className="mt-7 text-center">
+        <p className="mb-2 text-[10.5px] font-semibold uppercase tracking-[.16em] text-white/55">{ui.completeYourDay}</p>
+        <p className="text-[14px] text-white/75"><span className="font-semibold text-gold">{ui.before}:</span> {ui.plan1}</p>
+        <p className="mt-1 text-[14px] text-white/75"><span className="font-semibold text-gold">{ui.after}:</span> {ui.plan2}</p>
       </div>
     </div>
   );
@@ -745,6 +692,7 @@ function LeadCaptureBlock({ exp, hist, ui }) {
   const [phone, setPhone] = useState('');
   const [date, setDate] = useState('');
   const [status, setStatus] = useState('idle'); // idle | sending | success | fallback
+  const [open, setOpen] = useState(false);
 
   const isValidEmail = EMAIL_RE.test(email);
   const showEmailError = email.length > 0 && !isValidEmail;
@@ -791,9 +739,29 @@ function LeadCaptureBlock({ exp, hist, ui }) {
     );
   }
 
+  // Collapsed to a single button so the result stays short; the full form
+  // only appears for people who actually want the plan by email.
+  if (!open) {
+    return (
+      <button
+        type="button"
+        onClick={() => setOpen(true)}
+        className="mt-2.5 flex w-full items-center justify-center gap-2 rounded border-[1.5px] border-ink/80 px-4 py-3 text-[13px] font-semibold text-ink transition-colors hover:border-gold2 hover:text-gold2"
+      >
+        <IconMail className="h-4 w-4" />
+        {ui.emailOpen}
+      </button>
+    );
+  }
+
   return (
-    <div className="mt-3 rounded-[10px] border border-gold/25 bg-cream2 p-4 text-center">
-      <p className="mb-1 text-[13.5px] font-semibold text-ink">{ui.emailTitle}</p>
+    <motion.div
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3, ease: EASE }}
+      className="mt-3 rounded-[10px] border border-gold/25 bg-cream2 p-4 text-center"
+    >
+      <p className="mb-1 text-[13.5px] font-semibold text-ink">{ui.emailOpen}</p>
       <p className="mb-3 text-[12px] leading-[1.5] text-ink3">{ui.emailText}</p>
       <div className="flex flex-col gap-2.5">
         <input
@@ -849,25 +817,7 @@ function LeadCaptureBlock({ exp, hist, ui }) {
           </p>
         )}
       </div>
-    </div>
-  );
-}
-
-function QuickFact({ icon: Icon, children }) {
-  return (
-    <div className="flex items-start gap-1.5 text-[12.5px] font-medium leading-[1.3] text-ink2">
-      <Icon className="mt-px h-3.5 w-3.5 flex-shrink-0 text-gold2" />
-      <span>{children}</span>
-    </div>
-  );
-}
-
-function PlanPill({ time, name }) {
-  return (
-    <span className="inline-flex items-center gap-1.5 rounded-full border border-black/10 bg-cream2 px-3 py-1.5 text-[12.5px]">
-      <span className="font-semibold text-gold2">{time}:</span>
-      <span className="text-ink2">{name}</span>
-    </span>
+    </motion.div>
   );
 }
 
@@ -936,6 +886,15 @@ function IconUsers({ className }) {
     </svg>
   );
 }
+function IconMail({ className }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <rect x="3" y="5" width="18" height="14" rx="2" />
+      <path d="M3 7l9 6 9-6" />
+    </svg>
+  );
+}
+
 function IconShield({ className }) {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" className={className}>
@@ -1040,23 +999,6 @@ function IconSunset({ className }) {
       <path d="M5.5 12l1.8-1.8M18.5 12l-1.8-1.8M2.5 12h3M21.5 12h-3" />
       <path d="M4.5 17a7.5 7.5 0 0115 0z" />
       <path d="M2 21h20" />
-    </svg>
-  );
-}
-function IconBike({ className }) {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" className={className}>
-      <circle cx="6" cy="17" r="3.2" />
-      <circle cx="18" cy="17" r="3.2" />
-      <path d="M6 17l4-7h4l3 7M10 10l-1.5-3H6M13 10h3.5" />
-    </svg>
-  );
-}
-function IconPin({ className }) {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" className={className}>
-      <path d="M12 21s-7-6.1-7-11.5A7 7 0 0119 9.5C19 14.9 12 21 12 21z" />
-      <circle cx="12" cy="9.5" r="2.4" />
     </svg>
   );
 }
