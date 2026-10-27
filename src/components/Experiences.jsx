@@ -18,8 +18,8 @@ const COPY = {
     winter: {
       kicker: 'Este invierno · Plazas limitadas',
       title: 'Las vacaciones no se acaban en enero.',
-      text: 'Estamos preparando algo grande para este invierno: rutas, bici y la Granada que no sale en las guías. Apúntate y serás de los primeros en enterarte, antes de que salga en redes.',
-      tags: ['Una semana en enero', 'Pack de aventuras'],
+      text: 'Estamos preparando algo grande para este invierno: rutas, bici y la Granada que no sale en las guías. Y con alojamiento incluido en pleno Albaicín, en uno de sus rincones más especiales, con ambiente de comunidad y otros viajeros como tú. Apúntate y serás de los primeros en enterarte, antes de que salga en redes.',
+      tags: ['Una semana en enero', 'Alojamiento incluido', 'Pack de aventuras'],
       button: 'Avisadme primero →',
       note: 'Te escribimos por WhatsApp. Sin spam.',
       waMessage: 'Hola TRUE 👋 Avisadme primero de lo que preparáis para este invierno 🐐',
@@ -37,8 +37,8 @@ const COPY = {
     winter: {
       kicker: 'This winter · Limited spots',
       title: "The holidays don't end in January.",
-      text: "We're preparing something big for this winter: trails, bikes and the Granada you won't find in guidebooks. Sign up and be among the first to know, before it hits social media.",
-      tags: ['One week in January', 'Adventure pack'],
+      text: "We're preparing something big for this winter: trails, bikes and the Granada you won't find in guidebooks. Accommodation included, right in the Albaicín, in one of its most special spots, with a real community vibe and fellow travellers like you. Sign up and be among the first to know, before it hits social media.",
+      tags: ['One week in January', 'Accommodation included', 'Adventure pack'],
       button: 'Let me know first →',
       note: "We'll message you on WhatsApp. No spam.",
       waMessage: "Hi TRUE 👋 Let me know first about what you're preparing for this winter 🐐",
