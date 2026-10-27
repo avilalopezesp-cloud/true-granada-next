@@ -25,12 +25,12 @@ const STOPS = [
     n: 2,
     href: '/experiencias/ferrata',
     name: { es: 'Vía Ferrata', en: 'Via Ferrata' },
-    place: { es: 'Monachil', en: 'Monachil' },
+    place: { es: 'Quéntar', en: 'Quéntar' },
     time: { es: '20 min en coche', en: '20 min by car' },
-    mapName: { es: 'Monachil', en: 'Monachil' },
-    mapTime: { label: '20 min', x: 392, y: 226 },
-    marker: { x: 432, y: 300 },
-    route: 'M300 150 C 356 188, 398 238, 432 300',
+    mapName: { es: 'Quéntar', en: 'Quéntar' },
+    mapTime: { label: '20 min', x: 404, y: 138 },
+    marker: { x: 478, y: 196 },
+    route: 'M300 150 C 360 132, 430 150, 478 196',
   },
   {
     key: 'barranquismo',
@@ -55,7 +55,7 @@ const COPY = {
     granada: 'Granada',
     sierra: 'Sierra Nevada',
     sea: 'Mar Mediterráneo',
-    mapLabel: 'Mapa ilustrado: desde Plaza Larga, la ruta en e-bike recorre la ciudad, la vía ferrata está en Monachil y el barranquismo en Río Verde.',
+    mapLabel: 'Mapa ilustrado: desde Plaza Larga, la ruta en e-bike recorre la ciudad, la vía ferrata está en Quéntar y el barranquismo en Río Verde.',
   },
   en: {
     kicker: 'Born here, for real',
@@ -65,7 +65,7 @@ const COPY = {
     granada: 'Granada',
     sierra: 'Sierra Nevada',
     sea: 'Mediterranean Sea',
-    mapLabel: 'Illustrated map: from Plaza Larga, the e-bike route loops through the city, the via ferrata is in Monachil and canyoning is in Río Verde.',
+    mapLabel: 'Illustrated map: from Plaza Larga, the e-bike route loops through the city, the via ferrata is in Quéntar and canyoning is in Río Verde.',
   },
 };
 
@@ -104,7 +104,7 @@ export default function PlazaLargaMap() {
             <polyline points="420,268 444,236 462,254 486,216 510,250 532,224 556,256 578,238 598,266" />
             <polyline points="452,292 474,268 490,282 512,256 534,284 552,268 576,292" opacity=".6" />
           </g>
-          <text x="508" y="204" textAnchor="middle" className="fill-gold/70 font-serif text-[15px] italic">{c.sierra}</text>
+          <text x="510" y="318" textAnchor="middle" className="fill-gold/70 font-serif text-[15px] italic">{c.sierra}</text>
 
           {/* Sea */}
           <g fill="none" stroke="rgba(201,165,90,.22)" strokeWidth="1.2">
@@ -145,11 +145,14 @@ export default function PlazaLargaMap() {
                 variants={DRAW}
                 custom={i}
               />
-              <circle r="3.5" className="fill-gold motion-reduce:hidden">
-                <animateMotion dur={`${4 + i * 1.5}s`} begin={`${1.8 + i * 0.35}s`} repeatCount="indefinite" fill="freeze">
+              {/* Shown once its route has been drawn (the SVG clock starts at page load, not on scroll). */}
+              <motion.g className="motion-reduce:hidden" variants={{ hidden: { opacity: 0 }, show: { opacity: 1, transition: { delay: 1.5 + i * 0.35, duration: 0.4 } } }}>
+                <circle r="13" className="fill-ink" stroke="#C9A55A" strokeWidth="1.5" />
+                <image href="/images/true-goat.png" x="-11" y="-11" width="22" height="22" />
+                <animateMotion dur={`${7 + i * 2}s`} begin={`${1.8 + i * 0.35}s`} repeatCount="indefinite" fill="freeze">
                   <mpath href={`#route-${stop.key}`} />
                 </animateMotion>
-              </circle>
+              </motion.g>
             </g>
           ))}
 
