@@ -4,13 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { getExperienceList } from '@/data/experiences';
 import WhatsAppIcon from './icons/WhatsAppIcon';
-import { useLanguage, pick } from '@/i18n/LanguageContext';
-
-const COMING_SOON = [
-  { img: 'https://images.unsplash.com/photo-1585208798174-6cedd86e019a?w=800&q=80', alt: 'Flamenco Granada', cat: { es: 'Cultural', en: 'Cultural' }, name: { es: 'Flamenco Sacromonte', en: 'Flamenco in Sacromonte' } },
-  { img: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800&q=80', alt: 'Tapas Granada', cat: { es: 'Gastronomía', en: 'Food' }, name: { es: 'Tapas & Culture Route', en: 'Tapas & Culture Route' } },
-  { img: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&q=80', alt: 'Sierra Nevada', cat: { es: 'Naturaleza', en: 'Nature' }, name: { es: 'Senderismo Sierra Nevada', en: 'Sierra Nevada Hiking' } },
-];
+import { useLanguage } from '@/i18n/LanguageContext';
 
 const COPY = {
   es: {
@@ -21,7 +15,16 @@ const COPY = {
     ctaEbike: 'Diseñar mi ruta →',
     ctaOther: 'Ver experiencia →',
     from: 'Desde',
-    comingSoon: 'Próximamente',
+    winter: {
+      kicker: 'Este invierno · Plazas limitadas',
+      title: 'Las vacaciones no se acaban en enero.',
+      text: 'Estamos preparando algo grande para este invierno: rutas, bici y la Granada que no sale en las guías. Apúntate y serás de los primeros en enterarte, antes de que salga en redes.',
+      tags: ['Una semana en enero', 'Pack de aventuras'],
+      button: 'Avisadme primero →',
+      note: 'Te escribimos por WhatsApp. Sin spam.',
+      waMessage: 'Hola TRUE 👋 Avisadme primero de lo que preparáis para este invierno 🐐',
+      imgAlt: 'Guía de TRUE con las e-bikes frente a las vistas de Granada',
+    },
   },
   en: {
     kicker: 'Our experiences',
@@ -31,7 +34,16 @@ const COPY = {
     ctaEbike: 'Design my route →',
     ctaOther: 'View experience →',
     from: 'From',
-    comingSoon: 'Coming soon',
+    winter: {
+      kicker: 'This winter · Limited spots',
+      title: "The holidays don't end in January.",
+      text: "We're preparing something big for this winter: trails, bikes and the Granada you won't find in guidebooks. Sign up and be among the first to know, before it hits social media.",
+      tags: ['One week in January', 'Adventure pack'],
+      button: 'Let me know first →',
+      note: "We'll message you on WhatsApp. No spam.",
+      waMessage: "Hi TRUE 👋 Let me know first about what you're preparing for this winter 🐐",
+      imgAlt: 'TRUE guide with the e-bikes overlooking Granada',
+    },
   },
 };
 
@@ -65,10 +77,9 @@ export default function Experiences({ mobileCarousel = true }) {
           {experienceList.map((exp) => (
             <ExperienceCard key={exp.key} exp={exp} mobileCarousel={mobileCarousel} c={c} />
           ))}
-          {COMING_SOON.map((item) => (
-            <ComingSoonCard key={item.name.es} item={item} mobileCarousel={mobileCarousel} lang={lang} comingSoonLabel={c.comingSoon} />
-          ))}
         </div>
+
+        <WinterPackBanner w={c.winter} />
       </div>
     </section>
   );
@@ -108,18 +119,44 @@ function ExperienceCard({ exp, mobileCarousel, c }) {
   );
 }
 
-function ComingSoonCard({ item, mobileCarousel, lang, comingSoonLabel }) {
-  const carouselCardClass = mobileCarousel ? 'max-[540px]:w-[78%] max-[540px]:flex-shrink-0 max-[540px]:snap-center' : '';
+// Teaser for the January adventure week: one wide block in place of the old
+// "coming soon" cards. Sign-ups go through WhatsApp with a prefilled message.
+function WinterPackBanner({ w }) {
   return (
-    <div className={`reveal relative aspect-[3/4] overflow-hidden rounded-xl ${carouselCardClass}`}>
-      <Image src={item.img} alt={item.alt} width={800} height={1067} className="h-full w-full object-cover" />
-      <div className="absolute inset-0 bg-[linear-gradient(to_top,rgba(30,26,20,.94)_0%,rgba(30,26,20,.5)_100%)]" />
-      <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap rounded border border-gold bg-ink/85 px-5 py-[9px] text-[11px] font-semibold uppercase tracking-[.12em] text-gold">
-        {comingSoonLabel}
-      </span>
-      <div className="absolute inset-x-0 bottom-0 p-5">
-        <p className="mb-[5px] text-[10px] font-semibold uppercase tracking-[.14em] text-gold">{pick(lang, item.cat)}</p>
-        <h3 className="font-serif text-xl font-bold leading-[1.2] text-white">{pick(lang, item.name)}</h3>
+    <div className="reveal mt-4 grid overflow-hidden rounded-xl bg-ink md:grid-cols-[1.1fr_1fr]">
+      <div className="flex flex-col justify-center p-10 max-md:order-2 max-[540px]:p-7">
+        <p className="text-[11px] font-semibold uppercase tracking-[.22em] text-gold">{w.kicker}</p>
+        <h3 className="mt-4 font-serif text-[clamp(1.9rem,3.6vw,2.8rem)] font-bold leading-[1.08] text-white">{w.title}</h3>
+        <p className="mt-4 max-w-[460px] text-[15px] leading-[1.65] text-white/75">{w.text}</p>
+        <ul className="mt-5 flex flex-wrap gap-2">
+          {w.tags.map((tag) => (
+            <li key={tag} className="rounded-[3px] border border-white/20 bg-white/[.08] px-[11px] py-[5px] text-[10px] font-semibold uppercase tracking-[.1em] text-white/85">
+              {tag}
+            </li>
+          ))}
+        </ul>
+        <div className="mt-8">
+          <a
+            href={`https://wa.me/34689507099?text=${encodeURIComponent(w.waMessage)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2.5 rounded bg-gold px-7 py-[15px] text-sm font-semibold text-ink transition-all hover:brightness-110"
+          >
+            <WhatsAppIcon size={16} />
+            {w.button}
+          </a>
+          <p className="mt-3 text-xs text-white/55">{w.note}</p>
+        </div>
+      </div>
+      <div className="relative min-h-[260px] max-md:order-1">
+        <Image
+          src="/images/ebike-real-4.jpg"
+          alt={w.imgAlt}
+          fill
+          sizes="(max-width: 768px) 100vw, 540px"
+          className="object-cover"
+        />
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(30,26,20,.55)_0%,transparent_45%)] max-md:bg-[linear-gradient(to_top,rgba(30,26,20,.6)_0%,transparent_50%)]" />
       </div>
     </div>
   );
