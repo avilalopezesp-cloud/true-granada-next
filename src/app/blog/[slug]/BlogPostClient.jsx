@@ -23,7 +23,7 @@ export default function BlogPostClient({ slug }) {
         <div className="absolute inset-0 z-0 bg-[linear-gradient(to_bottom,rgba(30,26,20,.35)_0%,rgba(30,26,20,.85)_100%)]" />
         <div className="relative z-10 mx-auto w-full max-w-[760px]">
           <p className="mb-4 flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[.22em] text-gold">
-            {post.category} <span className="text-white/40">·</span> {post.readTime} {c.minRead}
+            {post.category} <span className="text-white/40">∙</span> {post.readTime} {c.minRead}
           </p>
           <h1 className="font-serif text-[clamp(1.9rem,4.5vw,3rem)] font-bold leading-[1.15] text-white">
             {post.title}

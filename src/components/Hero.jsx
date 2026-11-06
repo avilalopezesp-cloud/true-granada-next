@@ -5,7 +5,7 @@ import { useLanguage } from '@/i18n/LanguageContext';
 
 const COPY = {
   es: {
-    kicker: 'Granada · Albaicín · Andalucía',
+    kicker: 'Granada ∙ Albaicín ∙ Andalucía',
     title: <>Granada<br />no se <em className="font-light italic text-gold">visita.</em><br />Se vive.</>,
     subtitle: 'Cuéntanos cómo quieres descubrirla y diseñaremos una experiencia para ti. Sin catálogos. Sin tours genéricos.',
     ctaPrimary: '✨ Diseñar mi aventura',
@@ -13,7 +13,7 @@ const COPY = {
     scroll: 'scroll',
   },
   en: {
-    kicker: 'Granada · Albaicín · Andalusia',
+    kicker: 'Granada ∙ Albaicín ∙ Andalusia',
     title: <>Granada isn&apos;t <em className="font-light italic text-gold">visited.</em><br />It&apos;s lived.</>,
     subtitle: 'Tell us how you want to discover it and we\'ll design an experience for you. No catalogs. No generic tours.',
     ctaPrimary: '✨ Design my adventure',

@@ -16,13 +16,14 @@ const COPY = {
     ctaOther: 'Ver experiencia →',
     from: 'Desde',
     winter: {
-      kicker: 'Este invierno · Plazas limitadas',
-      title: 'Las vacaciones no se acaban en enero.',
-      text: 'Estamos preparando algo grande para este invierno: rutas, bici y la Granada que no sale en las guías. Y con alojamiento incluido en pleno Albaicín, en uno de sus rincones más especiales, con ambiente de comunidad y otros viajeros como tú. Apúntate y serás de los primeros en enterarte, antes de que salga en redes.',
-      tags: ['Una semana en enero', 'Alojamiento incluido', 'Pack de aventuras'],
-      button: 'Avisadme primero →',
-      note: 'Te escribimos por WhatsApp. Sin spam.',
-      waMessage: 'Hola TRUE 👋 Avisadme primero de lo que preparáis para este invierno 🐐',
+      kicker: 'Granada ∙ Enero 2027 ∙ Plazas limitadas',
+      title: <>TRUE <em className="font-light italic text-gold">Winter</em> Escape</>,
+      lead: 'Las vacaciones no se acaban en enero.',
+      text: 'Una semana de aventura, cultura y naturaleza: vía ferrata, barranquismo, raquetas en Sierra Nevada, e-bike hasta Guadix, la Alhambra y flamenco. Con alojamiento en Oripando Hostel y un grupo pequeño de viajeros como tú.',
+      tags: ['7 días ∙ 6 noches', 'Máx. 16 viajeros', 'Alojamiento incluido'],
+      button: 'Ver el plan día a día →',
+      waLink: '¿Te interesa? Avísame por WhatsApp',
+      waMessage: 'Hola TRUE 👋 Me interesa el TRUE Winter Escape de enero 2027 🐐 ¿Me avisáis cuando abráis plazas?',
       imgAlt: 'Guía de TRUE con las e-bikes frente a las vistas de Granada',
     },
   },
@@ -35,13 +36,14 @@ const COPY = {
     ctaOther: 'View experience →',
     from: 'From',
     winter: {
-      kicker: 'This winter · Limited spots',
-      title: "The holidays don't end in January.",
-      text: "We're preparing something big for this winter: trails, bikes and the Granada you won't find in guidebooks. Accommodation included, right in the Albaicín, in one of its most special spots, with a real community vibe and fellow travellers like you. Sign up and be among the first to know, before it hits social media.",
-      tags: ['One week in January', 'Accommodation included', 'Adventure pack'],
-      button: 'Let me know first →',
-      note: "We'll message you on WhatsApp. No spam.",
-      waMessage: "Hi TRUE 👋 Let me know first about what you're preparing for this winter 🐐",
+      kicker: 'Granada ∙ January 2027 ∙ Limited places',
+      title: <>TRUE <em className="font-light italic text-gold">Winter</em> Escape</>,
+      lead: "The holidays don't end in January.",
+      text: 'A week of adventure, culture and nature: via ferrata, canyoning, snowshoeing in Sierra Nevada, e-biking to Guadix, the Alhambra and flamenco. With accommodation at Oripando Hostel and a small group of travellers like you.',
+      tags: ['7 days ∙ 6 nights', 'Max. 16 travellers', 'Accommodation included'],
+      button: 'See the day-by-day plan →',
+      waLink: 'Interested? Let me know on WhatsApp',
+      waMessage: "Hi TRUE 👋 I'm interested in the TRUE Winter Escape in January 2027 🐐 Can you let me know when places open?",
       imgAlt: 'TRUE guide with the e-bikes overlooking Granada',
     },
   },
@@ -119,15 +121,16 @@ function ExperienceCard({ exp, mobileCarousel, c }) {
   );
 }
 
-// Teaser for the January adventure week: one wide block in place of the old
-// "coming soon" cards. Sign-ups go through WhatsApp with a prefilled message.
+// Teaser for the TRUE Winter Escape (January week). The main button opens the
+// full day-by-day page; WhatsApp stays as a quick "let me know" link.
 function WinterPackBanner({ w }) {
   return (
     <div className="reveal mt-4 grid overflow-hidden rounded-xl bg-ink md:grid-cols-[1.1fr_1fr]">
       <div className="flex flex-col justify-center p-10 max-md:order-2 max-[540px]:p-7">
         <p className="text-[11px] font-semibold uppercase tracking-[.22em] text-gold">{w.kicker}</p>
         <h3 className="mt-4 font-serif text-[clamp(1.9rem,3.6vw,2.8rem)] font-bold leading-[1.08] text-white">{w.title}</h3>
-        <p className="mt-4 max-w-[460px] text-[15px] leading-[1.65] text-white/75">{w.text}</p>
+        <p className="mt-3 font-serif text-lg italic text-white/90">{w.lead}</p>
+        <p className="mt-3 max-w-[460px] text-[15px] leading-[1.65] text-white/75">{w.text}</p>
         <ul className="mt-5 flex flex-wrap gap-2">
           {w.tags.map((tag) => (
             <li key={tag} className="rounded-[3px] border border-white/20 bg-white/[.08] px-[11px] py-[5px] text-[10px] font-semibold uppercase tracking-[.1em] text-white/85">
@@ -135,17 +138,22 @@ function WinterPackBanner({ w }) {
             </li>
           ))}
         </ul>
-        <div className="mt-8">
+        <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-4">
+          <Link
+            href="/winter-escape"
+            className="inline-flex items-center rounded bg-gold px-7 py-[15px] text-sm font-semibold text-ink transition-all hover:brightness-110"
+          >
+            {w.button}
+          </Link>
           <a
             href={`https://wa.me/34689507099?text=${encodeURIComponent(w.waMessage)}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2.5 rounded bg-gold px-7 py-[15px] text-sm font-semibold text-ink transition-all hover:brightness-110"
+            className="inline-flex items-center gap-2 text-[13px] font-semibold text-white/70 underline-offset-4 transition-colors hover:text-white hover:underline"
           >
-            <WhatsAppIcon size={16} />
-            {w.button}
+            <WhatsAppIcon size={14} />
+            {w.waLink}
           </a>
-          <p className="mt-3 text-xs text-white/55">{w.note}</p>
         </div>
       </div>
       <div className="relative min-h-[260px] max-md:order-1">
