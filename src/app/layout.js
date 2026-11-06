@@ -14,7 +14,10 @@ export const metadata = {
     title: "TRUE Granada — Granada no se visita, se vive",
     description:
       "Cuéntanos cómo quieres descubrir Granada y diseñamos una experiencia para ti. Sin catálogos, sin tours genéricos.",
-    images: ["/images/logo-true.png"],
+    // The logo itself is transparent and partly white, so WhatsApp and
+    // others (which paint transparency white) lost the goat; this version
+    // sits on the brand's dark background.
+    images: [{ url: "/images/og-true.jpg", width: 1200, height: 630, alt: "T.R.U.E. Albayzín" }],
     locale: "es_ES",
   },
   twitter: {
