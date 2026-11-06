@@ -15,7 +15,7 @@ const SOCIAL_LINKS = [
 
 const COPY = {
   es: {
-    tagline: <>Granada de Verdad.<br />Aventura · Naturaleza · Conexión.</>,
+    tagline: <>Granada de Verdad.<br />Aventura ∙ Naturaleza ∙ Conexión.</>,
     address: 'Plaza Larga, Albaicín, Granada',
     experiencias: 'Experiencias',
     barranquismo: 'Barranquismo',
@@ -36,7 +36,7 @@ const COPY = {
     copyright: '© 2026 TRUE Granada Experiences',
   },
   en: {
-    tagline: <>The Real Granada.<br />Adventure · Nature · Connection.</>,
+    tagline: <>The Real Granada.<br />Adventure ∙ Nature ∙ Connection.</>,
     address: 'Plaza Larga, Albaicín, Granada',
     experiencias: 'Experiences',
     barranquismo: 'Canyoning',

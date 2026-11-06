@@ -10,7 +10,7 @@ const COPY = {
     text: 'Cuéntanos qué buscas. Nosotros nos encargamos del resto — rápido, personal, sin formularios.',
     ctaPrimary: '✨ Diseñar mi aventura',
     ctaSecondary: 'Escribir por WhatsApp',
-    footer: '📍 Plaza Larga, Albaicín · +34 689 50 70 99 · info@betrue.es',
+    footer: '📍 Plaza Larga, Albaicín ∙ +34 689 50 70 99 ∙ info@betrue.es',
   },
   en: {
     kicker: 'Ready?',
@@ -18,7 +18,7 @@ const COPY = {
     text: "Tell us what you're looking for. We'll handle the rest — fast, personal, no forms.",
     ctaPrimary: '✨ Design my adventure',
     ctaSecondary: 'Message us on WhatsApp',
-    footer: '📍 Plaza Larga, Albaicín · +34 689 50 70 99 · info@betrue.es',
+    footer: '📍 Plaza Larga, Albaicín ∙ +34 689 50 70 99 ∙ info@betrue.es',
   },
 };
 
